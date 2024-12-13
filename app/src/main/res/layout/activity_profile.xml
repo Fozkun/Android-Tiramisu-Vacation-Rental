@@ -21,15 +21,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/backButton"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_back"
-                    android:contentDescription="Back Button" />
+                    android:contentDescription="Back Button"
+                    android:src="@drawable/ic_back" />
 
                 <TextView
                     android:id="@+id/profileTitle"
@@ -37,33 +37,33 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:text="My Profile"
+                    android:textColor="#000000"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="#000000" />
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <!-- Profile Header -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="#007BFF"
-                android:padding="16dp"
                 android:layout_marginTop="16dp"
-                android:gravity="center_vertical">
+                android:background="#007BFF"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp">
 
                 <ImageView
                     android:id="@+id/profileImage"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:src="@drawable/ic_user"
-                    android:contentDescription="Profile Image" />
+                    android:contentDescription="Profile Image"
+                    android:src="@drawable/ic_user" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="16dp">
+                    android:layout_marginStart="16dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/nickname"
@@ -87,10 +87,10 @@
                     android:id="@+id/editProfile"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
-                    android:src="@drawable/ic_edit"
-                    android:contentDescription="Edit Profile"
                     android:layout_gravity="end"
-                    android:layout_marginStart="auto" />
+                    android:layout_marginStart="auto"
+                    android:contentDescription="Edit Profile"
+                    android:src="@drawable/ic_edit" />
             </LinearLayout>
 
             <!-- My Account Section -->
@@ -99,56 +99,56 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="My Account"
+                android:textColor="#000000"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="#000000" />
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="12dp"
+                android:layout_marginTop="8dp"
                 android:background="#F7F7F7"
-                android:layout_marginTop="8dp">
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_card"
-                    android:contentDescription="Saved Cards Icon" />
+                    android:contentDescription="Saved Cards Icon"
+                    android:src="@drawable/ic_card" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:text="Saved cards"
-                    android:textSize="14sp"
-                    android:textColor="#000000" />
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="12dp"
+                android:layout_marginTop="8dp"
                 android:background="#F7F7F7"
-                android:layout_marginTop="8dp">
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_review"
-                    android:contentDescription="Reviews Icon" />
+                    android:contentDescription="Reviews Icon"
+                    android:src="@drawable/ic_review" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:text="Reviews"
-                    android:textSize="14sp"
-                    android:textColor="#000000" />
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <!-- Settings Section -->
@@ -157,33 +157,33 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Settings"
+                android:textColor="#000000"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="#000000" />
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="12dp"
+                android:layout_marginTop="8dp"
                 android:background="#F7F7F7"
-                android:layout_marginTop="8dp">
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_notification"
-                    android:contentDescription="Push Notification Icon" />
+                    android:contentDescription="Push Notification Icon"
+                    android:src="@drawable/ic_notification" />
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:layout_weight="1"
                     android:text="Push Notification"
-                    android:textSize="14sp"
-                    android:textColor="#000000" />
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switchNotification"
@@ -200,56 +200,56 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Information"
+                android:textColor="#000000"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="#000000" />
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="12dp"
+                android:layout_marginTop="8dp"
                 android:background="#F7F7F7"
-                android:layout_marginTop="8dp">
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_help"
-                    android:contentDescription="Help Icon" />
+                    android:contentDescription="Help Icon"
+                    android:src="@drawable/ic_help" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="Help & Support"
-                    android:textSize="14sp"
-                    android:textColor="#000000" />
+                    android:text="Help &amp; Support"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="12dp"
+                android:layout_marginTop="8dp"
                 android:background="#F7F7F7"
-                android:layout_marginTop="8dp">
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_about"
-                    android:contentDescription="About App Icon" />
+                    android:contentDescription="About App Icon"
+                    android:src="@drawable/ic_about" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:text="About App"
-                    android:textSize="14sp"
-                    android:textColor="#000000" />
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

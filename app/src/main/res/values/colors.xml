@@ -9,4 +9,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#007BFF</color>
     <color name="light_gray">#E0E0E0</color>
+    <color name="accent_color">#81BFDA</color>
+    <color name="text_color_1">#FFFFFFFF</color>
+    <color name="text_color_1_shadow">#000000</color>
+    <color name="bg_color_1">#FFFFFFFF</color>
+    <color name="bg_color_1_shadow">#000000</color>
+    <color name="bg_card_1_color">#4DB1F0F7</color>
+    <color name="bg_card_2_shadow">#4D81BFDA</color>
 </resources>

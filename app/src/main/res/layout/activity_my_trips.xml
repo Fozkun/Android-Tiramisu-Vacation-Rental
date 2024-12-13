@@ -1,10 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MyTripsActivity">
 
+  <!-- Bottom Navigation -->
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:gravity="center"
+      android:background="#FFFFFF"
+      android:padding="8dp"
+      android:elevation="4dp">
+
+    <!-- Home -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+      <ImageView
+          android:id="@+id/homeButton"
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          android:src="@drawable/ic_home"
+          android:contentDescription="Home" />
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:text="Home"
+          android:textSize="12sp"
+          android:textColor="#757575" />
+    </LinearLayout>
+
+    <!-- Coupons -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+      <ImageView
+          android:id="@+id/couponsButton"
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          android:src="@drawable/ic_coupons"
+          android:contentDescription="Coupons" />
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:text="Coupons"
+          android:textSize="12sp"
+          android:textColor="#757575" />
+    </LinearLayout>
+
+    <!-- Trips -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+      <ImageView
+          android:id="@+id/tripsButton"
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          android:src="@drawable/ic_trips"
+          android:contentDescription="Trips" />
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:text="My Trips"
+          android:textSize="12sp"
+          android:textColor="#007BFF" />
+    </LinearLayout>
+
+    <!-- Notifications -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+      <ImageView
+          android:id="@+id/notificationsButton"
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          android:src="@drawable/ic_notifications"
+          android:contentDescription="Notifications" />
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:text="Notification"
+          android:textSize="12sp"
+          android:textColor="#757575" />
+    </LinearLayout>
+
+    <!-- Profile -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+      <ImageView
+          android:id="@+id/profileButton"
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          android:src="@drawable/ic_profile"
+          android:contentDescription="Profile" />
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:text="Profile"
+          android:textSize="12sp"
+          android:textColor="#757575" />
+    </LinearLayout>
+  </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
