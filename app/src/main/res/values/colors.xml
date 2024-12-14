@@ -9,11 +9,21 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#007BFF</color>
     <color name="light_gray">#E0E0E0</color>
-    <color name="accent_color">#81BFDA</color>
+
+    <color name="accent_color">#FADA7A</color>
+
     <color name="text_color_1">#FFFFFFFF</color>
     <color name="text_color_1_shadow">#000000</color>
-    <color name="bg_color_1">#FFFFFFFF</color>
-    <color name="bg_color_1_shadow">#000000</color>
-    <color name="bg_card_1_color">#4DB1F0F7</color>
-    <color name="bg_card_2_shadow">#4D81BFDA</color>
+
+    <color name="text_color_2">#000000</color>
+    <color name="text_color_2_shadow">#FFFFFFFF</color>
+
+    <color name="icon_color_1">#FFFFFFFF</color>
+    <color name="icon_color_1_shadow">#000000</color>
+
+    <color name="icon_color_2">#000000</color>
+    <color name="icon_color_2_shadow">#FFFFFFFF</color>
+
+    <color name="card_1_color">#4DB1F0F7</color>
+    <color name="card_1_shadow">#4D81BFDA</color>
 </resources>
