@@ -59,7 +59,7 @@
                                 android:shadowDx="1.5"
                                 android:shadowDy="1.3"
                                 android:shadowRadius="1.6"
-                                android:src="@drawable/baseline_backpack_24" />
+                                android:src="@drawable/homepage_icon_backpack" />
 
                             <TextView
                                 android:id="@+id/title"
@@ -125,7 +125,7 @@
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="50dp"
-                                    android:background="@drawable/homepage_rounded_layout_form"
+                                    android:background="@drawable/homepage_rounded_form"
                                     android:gravity="center"
                                     android:orientation="horizontal"
                                     android:padding="5dp">
@@ -136,7 +136,7 @@
                                         android:layout_height="14dp"
                                         android:adjustViewBounds="true"
                                         android:scaleType="fitXY"
-                                        tools:srcCompat="@drawable/homepage_location_icon" />
+                                        tools:srcCompat="@drawable/homepage_icon_location" />
 
                                     <EditText
                                         android:id="@+id/editText1"
@@ -156,7 +156,7 @@
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="80dp"
-                                    android:background="@drawable/homepage_rounded_layout_form"
+                                    android:background="@drawable/homepage_rounded_form"
                                     android:gravity="center"
                                     android:orientation="horizontal"
                                     android:padding="5dp">
@@ -167,7 +167,7 @@
                                         android:layout_height="14dp"
                                         android:adjustViewBounds="true"
                                         android:scaleType="fitXY"
-                                        tools:srcCompat="@drawable/homepage_calendar_icon" />
+                                        tools:srcCompat="@drawable/homepage_icon_calendar" />
 
                                     <LinearLayout
                                         android:layout_width="0dp"
@@ -239,7 +239,7 @@
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="50dp"
-                                    android:background="@drawable/homepage_rounded_layout_form"
+                                    android:background="@drawable/homepage_rounded_form"
                                     android:gravity="center|start"
                                     android:orientation="horizontal"
                                     android:padding="5dp">
