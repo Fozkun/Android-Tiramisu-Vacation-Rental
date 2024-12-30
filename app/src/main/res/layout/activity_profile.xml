@@ -88,7 +88,6 @@
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:layout_gravity="end"
-                    android:layout_marginStart="auto"
                     android:contentDescription="Edit Profile"
                     android:src="@drawable/ic_edit" />
             </LinearLayout>

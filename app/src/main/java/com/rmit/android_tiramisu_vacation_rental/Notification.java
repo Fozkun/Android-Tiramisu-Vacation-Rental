@@ -1,4 +1,4 @@
-package com.example.groupassignmentfrontend;
+package com.rmit.android_tiramisu_vacation_rental;
 
 import android.os.Bundle;
 

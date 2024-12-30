@@ -1,4 +1,4 @@
-package com.example.groupassignmentfrontend.;
+package com.rmit.android_tiramisu_vacation_rental;
 
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
@@ -37,7 +37,7 @@ public class SigninActivity extends AppCompatActivity {
                 } else {
                     // Show password
                     passwordField.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    togglePasswordButton.setImageResource(R.drawable.ic_eye_off); // Change to eye-off icon
+                    //togglePasswordButton.setImageResource(R.drawable.ic_eye_off); // Change to eye-off icon
                 }
                 isPasswordVisible = !isPasswordVisible; // Toggle state
                 passwordField.setSelection(passwordField.getText().length()); // Keep cursor at end
