@@ -18,11 +18,20 @@
     <color name="text_color_2">#000000</color>
     <color name="text_color_2_shadow">#FFFFFFFF</color>
 
+    <color name="text_color_3">#FFFFFFFF</color>
+    <color name="text_color_3_shadow">#000000</color>
+
     <color name="icon_color_1">#FFFFFFFF</color>
     <color name="icon_color_1_shadow">#000000</color>
 
     <color name="icon_color_2">#000000</color>
     <color name="icon_color_2_shadow">#FFFFFFFF</color>
+
+    <color name="button_active_color_1">#FADA7A</color>
+    <color name="button_active_color_1_shadow">#2C2719</color>
+
+    <color name="button_not_active_color_1">@color/blue</color>
+    <color name="button_not_active_color_1_shadow">#060D14</color>
 
     <color name="card_1_color">#4DB1F0F7</color>
     <color name="card_1_shadow">#4D81BFDA</color>
