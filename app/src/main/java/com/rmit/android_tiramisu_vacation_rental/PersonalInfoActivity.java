@@ -1,4 +1,4 @@
-package com.example.vacationrentals;
+package com.rmit.android_tiramisu_vacation_rental;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.widget.Button;
 
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.WindowDecorActionBar;
 
 public class PersonalInfoActivity extends AppCompatActivity {
     @Override

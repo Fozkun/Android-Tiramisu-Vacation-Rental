@@ -1,4 +1,4 @@
-package com.example.vacationrentals;
+package com.rmit.android_tiramisu_vacation_rental;
 
 import android.content.Intent;
 import android.os.Bundle;

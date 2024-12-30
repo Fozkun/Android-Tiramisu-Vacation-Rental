@@ -1,4 +1,4 @@
-package com.example.vacationrentals;
+package com.rmit.android_tiramisu_vacation_rental;
 
 import android.os.Bundle;
 import android.widget.Button;

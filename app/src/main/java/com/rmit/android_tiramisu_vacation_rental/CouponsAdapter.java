@@ -1,4 +1,4 @@
-package com.example.vacationrentals;
+package com.rmit.android_tiramisu_vacation_rental;
 
 import android.view.LayoutInflater;
 import android.view.View;
