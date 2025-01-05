@@ -39,7 +39,7 @@
                 android:id="@+id/textViewHotelLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hotel location" />
+                android:text="Hotel locationTri" />
 
             <TextView
                 android:id="@+id/textViewMaxOccupancy"

@@ -1,6 +1,5 @@
 package com.rmit.android_tiramisu_vacation_rental;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,14 +17,14 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.rmit.android_tiramisu_vacation_rental.enums.UserRole;
-import com.rmit.android_tiramisu_vacation_rental.models.HotelModel;
-import com.rmit.android_tiramisu_vacation_rental.models.Location;
-import com.rmit.android_tiramisu_vacation_rental.models.UserSession;
+import com.rmit.android_tiramisu_vacation_rental.models.HotelModel_Tri;
+import com.rmit.android_tiramisu_vacation_rental.models.Location_Tri;
+import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
 
 public class HomepageActivity extends AppCompatActivity implements RecyclerViewHotelCardInterface {
     private static final String TAG = "HomepageActivity";
 
-    private UserSession userSession;
+    private UserSession_Tri userSessionTri;
 
     private HotelCardAdapter hotelCardAdapter;
     private Button btnCreateHotel;
@@ -49,9 +48,9 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
 
         hotelReference = FirebaseDatabase.getInstance().getReference(FirebaseConstants.HOTELS);
 
-        userSession = UserSession.getInstance();
-        if(userSession.hasSession()){
-            UserRole userRole = userSession.getUserRole();
+        userSessionTri = UserSession_Tri.getInstance();
+        if(userSessionTri.hasSession()){
+            UserRole userRole = userSessionTri.getUserRole();
 
             if(userRole != UserRole.RENTAL_PROVIDER){
                 btnCreateHotel.setVisibility(View.VISIBLE);
@@ -61,9 +60,9 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
                     new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
             recyclerViewHotelCard.setItemAnimator(null);
 
-            FirebaseRecyclerOptions<HotelModel> options
-                    = new FirebaseRecyclerOptions.Builder<HotelModel>()
-                    .setQuery(hotelReference, HotelModel.class)
+            FirebaseRecyclerOptions<HotelModel_Tri> options
+                    = new FirebaseRecyclerOptions.Builder<HotelModel_Tri>()
+                    .setQuery(hotelReference, HotelModel_Tri.class)
                     .build();
 
             hotelCardAdapter = new HotelCardAdapter(options, this);
@@ -72,13 +71,13 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
             hotelCardAdapter.startListening();
 
             btnCreateHotel.setOnClickListener(v -> {
-                HotelModel model = new HotelModel();
+                HotelModel_Tri model = new HotelModel_Tri();
 
                 String modelId = hotelReference.push().getKey();
                 model.setId(modelId);
                 model.setName("A hotel");
                 model.setAddress("Address");
-                model.setLocation(new Location());
+                model.setLocation(new Location_Tri());
                 model.setRating(0);
 
                 hotelReference.child(modelId).setValue(model);
@@ -88,7 +87,7 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
 
     @Override
     public void onItemClick(int position) {
-        HotelModel model = hotelCardAdapter.getItem(position);
+        HotelModel_Tri model = hotelCardAdapter.getItem(position);
         Log.d(TAG, model.toString());
         //Intent intent = new Intent(this, Hotel.class);
         //intent.putExtra("siteId", siteModel.getSiteId());

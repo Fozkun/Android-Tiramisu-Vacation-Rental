@@ -8,15 +8,11 @@ import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -26,7 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.rmit.android_tiramisu_vacation_rental.enums.UserRole;
-import com.rmit.android_tiramisu_vacation_rental.models.UserModel;
+import com.rmit.android_tiramisu_vacation_rental.models.UserModel_Tri;
 
 import java.util.Objects;
 
@@ -121,18 +117,18 @@ public class SignupActivity extends AppCompatActivity {
                     userRole = UserRole.RENTAL_PROVIDER;
                 }
 
-                UserModel userModel = new UserModel();
+                UserModel_Tri userModelTri = new UserModel_Tri();
 
-                userModel.username = username;
-                userModel.userRole = userRole;
-                userModel.nickname = nickname;
+                userModelTri.username = username;
+                userModelTri.userRole = userRole;
+                userModelTri.nickname = nickname;
 
-                registerUser(email, password, userModel);
+                registerUser(email, password, userModelTri);
             }
         });
     }
 
-    private void registerUser(String email, String password, UserModel userModel) {
+    private void registerUser(String email, String password, UserModel_Tri userModelTri) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
@@ -146,7 +142,7 @@ public class SignupActivity extends AppCompatActivity {
 
                 DatabaseReference referenceUser = FirebaseDatabase.getInstance().getReference("Registered Users");
 
-                referenceUser.child(firebaseUser.getUid()).setValue(userModel).addOnCompleteListener(dbTask -> {
+                referenceUser.child(firebaseUser.getUid()).setValue(userModelTri).addOnCompleteListener(dbTask -> {
                     if (dbTask.isSuccessful()) {
                         //Send verification email
                         firebaseUser.sendEmailVerification();

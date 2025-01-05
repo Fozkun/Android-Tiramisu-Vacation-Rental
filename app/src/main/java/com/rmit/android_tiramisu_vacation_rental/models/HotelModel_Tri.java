@@ -2,16 +2,16 @@ package com.rmit.android_tiramisu_vacation_rental.models;
 
 import java.io.Serializable;
 
-public class HotelModel implements Serializable {
+public class HotelModel_Tri implements Serializable {
     private String id;
     private String name;
     private String address;
-    private Location location;
+    private Location_Tri locationTri;
     private int maxOccupancy;
     private float rating;
     private String imageUrl;
 
-    public HotelModel() {
+    public HotelModel_Tri() {
     }
 
     public String getId() {
@@ -38,12 +38,12 @@ public class HotelModel implements Serializable {
         this.address = address;
     }
 
-    public Location getLocation() {
-        return location;
+    public Location_Tri getLocation() {
+        return locationTri;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLocation(Location_Tri locationTri) {
+        this.locationTri = locationTri;
     }
 
     public int getMaxOccupancy() {
@@ -75,7 +75,7 @@ public class HotelModel implements Serializable {
         return "HotelModel{" +
                 "name='" + name + '\'' +
                 ", address='" + address + '\'' +
-                ", location=" + location +
+                ", location=" + locationTri +
                 ", maxOccupancy=" + maxOccupancy +
                 ", rating=" + rating +
                 ", imageUrl='" + imageUrl + '\'' +

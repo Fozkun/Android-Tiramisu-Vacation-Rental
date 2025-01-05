@@ -31,8 +31,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rmit.android_tiramisu_vacation_rental.enums.UserRole;
-import com.rmit.android_tiramisu_vacation_rental.models.UserModel;
-import com.rmit.android_tiramisu_vacation_rental.models.UserSession;
+import com.rmit.android_tiramisu_vacation_rental.models.UserModel_Tri;
+import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
 
 import java.util.Objects;
 
@@ -47,7 +47,7 @@ public class SigninActivity extends AppCompatActivity {
     private FirebaseAuth authProfile;
     private DatabaseReference usersReference;
 
-    private UserSession userSession;
+    private UserSession_Tri userSessionTri;
 
     private boolean isPasswordVisible = false; // Track the visibility state of the password
 
@@ -74,7 +74,7 @@ public class SigninActivity extends AppCompatActivity {
 
         usersReference = FirebaseDatabase.getInstance().getReference(FirebaseConstants.REGISTERED_USERS);
 
-        userSession = UserSession.getInstance();
+        userSessionTri = UserSession_Tri.getInstance();
 
         if (firebaseUser != null && firebaseUser.isEmailVerified()) {
             firebaseUser.reload().addOnCompleteListener(task -> {
@@ -84,15 +84,15 @@ public class SigninActivity extends AppCompatActivity {
                     usersReference.child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            UserModel model = snapshot.getValue(UserModel.class);
+                            UserModel_Tri model = snapshot.getValue(UserModel_Tri.class);
                             if (model != null) {
                                 UserRole userRole = model.userRole;
 
-                                if (userSession.hasSession()) {
-                                    userSession.clearSession();
+                                if (userSessionTri.hasSession()) {
+                                    userSessionTri.clearSession();
                                 }
 
-                                userSession.setSession(firebaseUser.getUid(), userRole);
+                                userSessionTri.setSession(firebaseUser.getUid(), userRole);
                                 redirectToHomepage();
                             }
                         }
@@ -186,11 +186,11 @@ public class SigninActivity extends AppCompatActivity {
 
                         if (task1.isSuccessful()) {
                             DataSnapshot snapshot = task1.getResult();
-                            UserModel userModel = snapshot.getValue(UserModel.class);
+                            UserModel_Tri userModelTri = snapshot.getValue(UserModel_Tri.class);
                             Log.d(TAG, snapshot.toString());
 
-                            if (userModel != null) {
-                                userSession.setSession(firebaseUser.getUid(), userModel.userRole);
+                            if (userModelTri != null) {
+                                userSessionTri.setSession(firebaseUser.getUid(), userModelTri.userRole);
                                 redirectToHomepage();
                             }
                         }

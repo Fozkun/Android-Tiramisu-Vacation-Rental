@@ -13,13 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.rmit.android_tiramisu_vacation_rental.models.HotelModel;
+import com.rmit.android_tiramisu_vacation_rental.models.HotelModel_Tri;
 
-public class HotelCardAdapter extends FirebaseRecyclerAdapter<HotelModel, HotelCardAdapter.HotelCardViewHolder> {
+public class HotelCardAdapter extends FirebaseRecyclerAdapter<HotelModel_Tri, HotelCardAdapter.HotelCardViewHolder> {
     private final RecyclerViewHotelCardInterface hotelCardInterface;
 
     public HotelCardAdapter(
-            @NonNull FirebaseRecyclerOptions<HotelModel> options, RecyclerViewHotelCardInterface hotelCardInterface) {
+            @NonNull FirebaseRecyclerOptions<HotelModel_Tri> options, RecyclerViewHotelCardInterface hotelCardInterface) {
         super(options);
         this.hotelCardInterface = hotelCardInterface;
     }
@@ -27,7 +27,7 @@ public class HotelCardAdapter extends FirebaseRecyclerAdapter<HotelModel, HotelC
     @Override
     protected void
     onBindViewHolder(@NonNull HotelCardViewHolder holder,
-                     int position, @NonNull HotelModel model) {
+                     int position, @NonNull HotelModel_Tri model) {
 
         if (model.getImageUrl() == null) {
             holder.imageViewHotel.setImageResource(R.drawable.homepage_card_bg);

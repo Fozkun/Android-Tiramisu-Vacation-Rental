@@ -4,20 +4,20 @@ import android.util.Log;
 
 import com.rmit.android_tiramisu_vacation_rental.enums.UserRole;
 
-public class UserSession {
-    private static UserSession instance;
+public class UserSession_Tri {
+    private static UserSession_Tri instance;
 
     private String userId;
     private UserRole userRole;
 
-    private UserSession() {
+    private UserSession_Tri() {
         userId = null;
         userRole = null;
     }
 
-    public static synchronized UserSession getInstance() {
+    public static synchronized UserSession_Tri getInstance() {
         if (instance == null) {
-            instance = new UserSession();
+            instance = new UserSession_Tri();
         }
 
         return instance;
