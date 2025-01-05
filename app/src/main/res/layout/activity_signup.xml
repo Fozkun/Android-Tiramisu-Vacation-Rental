@@ -1,113 +1,153 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
+    android:background="@drawable/beach_background"
     android:gravity="center"
-    android:background="@drawable/beach_background">
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <!-- App Title -->
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SIGN UP"
-        android:textSize="50sp"
-        android:textStyle="bold"
         android:layout_marginBottom="24dp"
-        android:textColor="#FADA7A" />
+        android:text="SIGN UP"
+        android:textColor="#FADA7A"
+        android:textSize="50sp"
+        android:textStyle="bold" />
 
     <!-- Username Field -->
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:hint="Username"
-        android:padding="12dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_edit_text"
-        android:layout_marginBottom="16dp" />
+        android:hint="Email"
+        android:padding="12dp" />
+
+    <EditText
+        android:id="@+id/editTextUsername"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rounded_edit_text"
+        android:hint="Username"
+        android:padding="12dp" />
 
     <!-- Password Field -->
+
+    <EditText
+        android:id="@+id/editTextNickname"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rounded_edit_text"
+        android:hint="Nickname"
+        android:padding="12dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
         android:background="@drawable/rounded_edit_text"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:padding="4dp">
 
         <EditText
-            android:id="@+id/password"
+            android:id="@+id/editTextPassword"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
             android:hint="Password"
             android:inputType="textPassword"
-            android:background="@android:color/transparent"
             android:padding="12dp" />
 
         <ImageButton
             android:id="@+id/togglePassword"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_eye"
-            android:scaleType="centerInside"
             android:background="@android:color/transparent"
-            android:contentDescription="Toggle Password" />
+            android:contentDescription="Toggle Password"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_eye" />
     </LinearLayout>
 
     <!-- Confirm Password Field -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
+        android:layout_marginTop="16dp"
         android:background="@drawable/rounded_edit_text"
-        android:padding="4dp"
-        android:layout_marginTop="16dp">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="4dp">
 
         <EditText
-            android:id="@+id/confirmPassword"
+            android:id="@+id/editTextConfirmPassword"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
             android:hint="Confirm Password"
             android:inputType="textPassword"
-            android:background="@android:color/transparent"
             android:padding="12dp" />
 
         <ImageButton
             android:id="@+id/toggleConfirmPassword"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_eye"
-            android:scaleType="centerInside"
             android:background="@android:color/transparent"
-            android:contentDescription="Toggle Confirm Password" />
+            android:contentDescription="Toggle Confirm Password"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_eye" />
+
     </LinearLayout>
 
     <!-- Sign-Up Button -->
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/light_gray">
+
+        <RadioButton
+            android:id="@+id/radioButtonUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="User" />
+
+        <RadioButton
+            android:id="@+id/radioButtonRentalProvider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rental provider" />
+    </RadioGroup>
+
     <Button
         android:id="@+id/btnSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:backgroundTint="#FADA7A"
         android:text="Sign Up"
         android:textColor="#ffffff"
-        android:textStyle="bold"
-        android:layout_marginTop="24dp" />
+        android:textStyle="bold" />
 
     <!-- Sign-Up Link -->
     <TextView
-        android:id="@+id/signUpLink"
+        android:id="@+id/textViewSignin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:focusable="true"
         android:text="Already have an account? Sign in"
         android:textColor="#81BFDA"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
         android:textSize="16sp"
-        android:clickable="true"
-        android:focusable="true" />
+        android:textStyle="bold" />
 </LinearLayout>

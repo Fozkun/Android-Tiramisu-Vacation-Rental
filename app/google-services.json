@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1078324140214",
+    "project_id": "tiramisu-vacation-rental",
+    "firebase_url": "https://tiramisu-vacation-rental-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "storage_bucket": "tiramisu-vacation-rental.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1078324140214:android:e4d39357bdae8f761a2e17",
+        "android_client_info": {
+          "package_name": "com.rmit.android_tiramisu_vacation_rental"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPg6oM1-EPy0MMpzw5oDPKFETDI8MWDPY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

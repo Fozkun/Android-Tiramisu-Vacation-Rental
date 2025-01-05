@@ -1,5 +1,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainContent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -10,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="16dp">
+        android:padding="18dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,6 +25,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
+                <!-- Back button -->
                 <ImageView
                     android:id="@+id/backButton"
                     android:layout_width="24dp"
@@ -31,6 +33,7 @@
                     android:contentDescription="Back Button"
                     android:src="@drawable/ic_back" />
 
+                <!-- Title -->
                 <TextView
                     android:id="@+id/profileTitle"
                     android:layout_width="wrap_content"
@@ -52,6 +55,7 @@
                 android:orientation="horizontal"
                 android:padding="16dp">
 
+                <!-- Profile image -->
                 <ImageView
                     android:id="@+id/profileImage"
                     android:layout_width="64dp"
@@ -59,6 +63,7 @@
                     android:contentDescription="Profile Image"
                     android:src="@drawable/ic_user" />
 
+                <!-- Nickname and username -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -83,6 +88,7 @@
                         android:textSize="14sp" />
                 </LinearLayout>
 
+                <!-- Edit profile icon -->
                 <ImageView
                     android:id="@+id/editProfile"
                     android:layout_width="22dp"
@@ -111,41 +117,19 @@
                 android:orientation="horizontal"
                 android:padding="12dp">
 
+                <!-- Saved cards icon -->
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:contentDescription="Saved Cards Icon"
                     android:src="@drawable/ic_card" />
 
+                <!-- Saved cards text -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:text="Saved cards"
-                    android:textColor="#000000"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="#F7F7F7"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="12dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:contentDescription="Reviews Icon"
-                    android:src="@drawable/ic_review" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="Reviews"
                     android:textColor="#000000"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -169,12 +153,14 @@
                 android:orientation="horizontal"
                 android:padding="12dp">
 
+                <!-- Push notification icon -->
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:contentDescription="Push Notification Icon"
                     android:src="@drawable/ic_notification" />
 
+                <!-- Push notification text -->
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -184,6 +170,7 @@
                     android:textColor="#000000"
                     android:textSize="14sp" />
 
+                <!-- Notification switch -->
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switchNotification"
                     android:layout_width="wrap_content"
@@ -203,7 +190,9 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
+            <!-- Help & Support -->
             <LinearLayout
+                android:id="@+id/helpSupportSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -212,12 +201,14 @@
                 android:orientation="horizontal"
                 android:padding="12dp">
 
+                <!-- Help icon -->
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:contentDescription="Help Icon"
                     android:src="@drawable/ic_help" />
 
+                <!-- Help text -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -227,7 +218,9 @@
                     android:textSize="14sp" />
             </LinearLayout>
 
+            <!-- About App -->
             <LinearLayout
+                android:id="@+id/aboutAppSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -236,12 +229,14 @@
                 android:orientation="horizontal"
                 android:padding="12dp">
 
+                <!-- About app icon -->
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:contentDescription="About App Icon"
                     android:src="@drawable/ic_about" />
 
+                <!-- About app text -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -250,8 +245,42 @@
                     android:textColor="#000000"
                     android:textSize="14sp" />
             </LinearLayout>
+            <!-- Log Out Button -->
+            <Button
+                android:id="@+id/logoutButton"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#FF4444"
+                android:text="Log Out"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </ScrollView>
+
+
+    <!-- Detail Container for Help & Support or About App -->
+    <FrameLayout
+        android:id="@+id/detailContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="#AAFFFFFF">
+
+        <!-- TextView to display detailed content -->
+        <TextView
+            android:id="@+id/detailTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:visibility="gone" />
+    </FrameLayout>
 
     <!-- Bottom Navigation -->
     <LinearLayout

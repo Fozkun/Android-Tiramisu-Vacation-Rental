@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
     android:gravity="center"
@@ -20,7 +20,7 @@
             android:padding="16dp">
 
             <ImageView
-                android:id="@+id/hotelImage"
+                android:id="@+id/imageViewHotel"
                 android:layout_width="150dp"
                 android:layout_height="100dp"
                 android:adjustViewBounds="true"
@@ -29,34 +29,33 @@
                 tools:scaleType="centerCrop" />
 
             <TextView
-                android:id="@+id/hotelName"
+                android:id="@+id/textViewHotelName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Hotel Name" />
+                android:text="Hotel name" />
 
             <TextView
-                android:id="@+id/hotelLocation"
+                android:id="@+id/textViewHotelLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Location" />
+                android:text="Hotel locationTri" />
 
             <TextView
-                android:id="@+id/maxOccupancy"
+                android:id="@+id/textViewMaxOccupancy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Max Occupancy: 2" />
+                android:text="Max Occupancy: 0" />
 
             <RatingBar
-                android:id="@+id/hotelRating"
+                android:id="@+id/ratingBarHotelRating"
                 style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:numStars="5"
                 android:progressTint="@color/accent_color"
-                android:rating="4.5" />
+                android:rating="0.0" />
 
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
 </LinearLayout>

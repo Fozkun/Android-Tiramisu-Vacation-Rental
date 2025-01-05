@@ -46,42 +46,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:padding="8dp"
-        android:background="#F7F7F7">
-
-        <Button
-            android:id="@+id/allTab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/tab_selected"
-            android:text="ALL"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp" />
-
-        <Button
-            android:id="@+id/promotionTab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/tab_unselected"
-            android:text="PROMOTION"
-            android:textColor="#007BFF"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp" />
-
-        <Button
-            android:id="@+id/ordersTab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/tab_unselected"
-            android:text="ORDER"
-            android:textColor="#007BFF"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp" />
-    </LinearLayout>
+        android:padding="18dp"
+        android:background="#CCFF5722"/>
 
     <!-- Notification List -->
     <ScrollView
@@ -175,7 +141,7 @@
                 android:layout_marginTop="4dp"
                 android:text="Home"
                 android:textSize="12sp"
-                android:textColor="#007BFF" />
+                android:textColor="#757575" />
         </LinearLayout>
 
         <!-- Coupons -->
@@ -247,7 +213,7 @@
                 android:layout_marginTop="4dp"
                 android:text="Notification"
                 android:textSize="12sp"
-                android:textColor="#757575" />
+                android:textColor="#007BFF"  />
         </LinearLayout>
 
         <!-- Profile -->

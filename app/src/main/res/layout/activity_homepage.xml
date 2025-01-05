@@ -185,7 +185,7 @@
                                             android:orientation="vertical">
 
                                             <EditText
-                                                android:id="@+id/editText1"
+                                                android:id="@+id/editTextStartDate"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
                                                 android:hint="DD-MM-YYYY"
@@ -195,7 +195,7 @@
                                                 android:id="@+id/textView4"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
-                                                android:text="Day of Week"
+                                                android:text="Start Day"
                                                 android:textSize="10sp" />
                                         </LinearLayout>
 
@@ -223,7 +223,7 @@
                                                 android:id="@+id/textView5"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
-                                                android:text="Day of Week"
+                                                android:text="End Day"
                                                 android:textSize="10sp" />
 
                                         </LinearLayout>
@@ -269,6 +269,19 @@
                                     android:layout_weight="1" />
 
                                 <Button
+                                    android:id="@+id/btnCreateHotel"
+                                    android:layout_width="200dp"
+                                    android:layout_height="50dp"
+                                    android:backgroundTint="@color/blue"
+                                    android:shadowColor="@color/card_1_shadow"
+                                    android:shadowDx="0.5"
+                                    android:shadowDy="0.5"
+                                    android:shadowRadius="3.0"
+                                    android:text="Create Hotel"
+                                    android:textColor="@color/icon_color_1"
+                                    android:visibility="gone" />
+
+                                <Button
                                     android:id="@+id/button"
                                     android:layout_width="200dp"
                                     android:layout_height="50dp"
@@ -304,22 +317,12 @@
                         android:textSize="34sp"
                         android:textStyle="bold" />
 
-                    <HorizontalScrollView
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewHotelCard"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp" />
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <include layout="@layout/homepage_hotel_card" />
-
-                            <include layout="@layout/homepage_hotel_card" />
-
-                            <include layout="@layout/homepage_hotel_card" />
-                        </LinearLayout>
-                    </HorizontalScrollView>
                 </LinearLayout>
 
             </LinearLayout>
