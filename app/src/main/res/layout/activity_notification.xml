@@ -141,7 +141,7 @@
                 android:layout_marginTop="4dp"
                 android:text="Home"
                 android:textSize="12sp"
-                android:textColor="#007BFF" />
+                android:textColor="#757575" />
         </LinearLayout>
 
         <!-- Coupons -->
@@ -213,7 +213,7 @@
                 android:layout_marginTop="4dp"
                 android:text="Notification"
                 android:textSize="12sp"
-                android:textColor="#757575" />
+                android:textColor="#007BFF"  />
         </LinearLayout>
 
         <!-- Profile -->
