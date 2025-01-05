@@ -163,7 +163,7 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
             int selectedAdults = adultsPicker.getValue();
 
 
-            roomInfo.setText(selectedRooms + " Room(s), " + selectedAdults + " Adult(s)");
+            roomInfo.setText(selectedRooms + " Room(s), " + selectedAdults + " People");
 
 
             dialog.dismiss();
