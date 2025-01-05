@@ -5,73 +5,23 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <ImageView
-        android:id="@+id/hotel_image"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:contentDescription="Hotel Image"
-        android:scaleType="centerCrop"
-        android:src="@drawable/hotel_image" />
+    <TextView
+        android:id="@+id/hotelNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/hotel_name"
-        android:layout_width="match_parent"
+        android:id="@+id/hotelAddressTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hotel 1"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:layout_marginTop="8dp" />
-
-    <TextView
-        android:id="@+id/hotel_address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Address 1"
-        android:layout_marginTop="4dp" />
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
-        
-        <TextView
-            android:id="@+id/check_in_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Check in: DD/MM/YYYY" />
-
-        <TextView
-            android:id="@+id/check_out_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Check out: DD/MM/YYYY" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/room_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Room Details: "
-        android:layout_marginTop="4dp" />
-
-    <TextView
-        android:id="@+id/total_price"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Total Price: "
-        android:layout_marginTop="16dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="end" />
+        android:textSize="18sp" />
 
     <Button
-        android:id="@+id/confirm_booking_button"
-        android:layout_width="match_parent"
+        android:id="@+id/continueButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#007AFF"
-        android:text="Continue"
-        android:textColor="@android:color/white" />
+        android:text="Continue" />
+
 </LinearLayout>
