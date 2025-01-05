@@ -46,8 +46,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:padding="8dp"
-        android:background="#DCFF5722"/>
+        android:padding="18dp"
+        android:background="#CCFF5722"/>
 
     <!-- Notification List -->
     <ScrollView
