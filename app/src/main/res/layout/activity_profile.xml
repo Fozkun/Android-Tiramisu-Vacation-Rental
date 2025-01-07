@@ -1,5 +1,5 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mainContent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -290,10 +290,12 @@
         android:gravity="center"
         android:background="#FFFFFF"
         android:padding="8dp"
-        android:elevation="4dp">
+        android:elevation="4dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <!-- Home -->
         <LinearLayout
+            android:id="@+id/homeButton"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -301,7 +303,6 @@
             android:gravity="center">
 
             <ImageView
-                android:id="@+id/homeButton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_home"
@@ -318,6 +319,7 @@
 
         <!-- Coupons -->
         <LinearLayout
+            android:id="@+id/couponsButton"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -325,7 +327,6 @@
             android:gravity="center">
 
             <ImageView
-                android:id="@+id/couponsButton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_coupons"
@@ -340,8 +341,9 @@
                 android:textColor="#757575" />
         </LinearLayout>
 
-        <!-- Trips -->
+        <!-- My Trips -->
         <LinearLayout
+            android:id="@+id/tripsButton"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -349,7 +351,6 @@
             android:gravity="center">
 
             <ImageView
-                android:id="@+id/tripsButton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_trips"
@@ -366,6 +367,7 @@
 
         <!-- Notifications -->
         <LinearLayout
+            android:id="@+id/notificationsButton"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -373,7 +375,6 @@
             android:gravity="center">
 
             <ImageView
-                android:id="@+id/notificationsButton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_notifications"
@@ -383,13 +384,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Notification"
+                android:text="Notifications"
                 android:textSize="12sp"
                 android:textColor="#757575" />
         </LinearLayout>
 
         <!-- Profile -->
         <LinearLayout
+            android:id="@+id/profileButton"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -397,7 +399,6 @@
             android:gravity="center">
 
             <ImageView
-                android:id="@+id/profileButton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_profile"
@@ -410,6 +411,6 @@
                 android:text="Profile"
                 android:textSize="12sp"
                 android:textColor="#007BFF" />
-        </LinearLayout>
-    </LinearLayout>
+        </LinearLayout>>
+    </LinearLayout>>
 </LinearLayout>

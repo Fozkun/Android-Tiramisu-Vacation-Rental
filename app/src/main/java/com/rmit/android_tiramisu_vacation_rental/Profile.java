@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
@@ -21,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.rmit.android_tiramisu_vacation_rental.helpers.BottomNavigationHelper;
 import com.rmit.android_tiramisu_vacation_rental.models.UserModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.UserSettings_Tri;
@@ -36,10 +38,16 @@ public class Profile extends AppCompatActivity {
     private TextView detailTextView, textViewUsername, textViewNickname; // TextView to display details
     private LinearLayout mainContent;
 
+    private LinearLayout navHomepage, navCoupons, navNotification, navProfile, navMyTrips;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile); // Ensure the XML file is linked correctly
+        EdgeToEdge.enable(this);
+
+
 
         // Find views
         textViewNickname = findViewById(R.id.textViewNickname);
@@ -94,26 +102,19 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-        // Handle Home button click (assuming homeButton is an ImageView in XML)
-        ImageView homeButton = findViewById(R.id.homeButton);
-        homeButton.setOnClickListener(v -> navigateToHome());
+        // Initialize bottom navigation buttons
+        navHomepage = findViewById(R.id.homeButton);
+        navCoupons = findViewById(R.id.couponsButton);
+        navMyTrips = findViewById(R.id.tripsButton);
+        navNotification = findViewById(R.id.notificationsButton);
+        navProfile = findViewById(R.id.profileButton);
 
-        // Handle Coupons button click (assuming couponsButton is an ImageView in XML)
-        ImageView couponsButton = findViewById(R.id.couponsButton);
-        couponsButton.setOnClickListener(v -> navigateToCoupons());
-
-        // Handle Trips button click (assuming tripsButton is an ImageView in XML)
-        ImageView tripsButton = findViewById(R.id.tripsButton);
-        tripsButton.setOnClickListener(v -> navigateToTrips());
-
-        // Handle Notifications button click (assuming notificationsButton is an ImageView in XML)
-        ImageView notificationsButton = findViewById(R.id.notificationsButton);
-        notificationsButton.setOnClickListener(v -> navigateToNotifications());
-
-        // Handle Profile button click (assuming profileButton is an ImageView in XML)
-        ImageView profileButton = findViewById(R.id.profileButton);
-        profileButton.setOnClickListener(v -> {
-            // Already on the profile page, do nothing
+        // Set click listeners for bottom navigation buttons
+        navHomepage.setOnClickListener(v -> BottomNavigationHelper.navigateTo(this, HomepageActivity.class));
+        navCoupons.setOnClickListener(v -> BottomNavigationHelper.navigateTo(this, MyCouponsActivity.class));
+        navMyTrips.setOnClickListener(v -> BottomNavigationHelper.navigateTo(this, MyTripsActivity.class));
+        navNotification.setOnClickListener(v -> BottomNavigationHelper.navigateTo(this, NotificationActivity.class));
+        navProfile.setOnClickListener(v -> {
         });
 
         // Handle Help & Support click
@@ -184,33 +185,5 @@ public class Profile extends AppCompatActivity {
     private void closeDetails() {
         mainContent.setAlpha(1.0f); // Restore main content
         detailContainer.setVisibility(View.GONE); // Hide overlay
-    }
-
-    /**
-     * Navigate to Home screen
-     */
-    private void navigateToHome() {
-        // Implement navigation logic to the Home screen
-    }
-
-    /**
-     * Navigate to Coupons screen
-     */
-    private void navigateToCoupons() {
-        // Implement navigation logic to the Coupons screen
-    }
-
-    /**
-     * Navigate to Trips screen
-     */
-    private void navigateToTrips() {
-        // Implement navigation logic to the Trips screen
-    }
-
-    /**
-     * Navigate to Notifications screen
-     */
-    private void navigateToNotifications() {
-        // Implement navigation logic to the Notifications screen
     }
 }
