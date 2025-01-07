@@ -71,7 +71,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/nickname"
+                        android:id="@+id/textViewNickname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Nickname"
@@ -80,10 +80,10 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/username"
+                        android:id="@+id/textViewUsername"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@username"
+                        android:text="\@Username"
                         android:textColor="#D6E4FF"
                         android:textSize="14sp" />
                 </LinearLayout>

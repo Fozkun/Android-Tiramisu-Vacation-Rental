@@ -90,6 +90,7 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
 
         //Find and set with id
         navMyTrips = findViewById(R.id.nav_myTrips);
+        navProfile = findViewById(R.id.nav_profile);
 
 
         editTextStartDate.setOnClickListener(v -> showDatePicker(editTextStartDate));
@@ -154,6 +155,9 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
             // Set on click event for all bottom buttons
             navMyTrips.setOnClickListener(v -> {
                 BottomNavigationHelper.navigateTo(this, MyTripsActivity.class);
+            });
+            navProfile.setOnClickListener(v -> {
+                BottomNavigationHelper.navigateTo(this, Profile.class);
             });
         }
     }

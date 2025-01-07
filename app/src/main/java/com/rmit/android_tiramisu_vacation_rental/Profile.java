@@ -11,14 +11,27 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.rmit.android_tiramisu_vacation_rental.models.UserModel_Tri;
+import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
+
 public class Profile extends AppCompatActivity {
+    private UserSession_Tri userSession;
+    private DatabaseReference userReference;
 
     private SwitchCompat switchNotification; // Switch for Push Notification
     private FrameLayout detailContainer; // Overlay container for details
-    private TextView detailTextView; // TextView to display details
+    private TextView detailTextView, textViewUsername, textViewNickname; // TextView to display details
     private LinearLayout mainContent;
 
     @Override
@@ -26,11 +39,38 @@ public class Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile); // Ensure the XML file is linked correctly
 
-
         // Find views
+        textViewNickname = findViewById(R.id.textViewNickname);
+        textViewUsername = findViewById(R.id.textViewUsername);
         mainContent = findViewById(R.id.mainContent);
         detailContainer = findViewById(R.id.detailContainer);
         detailTextView = findViewById(R.id.detailTextView);
+
+        switchNotification = findViewById(R.id.switchNotification);
+
+        userSession = UserSession_Tri.getInstance();
+        if(!userSession.hasSession()){
+            return;
+        }
+
+        userReference = FirebaseDatabase.getInstance().getReference(FirebaseConstants.REGISTERED_USERS);
+        userReference.child(userSession.getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserModel_Tri model = snapshot.getValue(UserModel_Tri.class);
+
+                if(model != null){
+                    textViewNickname.setText(model.nickname);
+                    textViewUsername.setText(String.format("@%s", model.username));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
         // Handle Home button click (assuming homeButton is an ImageView in XML)
         ImageView homeButton = findViewById(R.id.homeButton);
@@ -77,26 +117,23 @@ public class Profile extends AppCompatActivity {
         switchNotification.setChecked(isNotificationEnabled);
 
         // Set an OnCheckedChangeListener for the switch
-        switchNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // Save state in SharedPreferences
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("isNotificationEnabled", isChecked);
-                editor.apply();
+        switchNotification.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // Save state in SharedPreferences
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("isNotificationEnabled", isChecked);
+            editor.apply();
 
-                // Update UI based on switch state
-                if (isChecked) {
-                    // User enabled notifications
-                    switchNotification.setThumbTintList(getResources().getColorStateList(android.R.color.holo_green_light));
-                    switchNotification.setTrackTintList(getResources().getColorStateList(android.R.color.holo_green_dark));
-                    Toast.makeText(Profile.this, "Notifications Enabled", Toast.LENGTH_SHORT).show();
-                } else {
-                    // User disabled notifications
-                    switchNotification.setThumbTintList(getResources().getColorStateList(android.R.color.darker_gray));
-                    switchNotification.setTrackTintList(getResources().getColorStateList(R.color.light_gray));
-                    Toast.makeText(Profile.this, "Notifications Disabled", Toast.LENGTH_SHORT).show();
-                }
+            // Update UI based on switch state
+            if (isChecked) {
+                // User enabled notifications
+                switchNotification.setThumbTintList(getResources().getColorStateList(android.R.color.holo_green_light));
+                switchNotification.setTrackTintList(getResources().getColorStateList(android.R.color.holo_green_dark));
+                Toast.makeText(Profile.this, "Notifications Enabled", Toast.LENGTH_SHORT).show();
+            } else {
+                // User disabled notifications
+                switchNotification.setThumbTintList(getResources().getColorStateList(android.R.color.darker_gray));
+                switchNotification.setTrackTintList(getResources().getColorStateList(R.color.light_gray));
+                Toast.makeText(Profile.this, "Notifications Disabled", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -108,12 +145,18 @@ public class Profile extends AppCompatActivity {
             editor.clear();
             editor.apply();
 
-            // Navigate back to Sign In
-            Intent intent = new Intent(Profile.this, SigninActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear back stack
-            startActivity(intent);
-
-            Toast.makeText(Profile.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+            userSession.clearSession();
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            auth.signOut();
+            auth.addAuthStateListener(firebaseAuth -> {
+                if(auth.getCurrentUser() == null){
+                    // Navigate back to Sign In
+                    Intent intent = new Intent(Profile.this, SigninActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear back stack
+                    startActivity(intent);
+                    Toast.makeText(Profile.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
     }
 
