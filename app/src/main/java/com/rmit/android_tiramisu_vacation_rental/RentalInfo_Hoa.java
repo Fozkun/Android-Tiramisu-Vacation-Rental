@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RentalInfo_Hoa {
+    private String id;
     private String hotelName;
     private float hotelRating;
     private String hotelLocation;
+    private int maxOccupancy;
     private List<Room> rooms;
     private Provider provider;
 
@@ -64,19 +66,25 @@ public class RentalInfo_Hoa {
         }
     }
 
-    public RentalInfo_Hoa(String hotelName, float hotelRating, String hotelLocation, List<Room> rooms, Provider provider) {
+    public RentalInfo_Hoa() {
+    }
+
+    public RentalInfo_Hoa(String id, String hotelName, float hotelRating, String hotelLocation, int maxOccupancy, List<Room> rooms, Provider provider) {
+        this.id = id;
         this.hotelName = hotelName;
         this.hotelRating = hotelRating;
         this.hotelLocation = hotelLocation;
+        this.maxOccupancy = maxOccupancy;
         this.rooms = rooms;
         this.provider = provider;
     }
 
-    public RentalInfo_Hoa() {
-        hotelName = "";
-        hotelRating = 0.0f;
-        hotelLocation = "";
-        rooms = new ArrayList<>();
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getHotelName() {
@@ -103,6 +111,14 @@ public class RentalInfo_Hoa {
         this.hotelLocation = hotelLocation;
     }
 
+    public int getMaxOccupancy() {
+        return maxOccupancy;
+    }
+
+    public void setMaxOccupancy(int maxOccupancy) {
+        this.maxOccupancy = maxOccupancy;
+    }
+
     public List<Room> getRooms() {
         return rooms;
     }
@@ -117,5 +133,18 @@ public class RentalInfo_Hoa {
 
     public void setProvider(Provider provider) {
         this.provider = provider;
+    }
+
+    @Override
+    public String toString() {
+        return "RentalInfo_Hoa{" +
+                "id='" + id + '\'' +
+                ", hotelName='" + hotelName + '\'' +
+                ", hotelRating=" + hotelRating +
+                ", hotelLocation='" + hotelLocation + '\'' +
+                ", maxOccupancy=" + maxOccupancy +
+                ", rooms=" + rooms +
+                ", provider=" + provider +
+                '}';
     }
 }

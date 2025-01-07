@@ -1,7 +1,10 @@
 package com.rmit.android_tiramisu_vacation_rental;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,8 +18,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -24,11 +31,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.rmit.android_tiramisu_vacation_rental.enums.UserRole;
 import com.rmit.android_tiramisu_vacation_rental.helpers.BottomNavigationHelper;
 import com.rmit.android_tiramisu_vacation_rental.models.HotelModel_Tri;
@@ -37,35 +47,19 @@ import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
 
 import java.util.Calendar;
 
-/*
-public Enum RoomStatus{
-    BOOKED, Available
-}
-
-public class HotelRoomModel_Tri {
-    private String id;
-    private String roomName;
-    private Date startDate;
-    private Date endDate;
-
-    private RoomStatus status;
-
-    private int people;
-    private String description;
-}
- */
-
 public class HomepageActivity extends AppCompatActivity implements RecyclerViewHotelCardInterface {
     private static final String TAG = "HomepageActivity";
 
     // ------------------------------------------
     private UserSession_Tri userSessionTri;
+    private String firebaseMessagingToken;
 
     private HotelCardAdapter hotelCardAdapter;
     private Button btnCreateHotel;
     private RecyclerView recyclerViewHotelCard;
 
     private DatabaseReference hotelReference;
+    private DatabaseReference fcmTokenReference;
 
     private EditText editTextWhere, editTextStartDate, editTextEndDate;
     private TextView textViewRoomAdults;
@@ -75,12 +69,28 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
     // Define all bottom buttons
     private LinearLayout navMyTrips, navCoupons, navNotification, navProfile;
 
+    private ActivityResultLauncher<String> resultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted ->{
+       if(isGranted){
+           //Get device token from firebase
+           getDeviceToken();
+           Log.d(TAG, "Permission granted");
+       }else{
+           Log.d(TAG, "Permission not granted");
+       }
+    });
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_homepage);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         editTextWhere = findViewById(R.id.editText1); // "Where you want to go?"
         editTextStartDate = findViewById(R.id.editTextStartDate); // "DD-MM-YYYY" (Start Date)
@@ -98,22 +108,15 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
 
         editTextEndDate.setOnClickListener(v -> showDatePicker(editTextEndDate));
 
-
         textViewRoomAdults.setOnClickListener(v -> showRoomPickerDialog(textViewRoomAdults));
 
-
         buttonFind.setOnClickListener(v -> handleFindButton());
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         btnCreateHotel = findViewById(R.id.btnCreateHotel);
         recyclerViewHotelCard = findViewById(R.id.recyclerViewHotelCard);
 
         hotelReference = FirebaseDatabase.getInstance().getReference(FirebaseConstants.HOTELS);
+        fcmTokenReference = FirebaseDatabase.getInstance().getReference(FirebaseConstants.FCM_TOKENS);
 
         // ------------------------------------------
         userSessionTri = UserSession_Tri.getInstance();
@@ -159,6 +162,8 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
             navProfile.setOnClickListener(v -> {
                 BottomNavigationHelper.navigateTo(this, Profile.class);
             });
+
+            requestPermission();
         }
     }
 
@@ -245,5 +250,41 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
         //Intent intent = new Intent(this, Hotel.class);
         //intent.putExtra("siteId", siteModel.getSiteId());
         //startActivity(intent);
+    }
+
+    public void requestPermission(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED){
+                // Permission already granted
+                getDeviceToken();
+            }else{
+                resultLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+            }
+        }else{
+            //Get device token from firebase
+            getDeviceToken();
+        }
+    }
+    public void getDeviceToken(){
+        if(firebaseMessagingToken != null){
+            return;
+        }
+
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+           if(task.isSuccessful()){
+                String token = task.getResult();
+                Log.d(TAG, token);
+
+                firebaseMessagingToken = token;
+                fcmTokenReference.child(userSessionTri.getUserId()).setValue(token);
+
+           }else{
+               try{
+                 throw task.getException();
+               } catch (Exception e) {
+                   Log.e(TAG, e.getMessage());
+               }
+           }
+        });
     }
 }
