@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -11,17 +10,17 @@
 
     <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="70dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <com.google.android.gms.maps.MapView
                 android:id="@+id/mapView"
-                android:layout_width="396dp"
-                android:layout_height="match_parent"
+                android:layout_width="410dp"
+                android:layout_height="113dp"
                 android:layout_weight="1" />
 
         </LinearLayout>
@@ -30,7 +29,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="375dp"
+        android:layout_height="wrap_content"
         android:padding="8dp">
 
         <LinearLayout
@@ -70,13 +69,16 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/roomType"
+                    android:id="@+id/textViewOccupancy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/border_shape_black"
-                    android:padding="5dp"
-                    android:text="Room Types"
-                    android:textStyle="bold" />
+                    android:text="Occupancy" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/roomTypesRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -89,7 +91,7 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:id="@+id/locationImage"
+                            android:id="@+id/roomImage"
                             android:layout_width="100dp"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
@@ -143,6 +145,7 @@
         </LinearLayout>
     </ScrollView>
 
+<<<<<<< Updated upstream
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -203,19 +206,161 @@
 
     <Button
         android:id="@+id/btnEdit"
+=======
+    <LinearLayout
+>>>>>>> Stashed changes
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:text="Edit" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/border_shape"
+        android:orientation="vertical"
+        android:visibility="visible">
 
-    <Button
-        android:id="@+id/btnDelete"
-        android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/textViewForm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create New Room"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/createRoomName"
+                android:layout_width="95dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Name"
+                android:textAlignment="center" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="316dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/InputRoomName"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:hint="Room Name" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/createRoomDetails"
+                android:layout_width="95dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Description"
+                android:textAlignment="center" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="316dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/InputRoomDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:hint="Room Details" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/createRoomPrice"
+                android:layout_width="95dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Price"
+                android:textAlignment="center" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="316dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/InputRoomPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:hint="Room Price" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/createRoomImage"
+                android:layout_width="95dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Image"
+                android:textAlignment="center" />
+
+            <ImageView
+                android:id="@+id/imgGallery"
+                android:layout_width="192dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btnUpload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Upload" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnCreateRoom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:text="Create" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="344dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:text="Delete" />
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Edit" />
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Delete" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
