@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,10 +23,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rmit.android_tiramisu_vacation_rental.models.UserModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
+import com.rmit.android_tiramisu_vacation_rental.models.UserSettings_Tri;
 
 public class Profile extends AppCompatActivity {
     private UserSession_Tri userSession;
+    private UserSettings_Tri userSettings;
     private DatabaseReference userReference;
+    private DatabaseReference userSettingReference;
 
     private SwitchCompat switchNotification; // Switch for Push Notification
     private FrameLayout detailContainer; // Overlay container for details
@@ -45,7 +47,6 @@ public class Profile extends AppCompatActivity {
         mainContent = findViewById(R.id.mainContent);
         detailContainer = findViewById(R.id.detailContainer);
         detailTextView = findViewById(R.id.detailTextView);
-
         switchNotification = findViewById(R.id.switchNotification);
 
         userSession = UserSession_Tri.getInstance();
@@ -71,6 +72,27 @@ public class Profile extends AppCompatActivity {
             }
         });
 
+        userSettingReference = FirebaseDatabase.getInstance().getReference(FirebaseConstants.USERS_SETTINGS);
+        userSettingReference.child(userSession.getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserSettings_Tri settings = snapshot.getValue(UserSettings_Tri.class);
+
+                if (settings != null) {
+                    boolean pushNotificationEnabled = settings.pushNotificationEnabled;
+                    switchNotification.setChecked(pushNotificationEnabled);
+
+                    userSettings = settings;
+                }else{
+                    userSettingReference.child(userSession.getUserId()).setValue(new UserSettings_Tri(userSession.getUserId()));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         // Handle Home button click (assuming homeButton is an ImageView in XML)
         ImageView homeButton = findViewById(R.id.homeButton);
@@ -107,22 +129,8 @@ public class Profile extends AppCompatActivity {
         // Handle Close Details
         detailContainer.setOnClickListener(v -> closeDetails());
 
-
-        // Initialize Push Notification Switch
-        switchNotification = findViewById(R.id.switchNotification);
-
-        // Load saved state for notification switch
-        SharedPreferences sharedPreferences = getSharedPreferences("NotificationPref", MODE_PRIVATE);
-        boolean isNotificationEnabled = sharedPreferences.getBoolean("isNotificationEnabled", false);
-        switchNotification.setChecked(isNotificationEnabled);
-
         // Set an OnCheckedChangeListener for the switch
         switchNotification.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            // Save state in SharedPreferences
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("isNotificationEnabled", isChecked);
-            editor.apply();
-
             // Update UI based on switch state
             if (isChecked) {
                 // User enabled notifications
@@ -135,16 +143,16 @@ public class Profile extends AppCompatActivity {
                 switchNotification.setTrackTintList(getResources().getColorStateList(R.color.light_gray));
                 Toast.makeText(Profile.this, "Notifications Disabled", Toast.LENGTH_SHORT).show();
             }
+
+            if(userSettings != null){
+                userSettings.pushNotificationEnabled = !userSettings.pushNotificationEnabled;
+                userSettingReference.child(userSession.getUserId()).setValue(userSettings);
+            }
         });
 
         // Handle Log Out Button click
         Button logoutButton = findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(v -> {
-            // Clear user session or preferences
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.clear();
-            editor.apply();
-
             userSession.clearSession();
             FirebaseAuth auth = FirebaseAuth.getInstance();
             auth.signOut();
@@ -159,8 +167,6 @@ public class Profile extends AppCompatActivity {
             });
         });
     }
-
-
 
     /**
      * Show details in the overlay container
