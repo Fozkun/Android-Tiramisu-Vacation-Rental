@@ -9,11 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -22,18 +24,41 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.rmit.android_tiramisu_vacation_rental.enums.UserRole;
+import com.rmit.android_tiramisu_vacation_rental.helpers.BottomNavigationHelper;
 import com.rmit.android_tiramisu_vacation_rental.models.HotelModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.Location_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
 
 import java.util.Calendar;
 
+/*
+public Enum RoomStatus{
+    BOOKED, Available
+}
+
+public class HotelRoomModel_Tri {
+    private String id;
+    private String roomName;
+    private Date startDate;
+    private Date endDate;
+
+    private RoomStatus status;
+
+    private int people;
+    private String description;
+}
+ */
+
 public class HomepageActivity extends AppCompatActivity implements RecyclerViewHotelCardInterface {
     private static final String TAG = "HomepageActivity";
 
+    // ------------------------------------------
     private UserSession_Tri userSessionTri;
 
     private HotelCardAdapter hotelCardAdapter;
@@ -45,6 +70,10 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
     private EditText editTextWhere, editTextStartDate, editTextEndDate;
     private TextView textViewRoomAdults;
     private Button buttonFind;
+
+    // ------------------------------------------
+    // Define all bottom buttons
+    private LinearLayout navMyTrips, navCoupons, navNotification, navProfile;
 
 
     @Override
@@ -58,6 +87,9 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
         editTextEndDate = findViewById(R.id.editText); // "DD-MM-YYYY" (End Date)
         textViewRoomAdults = findViewById(R.id.textView6); // "Room, People"
         buttonFind = findViewById(R.id.button); // "Find"
+
+        //Find and set with id
+        navMyTrips = findViewById(R.id.nav_myTrips);
 
 
         editTextStartDate.setOnClickListener(v -> showDatePicker(editTextStartDate));
@@ -82,11 +114,12 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
 
         hotelReference = FirebaseDatabase.getInstance().getReference(FirebaseConstants.HOTELS);
 
+        // ------------------------------------------
         userSessionTri = UserSession_Tri.getInstance();
         if(userSessionTri.hasSession()){
             UserRole userRole = userSessionTri.getUserRole();
 
-            if(userRole != UserRole.RENTAL_PROVIDER){
+            if(userRole == UserRole.RENTAL_PROVIDER){
                 btnCreateHotel.setVisibility(View.VISIBLE);
             }
 
@@ -115,6 +148,12 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
                 model.setRating(0);
 
                 hotelReference.child(modelId).setValue(model);
+            });
+
+            // ------------------------------------------
+            // Set on click event for all bottom buttons
+            navMyTrips.setOnClickListener(v -> {
+                BottomNavigationHelper.navigateTo(this, MyTripsActivity.class);
             });
         }
     }

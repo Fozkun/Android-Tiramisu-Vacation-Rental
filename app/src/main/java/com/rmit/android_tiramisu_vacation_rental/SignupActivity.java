@@ -140,7 +140,7 @@ public class SignupActivity extends AppCompatActivity {
                     Log.d(TAG, "Firebase user is null!");
                 }
 
-                DatabaseReference referenceUser = FirebaseDatabase.getInstance().getReference("Registered Users");
+                DatabaseReference referenceUser = FirebaseDatabase.getInstance().getReference(FirebaseConstants.REGISTERED_USERS);
 
                 referenceUser.child(firebaseUser.getUid()).setValue(userModelTri).addOnCompleteListener(dbTask -> {
                     if (dbTask.isSuccessful()) {

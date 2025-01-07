@@ -7,5 +7,4 @@ import retrofit2.http.POST;
 public interface NotificationService {
     @POST("sendNotification") // Replace with your actual endpoint
     Call<Void> sendNotification(@Body NotificationRequest notificationRequest);
-
 }

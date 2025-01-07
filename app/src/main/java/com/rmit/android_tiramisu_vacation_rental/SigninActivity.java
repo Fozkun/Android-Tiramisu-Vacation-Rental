@@ -181,7 +181,7 @@ public class SigninActivity extends AppCompatActivity {
                 if (firebaseUser.isEmailVerified()) {
                     Toast.makeText(this, "Successfully logged in", Toast.LENGTH_LONG).show();
 
-                    DatabaseReference mBase = FirebaseDatabase.getInstance().getReference("Registered Users");
+                    DatabaseReference mBase = FirebaseDatabase.getInstance().getReference(FirebaseConstants.REGISTERED_USERS);
                     mBase.child(firebaseUser.getUid()).get().addOnCompleteListener(task1 -> {
 
                         if (task1.isSuccessful()) {

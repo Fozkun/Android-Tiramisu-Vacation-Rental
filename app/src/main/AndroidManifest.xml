@@ -19,9 +19,17 @@
             android:name=".HomepageActivity"
             android:exported="false" />
         <activity
+            android:name=".RentalInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyCouponsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PaymentActivity"
+            android:exported="false" />
+        <activity
             android:name=".SignupActivity"
             android:exported="false" />
-
         <activity
             android:name=".SigninActivity"
             android:exported="true">

@@ -33,6 +33,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.retrofit2.retrofit)
+    implementation(libs.converter.gson)
     implementation(libs.glide)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.ui.database)

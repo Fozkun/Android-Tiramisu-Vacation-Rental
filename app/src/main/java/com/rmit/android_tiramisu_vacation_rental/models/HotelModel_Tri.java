@@ -1,9 +1,12 @@
 package com.rmit.android_tiramisu_vacation_rental.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class HotelModel_Tri implements Serializable {
     private String id;
+    private String ownerId;
+    private ArrayList<String> roomIds;
     private String name;
     private String address;
     private Location_Tri locationTri;
@@ -28,6 +31,21 @@ public class HotelModel_Tri implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public ArrayList<String> getRoomIds() {
+        return roomIds;
+    }
+
+    public void setRoomIds(ArrayList<String> roomIds) {
+        this.roomIds = roomIds;
     }
 
     public String getAddress() {

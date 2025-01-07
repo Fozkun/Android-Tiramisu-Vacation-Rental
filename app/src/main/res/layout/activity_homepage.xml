@@ -388,6 +388,7 @@
 
             <!-- Trips -->
             <LinearLayout
+                android:id="@+id/nav_myTrips"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -436,9 +437,11 @@
 
             <!-- Profile -->
             <LinearLayout
+                android:id="@+id/nav_profile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical">
 

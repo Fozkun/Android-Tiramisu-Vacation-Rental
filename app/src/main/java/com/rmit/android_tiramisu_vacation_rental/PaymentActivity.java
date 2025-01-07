@@ -41,7 +41,7 @@ public class PaymentActivity extends AppCompatActivity {
         cvvEditText = findViewById(R.id.cvvEditText);
         purchaseButton = findViewById(R.id.purchaseButton);
 
-        loadHotelData();
+        //loadHotelData();
 
         purchaseButton.setOnClickListener(new View.OnClickListener() {
             @Override
