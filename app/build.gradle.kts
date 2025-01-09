@@ -7,6 +7,13 @@ android {
     namespace = "com.rmit.android_tiramisu_vacation_rental"
     compileSdk = 34
 
+    packaging {
+        resources{
+            excludes += "META-INF/DEPENDENCIES"
+            excludes += "META-INF/INDEX.LIST"
+        }
+    }
+
     defaultConfig {
         applicationId = "com.rmit.android_tiramisu_vacation_rental"
         minSdk = 24
@@ -46,8 +53,11 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.play.services.maps)
+    implementation(libs.datastore.core.android)
     implementation(libs.firebase.messaging)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation (libs.google.auth.library.oauth2.http)
+    implementation(libs.volley)
 }

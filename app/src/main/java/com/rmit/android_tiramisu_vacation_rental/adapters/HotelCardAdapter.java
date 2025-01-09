@@ -1,4 +1,4 @@
-package com.rmit.android_tiramisu_vacation_rental;
+package com.rmit.android_tiramisu_vacation_rental.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.rmit.android_tiramisu_vacation_rental.R;
+import com.rmit.android_tiramisu_vacation_rental.interfaces.RecyclerViewHotelCardInterface;
 import com.rmit.android_tiramisu_vacation_rental.models.HotelModel_Tri;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HotelCardAdapter extends FirebaseRecyclerAdapter<HotelModel_Tri, HotelCardAdapter.HotelCardViewHolder> {
     private final RecyclerViewHotelCardInterface hotelCardInterface;
+    private List<HotelModel_Tri> filteredHotels = new ArrayList<>();
 
     public HotelCardAdapter(
             @NonNull FirebaseRecyclerOptions<HotelModel_Tri> options, RecyclerViewHotelCardInterface hotelCardInterface) {
@@ -54,6 +60,12 @@ public class HotelCardAdapter extends FirebaseRecyclerAdapter<HotelModel_Tri, Ho
 
         return new HotelCardViewHolder(view, hotelCardInterface);
     }
+
+    public void updateFilteredHotels(HotelModel_Tri hotel) {
+        this.filteredHotels.add(hotel);
+        notifyDataSetChanged();
+    }
+
 
     public static class HotelCardViewHolder extends RecyclerView.ViewHolder {
         public ImageView imageViewHotel;
