@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="nav_myTrips" type="id">nav_myTrips</item>
+    <item name="nav_profile" type="id">nav_profile</item>
+    <item name="couponDescription" type="id">couponDescription</item>
+    <item name="couponsRecyclerView" type="id">couponsRecyclerView</item>
+</resources>

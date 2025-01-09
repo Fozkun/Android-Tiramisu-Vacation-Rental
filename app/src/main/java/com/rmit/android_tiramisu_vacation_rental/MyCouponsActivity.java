@@ -1,9 +1,8 @@
 package com.rmit.android_tiramisu_vacation_rental;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 
@@ -11,42 +10,79 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.rmit.android_tiramisu_vacation_rental.helpers.BottomNavigationHelper;
+import com.rmit.android_tiramisu_vacation_rental.model_Nghi.Coupon;
+
 import java.util.ArrayList;
 
 
 public class MyCouponsActivity extends AppCompatActivity {
-    private EditText promoCodeInput;
+    private DatabaseReference databaseReference;
+    private ArrayList<Coupon> couponList;
+    private CouponsAdapter couponsAdapter;
+    private RecyclerView couponsRecyclerView;
+    private LinearLayout navHomepage, navMyTrips, navCoupons, navNotification, navProfile;
 
+    @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_coupons);
 
-       promoCodeInput = findViewById(R.id.promoCodeInput);
-        ImageButton submitPromoCodeButton = findViewById(R.id.submitPromoCodeButton);
-        RecyclerView couponsRecyclerView = findViewById(R.id.couponsRecycleView);
+        navHomepage = findViewById(R.id.homeButton);
+        navCoupons = findViewById(R.id.couponsButton);
+        navMyTrips = findViewById(R.id.tripsButton);
+        navNotification = findViewById(R.id.notificationsButton);
+        navProfile = findViewById(R.id.profileButton);
 
-       ImageButton backButton = findViewById(R.id.backButton);
-       backButton.setOnClickListener(view -> finish());
 
-       submitPromoCodeButton.setOnClickListener(view -> {
-           String promoCode = promoCodeInput.getText().toString();
-           if (!promoCode.isEmpty()) {
-               Toast.makeText(this, "Promo Code Applied: " + promoCode, Toast.LENGTH_SHORT).show();
-           } else {
-               Toast.makeText(this, "Please enter a promo code" + promoCode, Toast.LENGTH_SHORT).show();
-           }
-       });
+        databaseReference = FirebaseDatabase.getInstance().getReference("coupons");
+        couponsRecyclerView = findViewById(R.id.couponsRecyclerView);
+        couponList = new ArrayList<>();
+        couponsAdapter = new CouponsAdapter(couponList);
+        couponsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        couponsRecyclerView.setAdapter(couponsAdapter);
 
-       ArrayList<String> couponList = new ArrayList<>();
-       couponList.add("Coupon 1: Save 10%");
-       couponList.add("Coupon 1: Last Minute Deals");
+        loadCoupons();
 
-       CouponsAdapter couponsAdapter = new CouponsAdapter(couponList);
-       couponsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-       couponsRecyclerView.setAdapter(couponsAdapter);
+        navHomepage.setOnClickListener(v -> {
+            BottomNavigationHelper.navigateTo(this, HomepageActivity.class);
+        });
+        navMyTrips.setOnClickListener(v -> {
+            BottomNavigationHelper.navigateTo(this, MyTripsActivity.class);
+        });
+        navCoupons.setOnClickListener(v -> {
+        });
+        navNotification.setOnClickListener(v -> {
+            BottomNavigationHelper.navigateTo(this, Notification.class);
+        });
+        navProfile.setOnClickListener(v -> {
+            BottomNavigationHelper.navigateTo(this, Profile.class);
+        });
+    }
 
-       Button filterAll = findViewById(R.id.filterAll);
-       filterAll.setOnClickListener(view -> Toast.makeText(this, "All Coupons", Toast.LENGTH_SHORT).show());
+    private void loadCoupons() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                couponList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Coupon coupon = snapshot.getValue(Coupon.class);
+                    couponList.add(coupon);
+                }
+                couponsAdapter.notifyDataSetChanged(); 
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(MyCouponsActivity.this, "Failed to load coupons.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

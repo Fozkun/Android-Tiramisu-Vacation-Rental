@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Android-Tiramisu-Vacation-Rental</string>
+    <string name="claim_button">CLAIM BUTTON</string>
+    <string name="coupon_title">Coupon Title</string>
 </resources>
