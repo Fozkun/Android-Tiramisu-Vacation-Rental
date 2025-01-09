@@ -9,9 +9,11 @@ public class HotelRoomModel_Tri implements Serializable {
     private String id;
     private String hotelId;
     private String description;
-    private Date startDate;
-    private Date endDate;
+    private HotelRoomStatus status;
+    private Date startDate; // Format HH:mm dd-MM-yyyy
+    private Date endDate; // Format HH:mm dd-MM-yyyy
     private int people;
+    private Double price;
 
     public HotelRoomModel_Tri() {}
 
@@ -39,6 +41,14 @@ public class HotelRoomModel_Tri implements Serializable {
         this.description = description;
     }
 
+    public HotelRoomStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(HotelRoomStatus status) {
+        this.status = status;
+    }
+
     public Date getStartDate() {
         return startDate;
     }
@@ -61,5 +71,27 @@ public class HotelRoomModel_Tri implements Serializable {
 
     public void setPeople(int people) {
         this.people = people;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "HotelRoomModel_Tri{" +
+                "id='" + id + '\'' +
+                ", hotelId='" + hotelId + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", people=" + people +
+                ", price=" + price +
+                '}';
     }
 }

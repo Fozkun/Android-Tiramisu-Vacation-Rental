@@ -140,7 +140,7 @@
                                         tools:srcCompat="@drawable/homepage_icon_location" />
 
                                     <EditText
-                                        android:id="@+id/editText1"
+                                        android:id="@+id/editTextFindHotelWhere"
                                         android:layout_width="0dp"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
@@ -185,7 +185,7 @@
                                             android:orientation="vertical">
 
                                             <EditText
-                                                android:id="@+id/editTextStartDate"
+                                                android:id="@+id/editTextFindHotelStartDate"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
                                                 android:hint="DD-MM-YYYY"
@@ -213,7 +213,7 @@
                                             android:orientation="vertical">
 
                                             <EditText
-                                                android:id="@+id/editText"
+                                                android:id="@+id/editTextFindHotelEndDate"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
                                                 android:hint="DD-MM-YYYY"
@@ -255,7 +255,7 @@
                                         tools:srcCompat="@drawable/homepage_icon_people" />
 
                                     <TextView
-                                        android:id="@+id/textView6"
+                                        android:id="@+id/textViewFindHotelRoomAdults"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="1 Room,  1 Adult"
@@ -340,6 +340,7 @@
 
             <!-- Home -->
             <LinearLayout
+                android:id="@+id/nav_home"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -364,6 +365,7 @@
 
             <!-- Coupons -->
             <LinearLayout
+                android:id="@+id/nav_coupons"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -413,6 +415,7 @@
 
             <!-- Notifications -->
             <LinearLayout
+                android:id="@+id/nav_notification"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

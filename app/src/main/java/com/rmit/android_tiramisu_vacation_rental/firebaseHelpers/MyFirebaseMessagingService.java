@@ -74,7 +74,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void sendRegistrationToServer(String token, String userId) {
-        DatabaseReference fcmTokensReference = FirebaseDatabase.getInstance().getReference(FirebaseConstants.FCM_TOKENS);
+        DatabaseReference fcmTokensReference = FirebaseDatabase.getInstance().getReference(FirebaseConstants.FM_TOKENS);
         fcmTokensReference.child(userId).setValue(token);
     }
 }

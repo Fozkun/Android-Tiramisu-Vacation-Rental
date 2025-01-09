@@ -1,5 +1,6 @@
 package com.rmit.android_tiramisu_vacation_rental.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,29 +12,34 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.rmit.android_tiramisu_vacation_rental.R;
 import com.rmit.android_tiramisu_vacation_rental.interfaces.RecyclerViewHotelCardInterface;
 import com.rmit.android_tiramisu_vacation_rental.models.HotelModel_Tri;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class HotelCardAdapter extends FirebaseRecyclerAdapter<HotelModel_Tri, HotelCardAdapter.HotelCardViewHolder> {
+public class FilteredHotelCardAdapter extends RecyclerView.Adapter<FilteredHotelCardAdapter.HotelCardViewHolder> {
     private final RecyclerViewHotelCardInterface hotelCardInterface;
-    private List<HotelModel_Tri> filteredHotels = new ArrayList<>();
+    private final List<HotelModel_Tri> hotels;
 
-    public HotelCardAdapter(
-            @NonNull FirebaseRecyclerOptions<HotelModel_Tri> options, RecyclerViewHotelCardInterface hotelCardInterface) {
-        super(options);
+    public FilteredHotelCardAdapter(List<HotelModel_Tri> hotels, RecyclerViewHotelCardInterface hotelCardInterface) {
+        this.hotels = hotels;
         this.hotelCardInterface = hotelCardInterface;
     }
 
+    @NonNull
     @Override
-    protected void
-    onBindViewHolder(@NonNull HotelCardViewHolder holder,
-                     int position, @NonNull HotelModel_Tri model) {
+    public FilteredHotelCardAdapter.HotelCardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view
+                = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.homepage_hotel_card, parent, false);
+
+        return new HotelCardViewHolder(view, hotelCardInterface);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull FilteredHotelCardAdapter.HotelCardViewHolder holder, int position) {
+        HotelModel_Tri model = this.hotels.get(position);
 
         if (model.getImageUrl() == null) {
             holder.imageViewHotel.setImageResource(R.drawable.homepage_card_bg);
@@ -49,22 +55,9 @@ public class HotelCardAdapter extends FirebaseRecyclerAdapter<HotelModel_Tri, Ho
         holder.ratingBarHotelRating.setRating(model.getRating());
     }
 
-    @NonNull
     @Override
-    public HotelCardViewHolder
-    onCreateViewHolder(@NonNull ViewGroup parent,
-                       int viewType) {
-        View view
-                = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.homepage_hotel_card, parent, false);
-
-        return new HotelCardViewHolder(view, hotelCardInterface);
-    }
-
-    public void updateFilteredHotels(HotelModel_Tri hotel) {
-        this.filteredHotels.add(hotel);
-
-        notifyDataSetChanged();
+    public int getItemCount() {
+        return hotels.size();
     }
 
     public static class HotelCardViewHolder extends RecyclerView.ViewHolder {
