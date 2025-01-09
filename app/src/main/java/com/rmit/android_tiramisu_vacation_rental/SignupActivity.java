@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.rmit.android_tiramisu_vacation_rental.enums.UserRole;
+import com.rmit.android_tiramisu_vacation_rental.firebaseHelpers.FirebaseConstants;
 import com.rmit.android_tiramisu_vacation_rental.models.UserModel_Tri;
 
 import java.util.Objects;

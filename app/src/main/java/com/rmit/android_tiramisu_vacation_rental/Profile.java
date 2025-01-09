@@ -1,12 +1,10 @@
 package com.rmit.android_tiramisu_vacation_rental;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.rmit.android_tiramisu_vacation_rental.firebaseHelpers.FirebaseConstants;
 import com.rmit.android_tiramisu_vacation_rental.helpers.BottomNavigationHelper;
 import com.rmit.android_tiramisu_vacation_rental.models.UserModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;

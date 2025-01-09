@@ -38,6 +38,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.rmit.android_tiramisu_vacation_rental.adapters.HotelCardAdapter;
 import com.rmit.android_tiramisu_vacation_rental.enums.UserRole;
+import com.rmit.android_tiramisu_vacation_rental.firebaseHelpers.FirebaseConstants;
 import com.rmit.android_tiramisu_vacation_rental.firebaseHelpers.FirebaseNotificationSender;
 import com.rmit.android_tiramisu_vacation_rental.helpers.BottomNavigationHelper;
 import com.rmit.android_tiramisu_vacation_rental.interfaces.RecyclerViewHotelCardInterface;

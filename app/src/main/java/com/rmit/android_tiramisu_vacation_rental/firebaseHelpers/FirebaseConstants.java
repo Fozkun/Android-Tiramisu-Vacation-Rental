@@ -1,4 +1,4 @@
-package com.rmit.android_tiramisu_vacation_rental;
+package com.rmit.android_tiramisu_vacation_rental.firebaseHelpers;
 
 public class FirebaseConstants {
     public static final String REGISTERED_USERS = "Registered Users";

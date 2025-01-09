@@ -16,7 +16,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.rmit.android_tiramisu_vacation_rental.FirebaseConstants;
 import com.rmit.android_tiramisu_vacation_rental.R;
 import com.rmit.android_tiramisu_vacation_rental.SigninActivity;
 import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
