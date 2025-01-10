@@ -29,7 +29,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="751dp"
         android:padding="8dp">
 
         <LinearLayout
@@ -78,7 +78,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/roomTypesRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -129,6 +129,30 @@
                                 android:padding="5dp"
                                 android:text="Price" />
 
+                            <TextView
+                                android:id="@+id/startDate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/border_shape_black"
+                                android:padding="5dp"
+                                android:text="Start Date" />
+
+                            <TextView
+                                android:id="@+id/endDate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/border_shape_black"
+                                android:padding="5dp"
+                                android:text="End Date" />
+
+                            <TextView
+                                android:id="@+id/roomStatus"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/border_shape_black"
+                                android:padding="5dp"
+                                android:text="Status" />
+
                             <Button
                                 android:id="@+id/bookNowButton"
                                 android:layout_width="match_parent"
@@ -142,141 +166,220 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="3dp"
+                android:background="@drawable/border_shape"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/textViewForm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Create New Room"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/createRoomName"
+                        android:layout_width="95dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Name"
+                        android:textAlignment="center" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="316dp"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/InputRoomName"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:hint="Room Name" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/createRoomDetails"
+                        android:layout_width="95dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Description"
+                        android:textAlignment="center" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="316dp"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/InputRoomDetails"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:hint="Room Details" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/createPrice"
+                        android:layout_width="95dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Price"
+                        android:textAlignment="center" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="316dp"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/InputRoomPrice"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:hint="Room Price" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/createStartDate"
+                        android:layout_width="95dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Start Date"
+                        android:textAlignment="center" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="316dp"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/InputStartDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:hint="Room Start Date" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/createEndDate"
+                        android:layout_width="95dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="End Date"
+                        android:textAlignment="center" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="316dp"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/InputEndDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:hint="Room End Date" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/createStatus"
+                        android:layout_width="95dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Status"
+                        android:textAlignment="center" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="316dp"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/InputStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:hint="Room Status" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="37dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/createRoomImage"
+                        android:layout_width="95dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="Image"
+                        android:textAlignment="center" />
+
+                    <ImageView
+                        android:id="@+id/imgGallery"
+                        android:layout_width="137dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/btnUpload"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Upload" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnCreateRoom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
+                    android:text="Create" />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:background="@drawable/border_shape"
-        android:orientation="vertical"
-        android:visibility="visible">
-
-        <TextView
-            android:id="@+id/textViewForm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Create New Room"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/createRoomName"
-                android:layout_width="95dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="Name"
-                android:textAlignment="center" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="316dp"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/InputRoomName"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:hint="Room Name" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/createRoomDetails"
-                android:layout_width="95dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="Description"
-                android:textAlignment="center" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="316dp"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/InputRoomDetails"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:hint="Room Details" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/createRoomPrice"
-                android:layout_width="95dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="Price"
-                android:textAlignment="center" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="316dp"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/InputRoomPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:hint="Room Price" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="37dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/createRoomImage"
-                android:layout_width="95dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="Image"
-                android:textAlignment="center" />
-
-            <ImageView
-                android:id="@+id/imgGallery"
-                android:layout_width="192dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/btnUpload"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Upload" />
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btnCreateRoom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:text="Create" />
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="344dp"

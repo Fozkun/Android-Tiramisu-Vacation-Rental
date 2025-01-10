@@ -25,14 +25,18 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.rmit.android_tiramisu_vacation_rental.enums.HotelRoomStatus;
+import com.rmit.android_tiramisu_vacation_rental.utils.MyDateUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -65,7 +69,6 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
         Button btnCreateRoom = findViewById(R.id.btnCreateRoom);
         Button btnEdit = findViewById(R.id.btnEdit);
         Button btnDelete = findViewById(R.id.btnDelete);
-        checkOwnership();
         checkBookingStatus();
         rentalInfo = new RentalInfo_Hoa();
         populateRentalInfo();
@@ -143,6 +146,7 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
         rentalInfo.setHotelRating(4.5f);
         rentalInfo.setHotelLocation("123 Main St, City, Country");
         rentalInfo.setMaxOccupancy(40);
+        rentalInfo.setOwnerID(userId);
 
         List<RentalInfo_Hoa.Room> rooms = new ArrayList<>();
 
@@ -150,21 +154,19 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
         room1.setRoomName("Deluxe Room");
         room1.setRoomDetails("King-size bed, balcony, city view");
         room1.setRoomPrice(150.00);
-        // room1.setImageUrl("https://example.com/room1.jpg");
-
-
+        room1.setStatus(HotelRoomStatus.AVAILABLE);
+        room1.setImageUrl("https://example.com/room1.jpg");
+        // Set default start and end dates (you might need to adjust this)
+        room1.setStartDate(new Date());
+        room1.setEndDate(new Date());
         rooms.add(room1);
 
         rentalInfo.setRooms(rooms);
     }
 
+
     private void writeToDatabase() {
         String rentalId = mDatabase.child("rentals").push().getKey();
-
-        // Store ownerId (assuming you have the current user's ID)
-        Provider currentProvider = new Provider(userId);
-
-        rentalInfo.setProvider(currentProvider);
 
         // Write the entire RentalInfo object to the database
         mDatabase.child("rentals").child(rentalId).setValue(rentalInfo)
@@ -207,13 +209,19 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
         EditText roomDetailsEditText = findViewById(R.id.InputRoomDetails);
         EditText roomPriceEditText = findViewById(R.id.InputRoomPrice);
         ImageView roomImage = findViewById(R.id.roomImage);
+        EditText startDateEditText = findViewById(R.id.InputStartDate);
+        EditText endDateEditText = findViewById(R.id.InputEndDate);
 
         // Get room data from EditText fields
         String roomName = roomNameEditText.getText().toString().trim();
         String roomDetails = roomDetailsEditText.getText().toString().trim();
         String roomPriceStr = roomPriceEditText.getText().toString().trim();
         String roomImageStr = roomImage.getTag().toString();
+        String startDateStr = startDateEditText.getText().toString().trim();
+        String endDateStr = endDateEditText.getText().toString().trim();
 
+        Date startDate = MyDateUtils.parseDate(startDateStr);
+        Date endDate = MyDateUtils.parseDate(endDateStr);
         if (roomName.isEmpty() || roomDetails.isEmpty() || roomPriceStr.isEmpty()) {
             Toast.makeText(this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
             return;
@@ -223,7 +231,14 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
             double roomPrice = Double.parseDouble(roomPriceStr);
 
             // Create a new Room object
-            RentalInfo_Hoa.Room newRoom = new RentalInfo_Hoa.Room(roomName, roomDetails, roomPrice, roomImageStr);
+            RentalInfo_Hoa.Room newRoom = new RentalInfo_Hoa.Room();
+            newRoom.setRoomName(roomName);
+            newRoom.setRoomDetails(roomDetails);
+            newRoom.setRoomPrice(roomPrice);
+            newRoom.setStatus(HotelRoomStatus.AVAILABLE); // Set initial status
+            newRoom.setImageUrl(roomImageStr);
+            newRoom.setStartDate(startDate);
+            newRoom.setEndDate(endDate);
 
             // Add the new room to the existing list of rooms
             rentalInfo.getRooms().add(newRoom);
@@ -235,7 +250,6 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
             roomNameEditText.setText("");
             roomDetailsEditText.setText("");
             roomPriceEditText.setText("");
-
 
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Invalid price format.", Toast.LENGTH_SHORT).show();
@@ -304,37 +318,16 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
                 .show();
     }
 
-    private void checkOwnership() {
-
-        String rentalId = getIntent().getStringExtra("rentalId"); // Get rentalId from intent
-
-        DatabaseReference rentalRef = mDatabase.child("rentals").child(rentalId);
-        rentalRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    String ownerId = dataSnapshot.child("ownerId").getValue(String.class);
-                    if (ownerId.equals(userId)) {
-                        // Current user is the owner
-                        editButton.setVisibility(View.VISIBLE);
-                        deleteButton.setVisibility(View.VISIBLE);
-                    } else {
-                        // Current user is not the owner
-                        editButton.setVisibility(View.GONE);
-                        deleteButton.setVisibility(View.GONE);
-                    }
-                } else {
-                    // Rental not found
-                    Toast.makeText(RentalInfoActivity.this, "Rental not found.", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Handle any errors
-                Toast.makeText(RentalInfoActivity.this, "Error checking ownership.", Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void checkOwnership(String ownerId) {
+        if (ownerId.equals(userId)) {
+            // Current user is the owner
+            editButton.setVisibility(View.VISIBLE);
+            deleteButton.setVisibility(View.VISIBLE);
+        } else {
+            // Current user is not the owner
+            editButton.setVisibility(View.GONE);
+            deleteButton.setVisibility(View.GONE);
+        }
     }
 
     private class RoomTypesAdapter extends RecyclerView.Adapter<RoomTypesAdapter.ViewHolder> {
@@ -389,16 +382,16 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
             }
         }
 
-        // Update the UI to display the selected rooms
-        // (e.g., populate a new RecyclerView with the selectedRoomList)
 
-        // Example using a simple TextView (replace with your desired UI)
-        TextView roomDetailsTextView = findViewById(R.id.roomDetails); // Assuming you have this TextView in your layout
+        TextView roomDetailsTextView = findViewById(R.id.roomDetails);
         StringBuilder roomDetailsStringBuilder = new StringBuilder();
         for (RentalInfo_Hoa.Room room : selectedRoomList) {
             roomDetailsStringBuilder.append("Room Name: ").append(room.getRoomName()).append("\n");
             roomDetailsStringBuilder.append("Details: ").append(room.getRoomDetails()).append("\n");
             roomDetailsStringBuilder.append("Price: ").append(room.getRoomPrice()).append("\n\n");
+            roomDetailsStringBuilder.append("Start Date: ").append(room.getStartDate()).append("\n\n");
+            roomDetailsStringBuilder.append("End Date: ").append(room.getEndDate()).append("\n\n");
+            roomDetailsStringBuilder.append("Statis: ").append(room.getStatus()).append("\n\n");
         }
         roomDetailsTextView.setText(roomDetailsStringBuilder.toString());
     }
@@ -428,15 +421,20 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
 
                         // Populate room types list
                         getRoomTypesFromRentalInfo();
+
                         // Pass roomTypesList to the adapter
                         roomTypesAdapter = new RoomTypesAdapter(roomTypesList);
                         roomTypesRecyclerView.setAdapter(roomTypesAdapter);
+
+                        // Check ownership
+                        checkOwnership(rentalInfo.getOwnerID());
                     }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error
             }
         });
     }
