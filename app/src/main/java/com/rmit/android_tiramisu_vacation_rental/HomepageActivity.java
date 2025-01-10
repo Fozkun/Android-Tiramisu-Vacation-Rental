@@ -300,9 +300,6 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
         }
 
         findHotels(destination, MyDateUtils.parseDate(startDate), MyDateUtils.parseDate(endDate), roomCount, adultCount);
-
-        // Search for hotel information in Firebase
-        //findHotels(destination, MyDateUtils.parseDate(startDate), MyDateUtils.parseDate(endDate), roomDetails);
     }
 
     private void updateRecyclerViewContainingFilteredHotels() {
