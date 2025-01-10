@@ -382,7 +382,6 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
     }
 
     private void handleBtnCreateHotel() {
-
     }
 
     @Override
