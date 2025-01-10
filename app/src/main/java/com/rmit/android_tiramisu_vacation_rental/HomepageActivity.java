@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
@@ -41,8 +40,8 @@ import com.rmit.android_tiramisu_vacation_rental.adapters.FilteredHotelCardAdapt
 import com.rmit.android_tiramisu_vacation_rental.adapters.HotelCardAdapter;
 import com.rmit.android_tiramisu_vacation_rental.enums.HotelRoomStatus;
 import com.rmit.android_tiramisu_vacation_rental.enums.UserRole;
-import com.rmit.android_tiramisu_vacation_rental.firebaseHelpers.FirebaseConstants;
-import com.rmit.android_tiramisu_vacation_rental.firebaseHelpers.FirebaseNotificationSender;
+import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseConstants;
+import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseNotificationSender;
 import com.rmit.android_tiramisu_vacation_rental.helpers.BottomNavigationHelper;
 import com.rmit.android_tiramisu_vacation_rental.interfaces.RecyclerViewHotelCardInterface;
 import com.rmit.android_tiramisu_vacation_rental.models.HotelModel_Tri;
@@ -50,10 +49,7 @@ import com.rmit.android_tiramisu_vacation_rental.models.HotelRoomModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
 import com.rmit.android_tiramisu_vacation_rental.utils.MyDateUtils;
 
-import java.lang.reflect.Array;
 import java.text.MessageFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -99,6 +95,7 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         //Check user session
         userSessionTri = UserSession_Tri.getInstance();
         if (!userSessionTri.hasSession()) {
@@ -242,7 +239,28 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
 
         datePickerDialog.show();
     }
+<<<<<<< Updated upstream
 
+=======
+    /*
+    private void showDatePicker(EditText editText) {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this,
+                (view, year1, month1, dayOfMonth) -> {
+                    String selectedDate = String.format(Locale.getDefault(), "%02d-%02d-%04d", dayOfMonth, month1 + 1, year1);
+                    editText.setText(selectedDate);
+                },
+                year, month, day);
+
+        datePickerDialog.show();
+    }
+     */
+>>>>>>> Stashed changes
 
     private void showRoomPickerDialog(TextView roomInfo) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

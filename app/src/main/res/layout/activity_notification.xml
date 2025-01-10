@@ -1,230 +1,201 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    android:orientation="vertical">
 
     <!-- Header Section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:background="#FFFFFF"
         android:gravity="center_vertical"
-        android:padding="16dp"
-        android:background="#FFFFFF">
+        android:orientation="horizontal"
+        android:padding="16dp">
 
+<<<<<<< Updated upstream
+=======
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="Back Button"
+            android:src="@drawable/ic_back" />
+
+>>>>>>> Stashed changes
         <TextView
             android:id="@+id/headerTitle"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="Notification"
+            android:textColor="#000000"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="#000000" />
+            android:textStyle="bold" />
 
+<<<<<<< Updated upstream
+=======
+        <ImageView
+            android:id="@+id/filterButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="Filter Button"
+            android:src="@drawable/ic_filter" />
+>>>>>>> Stashed changes
     </LinearLayout>
 
     <!-- Tab Section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:background="#CCFF5722"
         android:gravity="center"
-        android:padding="18dp"
-        android:background="#CCFF5722"/>
+        android:orientation="horizontal"
+        android:padding="18dp" />
 
     <!-- Notification List -->
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewNotificationCard"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="8dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <!-- Notification Card -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/card_background"
-                android:padding="16dp"
-                android:layout_marginBottom="8dp">
-
-                <TextView
-                    android:id="@+id/productLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🔥 Product"
-                    android:textSize="14sp"
-                    android:textColor="#FF5722"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/notificationTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Promotion of Can Tho trip"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="#000000" />
-
-                <TextView
-                    android:id="@+id/notificationDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="📍 Only from 2tr199 | 2N1D + International breakfast + On Con Au 💖 At Legacy Mekong Can Tho resort ✨BOOK NOW BEFORE YOU MISS OUT"
-                    android:textSize="14sp"
-                    android:textColor="#757575" />
-
-                <TextView
-                    android:id="@+id/notificationTimestamp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="⏰ 9 hours ago"
-                    android:textSize="12sp"
-                    android:textColor="#757575" />
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+        android:layout_margin="5dp"
+        android:layout_weight="1" />
 
     <!-- Bottom Navigation -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
         android:background="#FFFFFF"
-        android:padding="8dp"
-        android:elevation="4dp">
+        android:elevation="4dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <!-- Home -->
         <LinearLayout
+            android:id="@+id/nav_homepage"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/homeButton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_home"
-                android:contentDescription="Home" />
+                android:contentDescription="Home"
+                android:src="@drawable/ic_home" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Home"
-                android:textSize="12sp"
-                android:textColor="#757575" />
+                android:textColor="#757575"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <!-- Coupons -->
         <LinearLayout
+            android:id="@+id/nav_coupons"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/couponsButton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_coupons"
-                android:contentDescription="Coupons" />
+                android:contentDescription="Coupons"
+                android:src="@drawable/ic_coupons" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Coupons"
-                android:textSize="12sp"
-                android:textColor="#757575" />
+                android:textColor="#757575"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <!-- Trips -->
         <LinearLayout
+            android:id="@+id/nav_myTrips"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/tripsButton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_trips"
-                android:contentDescription="Trips" />
+                android:contentDescription="Trips"
+                android:src="@drawable/ic_trips" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="My Trips"
-                android:textSize="12sp"
-                android:textColor="#757575" />
+                android:textColor="#757575"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <!-- Notifications -->
         <LinearLayout
+            android:id="@+id/nav_notification"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/notificationsButton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_notifications"
-                android:contentDescription="Notifications" />
+                android:contentDescription="Notifications"
+                android:src="@drawable/ic_notifications" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Notification"
-                android:textSize="12sp"
-                android:textColor="#007BFF"  />
+                android:textColor="#007BFF"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <!-- Profile -->
         <LinearLayout
+            android:id="@+id/nav_profile"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/profileButton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_profile"
-                android:contentDescription="Profile" />
+                android:contentDescription="Profile"
+                android:src="@drawable/ic_profile" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Profile"
-                android:textSize="12sp"
-                android:textColor="#757575" />
+                android:textColor="#757575"
+                android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
