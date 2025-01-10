@@ -239,28 +239,6 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
 
         datePickerDialog.show();
     }
-<<<<<<< Updated upstream
-
-=======
-    /*
-    private void showDatePicker(EditText editText) {
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this,
-                (view, year1, month1, dayOfMonth) -> {
-                    String selectedDate = String.format(Locale.getDefault(), "%02d-%02d-%04d", dayOfMonth, month1 + 1, year1);
-                    editText.setText(selectedDate);
-                },
-                year, month, day);
-
-        datePickerDialog.show();
-    }
-     */
->>>>>>> Stashed changes
 
     private void showRoomPickerDialog(TextView roomInfo) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -405,12 +383,6 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
 
     private void handleBtnCreateHotel() {
 
-    }
-
-
-    private void displayHotel(HotelModel_Tri hotel) {
-        //hotelCardAdapter.updateFilteredHotels(hotel);
-        filteredHotels.add(hotel);
     }
 
     @Override
