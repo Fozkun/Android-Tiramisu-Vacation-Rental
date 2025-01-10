@@ -305,7 +305,7 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
         //findHotels(destination, MyDateUtils.parseDate(startDate), MyDateUtils.parseDate(endDate), roomDetails);
     }
 
-    private void updateRecyclerViewContainingFilteredHotels(){
+    private void updateRecyclerViewContainingFilteredHotels() {
         filteredHotelCardAdapter = new FilteredHotelCardAdapter(filteredHotels, HomepageActivity.this);
         recyclerViewHotelCard.setAdapter(filteredHotelCardAdapter);
     }
@@ -340,7 +340,7 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
 
                                                     if (isRoomFound) {
                                                         foundRooms.add(room);
-                                                        Log.d(TAG,"Room found: " + room);
+                                                        Log.d(TAG, "Room found: " + room);
                                                     }
                                                 }
                                             }
