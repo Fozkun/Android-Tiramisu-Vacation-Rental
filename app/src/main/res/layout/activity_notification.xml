@@ -14,13 +14,6 @@
         android:padding="16dp"
         android:background="#FFFFFF">
 
-        <ImageView
-            android:id="@+id/backButton"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_back"
-            android:contentDescription="Back Button" />
-
         <TextView
             android:id="@+id/headerTitle"
             android:layout_width="0dp"
@@ -32,12 +25,6 @@
             android:textStyle="bold"
             android:textColor="#000000" />
 
-        <ImageView
-            android:id="@+id/filterButton"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_filter"
-            android:contentDescription="Filter Button" />
     </LinearLayout>
 
     <!-- Tab Section -->

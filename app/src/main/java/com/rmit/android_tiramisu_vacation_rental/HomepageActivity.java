@@ -243,24 +243,6 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
         datePickerDialog.show();
     }
 
-    /*
-    private void showDatePicker(EditText editText) {
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this,
-                (view, year1, month1, dayOfMonth) -> {
-                    String selectedDate = String.format(Locale.getDefault(), "%02d-%02d-%04d", dayOfMonth, month1 + 1, year1);
-                    editText.setText(selectedDate);
-                },
-                year, month, day);
-
-        datePickerDialog.show();
-    }
-     */
 
     private void showRoomPickerDialog(TextView roomInfo) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -404,125 +386,12 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
     }
 
     private void handleBtnCreateHotel() {
-        // 1. Display create hotel form
-        // 2. Fill in the form
-        // 3. Click save
-        // 4. Hotel created
-        // 5. View the hotel
 
-        /*
-        HotelModel_Tri model = new HotelModel_Tri();
-
-        String modelId = hotelReference.push().getKey();
-        model.setId(modelId);
-        model.setName("A hotel");
-        model.setAddress("Address");
-        model.setLocation(new Location_Tri());
-        model.setRating(0);
-
-        hotelReference.child(modelId).setValue(model);
-         */
     }
 
-    /*
-    private void findHotels(String destination, Date startDate, Date endDate, String roomDetails) {
-        hotelReference.orderByChild("address").startAfter(destination)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            for (DataSnapshot hotelSnapshot : snapshot.getChildren()) {
-                                HotelModel_Tri hotel = hotelSnapshot.getValue(HotelModel_Tri.class);
-                                if (hotel != null) {
-                                    filterHotelByRooms(hotel, startDate, endDate, roomDetails);
-                                }
-                            }
-                        } else {
-                            Toast.makeText(HomepageActivity.this, "No hotels found at this location", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(HomepageActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    private void filterHotelByRooms(@NonNull HotelModel_Tri hotel, Date startDate, Date endDate, String roomDetails) {
-        roomReference.orderByChild("hotelId").equalTo(hotel.getId())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        boolean foundRoom = false;
-
-                        for (DataSnapshot roomSnapshot : snapshot.getChildren()) {
-                            HotelRoomModel_Tri room = roomSnapshot.getValue(HotelRoomModel_Tri.class);
-
-
-                            if (room != null &&
-                                    (room.getDescription().equalsIgnoreCase("Deluxe Room") || room.getDescription().equalsIgnoreCase("Standard Room")) &&
-                                    isHotelRoomAvailable(room, startDate, endDate, roomDetails)) {
-                                foundRoom = true;
-                                displayHotel(hotel);
-                                break;
-                            }
-
-
-                            if(room == null){
-                            }else if(room.getStatus() == HotelRoomStatus.UNAVAILABLE) {
-                            }else if(room.getStartDate() != null && room.getEndDate() != null){
-                               if(room.getStartDate().equals(startDate) && room.getEndDate().equals(endDate)){
-                                   foundRoom = true;
-                                   break;
-                               }else{
-                               }
-                            } else {
-                            }
-                        }
-
-                        filteredHotelCardAdapter = new FilteredHotelCardAdapter(filteredHotels, HomepageActivity.this);
-                        recyclerViewHotelCard.setAdapter(filteredHotelCardAdapter);
-
-                        if (!foundRoom) {
-                            Toast.makeText(HomepageActivity.this, "No available rooms found for this hotel.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(HomepageActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-    private boolean isHotelRoomAvailable(HotelRoomModel_Tri room, String startDate, String endDate, String roomDetails) {
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-
-            Date inputStartDate = dateFormat.parse(startDate);
-            Date inputEndDate = dateFormat.parse(endDate);
-
-            String roomStartDateString = dateFormat.format(room.getStartDate());
-            String roomEndDateString = dateFormat.format(room.getEndDate());
-
-            Date roomStartDate = dateFormat.parse(roomStartDateString);
-            Date roomEndDate = dateFormat.parse(roomEndDateString);
-
-            String[] roomInfo = roomDetails.split(", ");
-            int requestedRooms = Integer.parseInt(roomInfo[0].split(" ")[0]);
-            int requestedPeople = Integer.parseInt(roomInfo[1].split(" ")[0]);
-
-            return !(inputStartDate.after(roomEndDate) || inputEndDate.before(roomStartDate)) &&
-                    requestedPeople <= room.getPeople();
-        } catch (ParseException e) {
-            Log.e(TAG, Objects.requireNonNull(e.getMessage()));
-            return false;
-        }
-    }
-*/
 
     private void displayHotel(HotelModel_Tri hotel) {
-        //hotelCardAdapter.updateFilteredHotels(hotel); ///////////////
+        //hotelCardAdapter.updateFilteredHotels(hotel);
         filteredHotels.add(hotel);
     }
 
