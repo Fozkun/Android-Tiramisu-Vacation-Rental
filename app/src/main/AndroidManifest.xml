@@ -36,6 +36,9 @@
             android:name=".MyCouponsActivity"
             android:exported="false" />
         <activity
+            android:name=".NotificationActivity"
+            android:exported="false" />
+        <activity
             android:name=".PaymentActivity"
             android:exported="false" />
         <activity
@@ -55,7 +58,7 @@
         </activity>
 
         <service
-            android:name=".firebaseHelpers.MyFirebaseMessagingService"
+            android:name=".helpers.firebase.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

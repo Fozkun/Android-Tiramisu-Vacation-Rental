@@ -1,4 +1,4 @@
-package com.rmit.android_tiramisu_vacation_rental.firebaseHelpers;
+package com.rmit.android_tiramisu_vacation_rental.helpers.firebase;
 
 import android.content.Context;
 import android.util.Log;

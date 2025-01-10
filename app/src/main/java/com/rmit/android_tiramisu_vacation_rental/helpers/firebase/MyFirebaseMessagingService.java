@@ -1,4 +1,4 @@
-package com.rmit.android_tiramisu_vacation_rental.firebaseHelpers;
+package com.rmit.android_tiramisu_vacation_rental.helpers.firebase;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
