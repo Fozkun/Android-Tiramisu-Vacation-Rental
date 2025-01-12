@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:padding="16dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Hotel and Room Information -->
+        <TextView
+            android:id="@+id/tvHotelName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hotel Name"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tvRoomDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Room Details"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Price Section -->
+        <TextView
+            android:id="@+id/tvRoomPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Price: "
+            android:layout_marginBottom="16dp"
+            android:textStyle="bold" />
+
+        <!-- Coupons Section -->
+        <TextView
+            android:id="@+id/tvCouponTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Coupon"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCoupons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Final Price Section -->
+        <TextView
+            android:id="@+id/tvFinalPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Final Price: "
+            android:layout_marginBottom="16dp"
+            android:textStyle="bold" />
+
+        <!-- Confirm Button -->
+        <Button
+            android:id="@+id/btnConfirmBooking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Confirm" />
+    </LinearLayout>
+</ScrollView>
