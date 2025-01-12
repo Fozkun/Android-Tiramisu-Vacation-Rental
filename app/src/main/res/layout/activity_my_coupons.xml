@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -10,102 +9,162 @@
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:text="My Coupons"
-        android:textStyle="bold"
+        android:textColor="#000"
         android:textSize="20sp"
-        android:textColor="#000"/>
+        android:textStyle="bold" />
 
-    <!-- Back Button -->
-    <ImageButton
-        android:id="@+id/backButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignTop="@+id/titleText"
-        android:layout_alignParentStart="true"
-        android:layout_margin="15dp"
-        android:background="@null"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_back"
-        tools:ignore="TouchTargetSizeCheck" />
-
-    <!-- Promo Code Input -->
-    <EditText
-        android:id="@+id/promoCodeInput"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_below="@+id/titleText"
-        android:layout_margin="10dp"
-        android:layout_weight="5"
-        android:layout_alignParentStart="true"
-        android:background="@drawable/rounded_border"
-        android:hint="Enter Promo Code"
-        android:paddingStart="10dp" />
-
-    <!-- Submit Promo Code Button -->
-    <ImageButton
-        android:id="@+id/submitPromoCodeButton"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginEnd="10dp"
-        android:layout_toEndOf="@+id/promoCodeInput"
-        android:background="@drawable/rounded_blue_button"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_checkmark"
-        tools:ignore="TouchTargetSizeCheck" />
-
-    <!-- Filter Buttons -->
+    <!-- Tab Section -->
     <LinearLayout
-        android:id="@+id/filterButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/promoCodeInput"
+        android:layout_below="@+id/titleText"
+        android:background="#CCFF5722"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:padding="10dp">
-
-        <Button
-            android:id="@+id/filterAll"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="All"
-            android:backgroundTint="#007AFF"
-            android:textColor="@android:color/white" />
-
-        <Button
-            android:id="@+id/filterPercentage"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="PERCENTAGE"
-            android:backgroundTint="#D9E7FF"
-            android:textColor="#007AFF" />
-
-        <Button
-            android:id="@+id/filterLastMinute"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="LAST MINUTE"
-            android:backgroundTint="#D9E7FF"
-            android:textColor="#007AFF" />
-
-        <Button
-            android:id="@+id/filterSeasonal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="SEASONAL"
-            android:backgroundTint="#D9E7FF"
-            android:textColor="#007AFF"/>
-    </LinearLayout>
+        android:padding="18dp" />
 
     <!-- Coupons List -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/couponsRecycleView"
+        android:id="@+id/couponsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/filterButtons"
-        android:layout_marginTop="10dp"/>
+        android:layout_below="@id/titleText"
+        android:layout_marginTop="45dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF"
+        android:baselineAligned="false"
+        android:elevation="4dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <!-- Home -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/homeButton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="Home"
+                android:src="@drawable/ic_home" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Home"
+                android:textColor="#007BFF"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Coupons -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/couponsButton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="Coupons"
+                android:src="@drawable/ic_coupons" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Coupons"
+                android:textColor="#757575"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Trips -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/tripsButton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="Trips"
+                android:src="@drawable/ic_trips" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="My Trips"
+                android:textColor="#757575"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Notifications -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/notificationsButton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="Notifications"
+                android:src="@drawable/ic_notifications" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Notification"
+                android:textColor="#757575"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <!-- Profile -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/profileButton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="Profile"
+                android:src="@drawable/ic_profile" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Profile"
+                android:textColor="#757575"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 </RelativeLayout>
