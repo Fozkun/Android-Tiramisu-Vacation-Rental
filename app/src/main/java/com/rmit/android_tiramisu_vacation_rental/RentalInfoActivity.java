@@ -1,19 +1,14 @@
 package com.rmit.android_tiramisu_vacation_rental;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -30,7 +25,8 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,7 +34,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rmit.android_tiramisu_vacation_rental.adapters.HotelRoomAdapter;
-import com.rmit.android_tiramisu_vacation_rental.enums.HotelRoomStatus;
 import com.rmit.android_tiramisu_vacation_rental.enums.UserRole;
 import com.rmit.android_tiramisu_vacation_rental.helpers.BottomNavigationHelper;
 import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseConstants;
@@ -46,12 +41,9 @@ import com.rmit.android_tiramisu_vacation_rental.models.HotelModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.HotelRoomModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.Location_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
-import com.rmit.android_tiramisu_vacation_rental.utils.MyDateUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = "RentalInfoActivity"; //Tag use for Logcat
@@ -63,8 +55,8 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
     // All views
     private TextView textViewHotelName, textViewHotelLocation;
     private RatingBar ratingBarHotel;
-    private LinearLayout layoutActionButtons, layoutCreateHotelRoomForm;
-    private Button btnDeleteHotel, btnShowEditHotelForm, btnShowCreateHotelRoom, btnShowCreateHotelCouponForm;
+    private LinearLayout layoutActionButtons, layoutEditHotelForm, layoutCreateHotelRoomForm, layoutCreateHotelCouponForm;
+    private Button btnDeleteHotel, btnSaveHotel, btnCreateHotelCoupon, btnShowEditHotelForm, btnShowCreateHotelRoom, btnShowCreateHotelCouponForm;
     private HotelRoomAdapter hotelRoomAdapter;
     private RecyclerView recyclerViewHotelRoomCard;
     // All bottom navigation buttons
@@ -116,10 +108,14 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
         ratingBarHotel = findViewById(R.id.ratingBarHotel);
         layoutActionButtons = findViewById(R.id.layoutActionButtons);
         layoutCreateHotelRoomForm = findViewById(R.id.layoutCreateHotelRoomForm);
+        layoutCreateHotelCouponForm = findViewById(R.id.layoutCreateHotelCouponForm);
+        layoutEditHotelForm = findViewById(R.id.layoutEditHotelForm);
         btnDeleteHotel = findViewById(R.id.btnDeleteHotel);
         btnShowEditHotelForm = findViewById(R.id.btnShowEditHotelForm);
         btnShowCreateHotelRoom = findViewById(R.id.btnShowCreateHotelRoomForm);
         btnShowCreateHotelCouponForm = findViewById(R.id.btnShowCreateHotelCouponForm);
+        btnCreateHotelCoupon = findViewById(R.id.btnCreateHotelCoupon);
+        btnSaveHotel = findViewById(R.id.btnSaveHotel);
         recyclerViewHotelRoomCard = findViewById(R.id.recyclerViewHotelRoomCard);
 
         //Find all bottom navigation ids
@@ -130,24 +126,51 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
         navProfile = findViewById(R.id.nav_profile);
 
         // Setup click event listener for all buttons
+        btnSaveHotel.setOnClickListener(v -> {
+            EditText editTextHotelName  = findViewById(R.id.editText_hotel_name);
+
+            if(!editTextHotelName.getText().toString().equals("")){
+                this.hotelModel.setName(editTextHotelName.getText().toString());
+            }
+
+            /*
+            if(){}
+
+            if(){
+
+            }
+             */
+
+
+            hotelReference.child(this.hotelModel.getId()).setValue(this.hotelModel);
+        });
+
         btnDeleteHotel.setOnClickListener(v -> {
 
         });
 
         btnShowEditHotelForm.setOnClickListener(v -> {
-
+            if (layoutEditHotelForm.getVisibility() == View.GONE) {
+                layoutEditHotelForm.setVisibility(View.VISIBLE);
+            } else {
+                layoutEditHotelForm.setVisibility(View.GONE);
+            }
         });
 
         btnShowCreateHotelRoom.setOnClickListener(v -> {
-            if(layoutCreateHotelRoomForm.getVisibility() == View.GONE){
+            if (layoutCreateHotelRoomForm.getVisibility() == View.GONE) {
                 layoutCreateHotelRoomForm.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 layoutCreateHotelRoomForm.setVisibility(View.GONE);
             }
         });
 
         btnShowCreateHotelCouponForm.setOnClickListener(v -> {
-
+            if(layoutCreateHotelCouponForm.getVisibility() == View.GONE){
+                layoutCreateHotelCouponForm.setVisibility(View.VISIBLE);
+            }else{
+                layoutCreateHotelCouponForm.setVisibility(View.GONE);
+            }
         });
 
         // Setup click event listener for all bottom buttons

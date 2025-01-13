@@ -66,7 +66,7 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="5dp"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -85,6 +85,135 @@
                         android:backgroundTint="@color/gray"
                         android:text="Edit hotel" />
 
+                    <LinearLayout
+                        android:id="@+id/layoutEditHotelForm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/border_shape_black"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp"
+                        android:visibility="gone">
+
+                        <!-- Hotel Name -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="4dp"
+                            android:text="Hotel Name"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/editText_hotel_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter hotel name"
+                            android:inputType="text"
+                            android:minHeight="48dp" />
+
+                        <!-- Address -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="16dp"
+                            android:paddingBottom="4dp"
+                            android:text="Address"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/editText_hotel_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter hotel address"
+                            android:inputType="textPostalAddress"
+                            android:minHeight="48dp" />
+
+                        <!-- Location (latitude & longitude) -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="16dp"
+                            android:paddingBottom="4dp"
+                            android:text="Location (Latitude and Longitude)"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/editText_latitude"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Latitude"
+                            android:inputType="numberDecimal"
+                            android:minHeight="48dp" />
+
+                        <EditText
+                            android:id="@+id/editText_longitude"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Longitude"
+                            android:inputType="numberDecimal"
+                            android:minHeight="48dp" />
+
+                        <!-- Max Occupancy -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="16dp"
+                            android:paddingBottom="4dp"
+                            android:text="Max Occupancy"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/editText_max_occupancy"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter maximum occupancy"
+                            android:inputType="number"
+                            android:minHeight="48dp" />
+
+                        <!-- Rating -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="16dp"
+                            android:paddingBottom="4dp"
+                            android:text="Rating"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/editText_rating"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter rating"
+                            android:inputType="numberDecimal"
+                            android:minHeight="48dp" />
+
+                        <!-- Upload Image Button -->
+                        <Button
+                            android:id="@+id/btnUploadHotelImage"
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/gray"
+                            android:text="Upload Image" />
+
+                        <ImageView
+                            android:id="@+id/iv_uploaded_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:layout_marginTop="8dp"
+                            android:contentDescription="Uploaded Image Preview"
+                            android:scaleType="centerCrop"
+                            android:visibility="gone" />
+                        <!-- Create Button -->
+                        <Button
+                            android:id="@+id/btnSaveHotel"
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/accent_color"
+                            android:text="Save"
+                            android:textColor="@android:color/white" />
+                    </LinearLayout>
+
                     <Button
                         android:id="@+id/btnShowCreateHotelRoomForm"
                         android:layout_width="250dp"
@@ -97,7 +226,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/border_shape"
+                        android:background="@drawable/border_shape_black"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:padding="10dp"
@@ -312,6 +441,161 @@
                         android:backgroundTint="@color/gray"
                         android:text="Create coupon" />
 
+
+                    <LinearLayout
+                        android:id="@+id/layoutCreateHotelCouponForm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/border_shape_black"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Create coupon form"
+                            android:textAlignment="center"
+                            android:textColor="@color/text_color_2"
+                            android:textSize="34sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="50dp"
+                            android:layout_marginRight="15dp"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="150dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="Title"
+                                    android:textColor="@color/text_color_2"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/inputLayoutCouponTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="5dp"
+                                    android:hint="Coupon title">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="hint" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="15dp"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="150dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="Description"
+                                    android:textColor="@color/text_color_2"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/inputLayoutCouponDescription"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="5dp">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="Coupon description" />
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="15dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Coupon type"
+                                    android:textColor="@color/text_color_2"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+
+                                <RadioGroup
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <RadioButton
+                                        android:id="@+id/radioButtonCouponTypePercentageDiscount"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:checked="true"
+                                        android:focusable="false"
+                                        android:text="Percentage discount" />
+                                </RadioGroup>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="15dp"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="150dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="Value"
+                                    android:textColor="@color/text_color_2"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/inputLayoutCouponValue"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="5dp">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="Coupon value" />
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/btnCreateHotelCoupon"
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:backgroundTint="@color/accent_color"
+                            android:text="Create" />
+
+                    </LinearLayout>
                     <Button
                         android:id="@+id/btnDeleteHotel"
                         android:layout_width="250dp"
