@@ -2,11 +2,13 @@ package com.rmit.android_tiramisu_vacation_rental;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -19,6 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.common.util.NumberUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -27,6 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,21 +38,26 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rmit.android_tiramisu_vacation_rental.adapters.HotelRoomAdapter;
+import com.rmit.android_tiramisu_vacation_rental.enums.CouponType;
 import com.rmit.android_tiramisu_vacation_rental.enums.UserRole;
 import com.rmit.android_tiramisu_vacation_rental.helpers.BottomNavigationHelper;
 import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseConstants;
+import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseNotificationSender;
+import com.rmit.android_tiramisu_vacation_rental.models.CouponModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.HotelModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.HotelRoomModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.Location_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = "RentalInfoActivity"; //Tag use for Logcat
     private UserSession_Tri userSession; //User session to access user role and id
-    private DatabaseReference userReference, hotelReference, roomReference, fmTokenReference, mDatabase;
+    private DatabaseReference userReference, hotelReference, roomReference, couponReference, fmTokenReference, mDatabase;
     private HotelModel_Tri hotelModel;
     private ArrayList<HotelRoomModel_Tri> rooms = new ArrayList<>();
 
@@ -100,6 +109,7 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
         userReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.REGISTERED_USERS);
         hotelReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.HOTELS);
         roomReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.HOTEL_ROOMS);
+        couponReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.Coupons);
         fmTokenReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.FM_TOKENS);
 
         //Find view by id
@@ -127,20 +137,32 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
 
         // Setup click event listener for all buttons
         btnSaveHotel.setOnClickListener(v -> {
-            EditText editTextHotelName  = findViewById(R.id.editText_hotel_name);
+            EditText editTextHotelName = findViewById(R.id.editText_hotel_name);
+            EditText editTextHotelAddress = findViewById(R.id.editText_hotel_address);
+            EditText editTextLatitude = findViewById(R.id.editText_latitude);
+            EditText editTextLongitude = findViewById(R.id.editText_longitude);
+            EditText editTextMaxOccupancy = findViewById(R.id.editText_max_occupancy);
 
-            if(!editTextHotelName.getText().toString().equals("")){
+            if (!editTextHotelName.getText().toString().equals("")) {
                 this.hotelModel.setName(editTextHotelName.getText().toString());
             }
 
-            /*
-            if(){}
 
-            if(){
-
+            if (!editTextHotelAddress.getText().toString().equals("")) {
+                this.hotelModel.setAddress(editTextHotelAddress.getText().toString());
             }
-             */
 
+            if (!editTextLatitude.getText().toString().equals("") && !editTextLongitude.getText().toString().equals("")) {
+                double latitude = Double.parseDouble(editTextLatitude.getText().toString());
+                double longtitude = Double.parseDouble(editTextLongitude.getText().toString());
+                Location_Tri locationTri = new Location_Tri(latitude, longtitude);
+                this.hotelModel.setLocation(locationTri);
+            }
+
+            if (!editTextMaxOccupancy.getText().toString().equals("")) {
+                int maxOccupancy = Integer.parseInt(editTextMaxOccupancy.getText().toString());
+                this.hotelModel.setMaxOccupancy(maxOccupancy);
+            }
 
             hotelReference.child(this.hotelModel.getId()).setValue(this.hotelModel);
         });
@@ -166,10 +188,83 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
         });
 
         btnShowCreateHotelCouponForm.setOnClickListener(v -> {
-            if(layoutCreateHotelCouponForm.getVisibility() == View.GONE){
+            if (layoutCreateHotelCouponForm.getVisibility() == View.GONE) {
                 layoutCreateHotelCouponForm.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 layoutCreateHotelCouponForm.setVisibility(View.GONE);
+            }
+        });
+
+        btnCreateHotelCoupon.setOnClickListener(v -> {
+            TextInputLayout inputLayoutCouponTitle, inputLayoutCouponDescription, inputLayoutCouponValue;
+
+            inputLayoutCouponTitle = findViewById(R.id.inputLayoutCouponTitle);
+            inputLayoutCouponDescription = findViewById(R.id.inputLayoutCouponDescription);
+            inputLayoutCouponValue = findViewById(R.id.inputLayoutCouponValue);
+
+            String titleInput = "";
+            String description = "";
+            String value = "";
+            if (inputLayoutCouponTitle.getEditText() != null) {
+                titleInput = inputLayoutCouponTitle.getEditText().getText().toString();
+            }
+
+            if (inputLayoutCouponDescription.getEditText() != null) {
+                description = inputLayoutCouponDescription.getEditText().getText().toString();
+            }
+
+            if (inputLayoutCouponValue.getEditText() != null) {
+                value = inputLayoutCouponValue.getEditText().getText().toString();
+            }
+
+            if (TextUtils.isEmpty(titleInput)) {
+                inputLayoutCouponTitle.setError("Title is required");
+                inputLayoutCouponTitle.requestFocus();
+            } else if (TextUtils.isEmpty(description)) {
+                inputLayoutCouponDescription.setError("Description is required");
+                inputLayoutCouponDescription.requestFocus();
+            } else if (TextUtils.isEmpty(value)) {
+                inputLayoutCouponValue.setError("Coupon value is required");
+                inputLayoutCouponValue.requestFocus();
+            } else {
+                boolean isValid = true;
+                int percentageValue = 0;
+
+                try {
+                    percentageValue = Integer.parseInt(value);
+                } catch (NumberFormatException e) {
+                    inputLayoutCouponValue.setError("Valid value is required");
+                    inputLayoutCouponValue.requestFocus();
+                    isValid = false;
+                }
+
+                if (isValid) {
+                    CouponModel_Tri model = new CouponModel_Tri();
+                    model.setTitle(titleInput);
+                    model.setDescription(description);
+                    model.setValue(String.valueOf(percentageValue));
+                    model.setType(CouponType.PERCENTAGE_DISCOUNT);
+                    model.setCreatedDate(new Date());
+
+                    String key = couponReference.push().getKey();
+                    if (key != null) {
+                        model.setId(key);
+                        couponReference.child(key).setValue(model).addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, model.toString());
+                            } else {
+                                try {
+                                    throw Objects.requireNonNull(task.getException());
+                                } catch (Exception e) {
+                                    Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                                }
+                            }
+
+                            layoutCreateHotelCouponForm.setVisibility(View.GONE);
+                            sendNotificationToUsers("New coupon dropped", model.getDescription());
+                        });
+                    }
+                }
             }
         });
 
@@ -327,6 +422,34 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
         } else {
             Log.e(TAG, "GoogleMap is not initialized.");
         }
+    }
+
+    public void sendNotificationToUsers(String title, String description) {
+        new Thread(() -> {
+            fmTokenReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    ArrayList<String> allKeys = new ArrayList<>();
+
+                    for (DataSnapshot snapshotFcKey : snapshot.getChildren()) {
+                        String key = snapshotFcKey.getValue(String.class);
+
+                        if (key != null) {
+                            allKeys.add(key);
+                        }
+                    }
+
+                    for (String key : allKeys) {
+                        FirebaseNotificationSender firebaseNotificationSender = new FirebaseNotificationSender(key, title, description, RentalInfoActivity.this);
+                        firebaseNotificationSender.sendNotification();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        }).start();
     }
 
     @Override

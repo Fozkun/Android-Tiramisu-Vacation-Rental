@@ -66,7 +66,7 @@
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="5dp"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -172,21 +172,6 @@
                             android:minHeight="48dp" />
 
                         <!-- Rating -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="16dp"
-                            android:paddingBottom="4dp"
-                            android:text="Rating"
-                            android:textStyle="bold" />
-
-                        <EditText
-                            android:id="@+id/editText_rating"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Enter rating"
-                            android:inputType="numberDecimal"
-                            android:minHeight="48dp" />
 
                         <!-- Upload Image Button -->
                         <Button
@@ -472,7 +457,7 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="50dp"
                                 android:gravity="center"
                                 android:orientation="horizontal">
 
@@ -488,19 +473,19 @@
                                     android:id="@+id/inputLayoutCouponTitle"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:layout_marginLeft="5dp"
-                                    android:hint="Coupon title">
+                                    android:layout_marginLeft="5dp">
 
                                     <com.google.android.material.textfield.TextInputEditText
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:hint="hint" />
+                                        android:hint="Coupon title"
+                                        android:inputType="text" />
                                 </com.google.android.material.textfield.TextInputLayout>
                             </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="50dp"
                                 android:layout_marginTop="15dp"
                                 android:gravity="center"
                                 android:orientation="horizontal">
@@ -522,14 +507,15 @@
                                     <com.google.android.material.textfield.TextInputEditText
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:hint="Coupon description" />
+                                        android:hint="Coupon description"
+                                        android:inputType="text" />
                                 </com.google.android.material.textfield.TextInputLayout>
 
                             </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="50dp"
                                 android:layout_marginTop="15dp"
                                 android:orientation="vertical">
 
@@ -558,7 +544,7 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="50dp"
                                 android:layout_marginTop="15dp"
                                 android:gravity="center"
                                 android:orientation="horizontal">
@@ -580,7 +566,8 @@
                                     <com.google.android.material.textfield.TextInputEditText
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:hint="Coupon value" />
+                                        android:hint="Coupon value"
+                                        android:inputType="text" />
                                 </com.google.android.material.textfield.TextInputLayout>
 
                             </LinearLayout>
@@ -596,6 +583,7 @@
                             android:text="Create" />
 
                     </LinearLayout>
+
                     <Button
                         android:id="@+id/btnDeleteHotel"
                         android:layout_width="250dp"
