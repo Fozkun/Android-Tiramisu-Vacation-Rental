@@ -25,7 +25,6 @@ import java.util.List;
 
 
 public class BookingConfirmationActivity extends AppCompatActivity {
-
         private TextView tvHotelName, tvRoomDetails, tvRoomPrice, tvFinalPrice;
         private RecyclerView rvCoupons;
         private Button btnConfirmBooking;
