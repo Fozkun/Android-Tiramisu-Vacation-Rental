@@ -7,6 +7,14 @@ android {
     namespace = "com.rmit.android_tiramisu_vacation_rental"
     compileSdk = 34
 
+    defaultConfig {
+        minSdk = 21
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
     packaging {
         resources{
             excludes += "META-INF/DEPENDENCIES"

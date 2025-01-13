@@ -7,8 +7,10 @@ import java.util.Date;
 
 public class HotelRoomModel_Tri implements Serializable {
     private String id;
+    private String name;
     private String hotelId;
     private String description;
+    private String imageUrl;
     private HotelRoomStatus status;
     private Date startDate; // Format HH:mm dd-MM-yyyy
     private Date endDate; // Format HH:mm dd-MM-yyyy
@@ -25,6 +27,14 @@ public class HotelRoomModel_Tri implements Serializable {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getHotelId() {
         return hotelId;
     }
@@ -39,6 +49,14 @@ public class HotelRoomModel_Tri implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public HotelRoomStatus getStatus() {
@@ -85,8 +103,10 @@ public class HotelRoomModel_Tri implements Serializable {
     public String toString() {
         return "HotelRoomModel_Tri{" +
                 "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", hotelId='" + hotelId + '\'' +
                 ", description='" + description + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
                 ", status=" + status +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +

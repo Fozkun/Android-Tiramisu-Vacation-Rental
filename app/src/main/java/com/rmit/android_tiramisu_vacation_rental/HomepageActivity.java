@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -379,15 +380,17 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
     }
 
     private void handleBtnCreateHotel() {
+
     }
 
     @Override
     public void onItemClick(int position) {
         HotelModel_Tri model = hotelCardAdapter.getItem(position);
         Log.d(TAG, model.toString());
-        //Intent intent = new Intent(this, Hotel.class);
-        //intent.putExtra("siteId", siteModel.getSiteId());
-        //startActivity(intent);
+
+        Intent intent = new Intent(this, RentalInfoActivity.class);
+        intent.putExtra("hotelId", model.getId());
+        startActivity(intent);
     }
 
     //A method to get user Firebase messaging token for notification feature

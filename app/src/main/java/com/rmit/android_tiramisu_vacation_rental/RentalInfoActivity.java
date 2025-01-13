@@ -1,6 +1,7 @@
 package com.rmit.android_tiramisu_vacation_rental;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +18,9 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,7 +37,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.rmit.android_tiramisu_vacation_rental.adapters.HotelRoomAdapter;
 import com.rmit.android_tiramisu_vacation_rental.enums.HotelRoomStatus;
+import com.rmit.android_tiramisu_vacation_rental.enums.UserRole;
+import com.rmit.android_tiramisu_vacation_rental.helpers.BottomNavigationHelper;
+import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseConstants;
+import com.rmit.android_tiramisu_vacation_rental.models.HotelModel_Tri;
+import com.rmit.android_tiramisu_vacation_rental.models.HotelRoomModel_Tri;
+import com.rmit.android_tiramisu_vacation_rental.models.Location_Tri;
+import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
 import com.rmit.android_tiramisu_vacation_rental.utils.MyDateUtils;
 
 import java.util.ArrayList;
@@ -40,39 +53,173 @@ import java.util.Date;
 import java.util.List;
 
 public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
+    private static final String TAG = "RentalInfoActivity"; //Tag use for Logcat
+    private UserSession_Tri userSession; //User session to access user role and id
+    private DatabaseReference userReference, hotelReference, roomReference, fmTokenReference, mDatabase;
+    private HotelModel_Tri hotelModel;
+    private ArrayList<HotelRoomModel_Tri> rooms = new ArrayList<>();
+
+    // All views
+    private TextView textViewHotelName, textViewHotelLocation;
+    private RatingBar ratingBarHotel;
+    private HotelRoomAdapter hotelRoomAdapter;
+    private RecyclerView recyclerViewHotelRoomCard;
+    // All bottom navigation buttons
+    private LinearLayout navHome, navMyTrips, navCoupons, navNotification, navProfile;
+
     private GoogleMap mMap;
     private MapView mapView;
-    private DatabaseReference mDatabase;
     private RentalInfo_Hoa rentalInfo;
     private FirebaseAuth mAuth;
     private String userId;
-    private Button editButton, deleteButton;
+    private Button btnCreateRoom, btnEditRoom, btnDeleteRoom;
     private RecyclerView roomTypesRecyclerView;
-    private RoomTypesAdapter roomTypesAdapter;
+    //private RoomTypesAdapter roomTypesAdapter;
     private List<String> roomTypesList = new ArrayList<>();
     private String selectedRoomType;
     private TextView hotelNameTextView;
     private RatingBar hotelRatingRatingBar;
     private TextView hotelLocationTextView;
     private TextView maxOccupancyTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_rental_info);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+        //Check user session
+        userSession = UserSession_Tri.getInstance();
+        if (!userSession.hasSession()) {
+            Log.d(TAG, "No user session");
+            finish();
+            return;
+        }
+
+        //Define firebase references
+        userReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.REGISTERED_USERS);
+        hotelReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.HOTELS);
+        roomReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.HOTEL_ROOMS);
+        fmTokenReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.FM_TOKENS);
+
+        //Find view by id
+        textViewHotelName = findViewById(R.id.textViewHotelName);
+        textViewHotelLocation = findViewById(R.id.textViewHotelLocation);
+        ratingBarHotel = findViewById(R.id.ratingBarHotel);
+        recyclerViewHotelRoomCard = findViewById(R.id.recyclerViewHotelRoomCard);
+
+        //Find all bottom navigation ids
+        navHome = findViewById(R.id.nav_home);
+        navCoupons = findViewById(R.id.nav_coupons);
+        navMyTrips = findViewById(R.id.nav_myTrips);
+        navNotification = findViewById(R.id.nav_notification);
+        navProfile = findViewById(R.id.nav_profile);
+
+        //Display views based on role
+        if (userSession.getUserRole() == UserRole.RENTAL_PROVIDER || userSession.getUserRole() == UserRole.SUPER_USER) {
+
+        } else {
+
+        }
+        // Setup click event listener;
+
+        // Setup click event listener for all bottom buttons
+        navHome.setOnClickListener(v -> {
+            BottomNavigationHelper.navigateTo(this, HomepageActivity.class);
+        });
+        navCoupons.setOnClickListener(v -> {
+            BottomNavigationHelper.navigateTo(this, MyCouponsActivity.class);
+        });
+        navMyTrips.setOnClickListener(v -> {
+            BottomNavigationHelper.navigateTo(this, MyTripsActivity.class);
+        });
+        navNotification.setOnClickListener(v -> {
+            BottomNavigationHelper.navigateTo(this, NotificationActivity.class);
+        });
+        navProfile.setOnClickListener(v -> {
+            BottomNavigationHelper.navigateTo(this, Profile.class);
+        });
+
+        //Setup recycler view and adapter;
+        hotelRoomAdapter = new HotelRoomAdapter(this.rooms);
+        recyclerViewHotelRoomCard.setLayoutManager(
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerViewHotelRoomCard.setAdapter(hotelRoomAdapter);
+
+        // Get hotel id from intent
+        Intent intent = getIntent();
+        String hotelId = intent.getStringExtra("hotelId");
+
+        if (hotelId == null) {
+            Log.d(TAG, "Hotel id is missing?");
+            finish();
+            return;
+        }
+
+        hotelReference.child(hotelId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                HotelModel_Tri foundModel = snapshot.getValue(HotelModel_Tri.class);
+                if (foundModel == null) {
+                    Log.d(TAG, "Hotel is not found with id: " + hotelId);
+                    hotelReference.removeEventListener(this);
+                    finish();
+                }
+
+                hotelModel = foundModel;
+                updateView();
+
+                roomReference.orderByChild("hotelId").equalTo(hotelModel.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        ArrayList<HotelRoomModel_Tri> foundRooms = new ArrayList<>();
+
+                        for(DataSnapshot roomSnapshot: snapshot.getChildren()){
+                            HotelRoomModel_Tri foundRoom = roomSnapshot.getValue(HotelRoomModel_Tri.class);
+
+                            if(foundRoom != null){
+                                foundRooms.add(foundRoom);
+                            }
+                        }
+
+                        rooms = foundRooms;
+                        hotelRoomAdapter.setRooms(rooms);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        /*
+        //Find view by id
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         userId = mAuth.getCurrentUser().getUid();
-        Button btnCreateRoom = findViewById(R.id.btnCreateRoom);
-        Button btnEdit = findViewById(R.id.btnEdit);
-        Button btnDelete = findViewById(R.id.btnDelete);
+        btnCreateRoom = findViewById(R.id.btnCreateRoom);
+        btnEditRoom = findViewById(R.id.btnEdit);
+        btnDeleteRoom = findViewById(R.id.btnDelete);
         checkBookingStatus();
         rentalInfo = new RentalInfo_Hoa();
         populateRentalInfo();
         writeToDatabase();
+
         // Set up RecyclerView
         roomTypesRecyclerView = findViewById(R.id.roomTypesRecyclerView);
         roomTypesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -85,26 +232,56 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
         // Fetch rental information from Firebase
         fetchRentalInfo(rentalId);
 
-        btnCreateRoom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createNewRoom();
-            }
-        });
-        btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editHotelInfo();
-            }
-        });
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteHotel();
-            }
-        });
+        btnCreateRoom.setOnClickListener(view -> createNewRoom());
+        btnEditRoom.setOnClickListener(view -> editHotelInfo());
+        btnDeleteRoom.setOnClickListener(view -> deleteHotel());
+         */
     }
 
+    private void updateView() {
+        if(hotelModel == null){
+            return;
+        }
+
+        this.textViewHotelName.setText(hotelModel.getName());
+        this.textViewHotelLocation.setText(hotelModel.getAddress());
+        this.ratingBarHotel.setRating(hotelModel.getRating());
+    }
+
+    private void updateHotelMapView() {
+        if(hotelModel == null){
+            return;
+        }
+
+        Location_Tri hotelLocation = hotelModel.getLocation();
+        LatLng latLng = new LatLng(0, 0);
+        if (hotelLocation != null) {
+            latLng = new LatLng(hotelLocation.latitude, hotelLocation.longitude);
+        }
+
+        if (mMap != null) {
+            mMap.clear(); // Clear existing markers if any
+
+            // Add a marker at the hotel location
+            mMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title(hotelModel.getName())
+                    .snippet("Address: " + hotelModel.getAddress()));
+
+            // Move and zoom the camera to the hotel location
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        } else {
+            Log.e(TAG, "GoogleMap is not initialized.");
+        }
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap = googleMap;
+        updateHotelMapView();
+    }
+
+    /*
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -141,6 +318,7 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
         super.onDestroy();
         mapView.onDestroy();
     }
+
     private void populateRentalInfo() {
         rentalInfo.setHotelName("Example Hotel");
         rentalInfo.setHotelRating(4.5f);
@@ -180,7 +358,11 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
                 });
 
     }
-        private void checkBookingStatus() {
+
+ */
+
+    /*
+    private void checkBookingStatus() {
         // where rentalId is the unique identifier of the rental
 
         DatabaseReference bookingRef = mDatabase.child("users").child(userId).child("bookings");
@@ -321,12 +503,12 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
     private void checkOwnership(String ownerId) {
         if (ownerId.equals(userId)) {
             // Current user is the owner
-            editButton.setVisibility(View.VISIBLE);
-            deleteButton.setVisibility(View.VISIBLE);
+            btnEditRoom.setVisibility(View.VISIBLE);
+            btnDeleteRoom.setVisibility(View.VISIBLE);
         } else {
             // Current user is not the owner
-            editButton.setVisibility(View.GONE);
-            deleteButton.setVisibility(View.GONE);
+            btnEditRoom.setVisibility(View.GONE);
+            btnDeleteRoom.setVisibility(View.GONE);
         }
     }
 
@@ -438,4 +620,5 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
             }
         });
     }
+     */
 }
