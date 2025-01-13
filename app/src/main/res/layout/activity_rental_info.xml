@@ -101,7 +101,7 @@
                         android:gravity="center"
                         android:orientation="vertical"
                         android:padding="10dp"
-                        android:visibility="visible">
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/textViewForm"
@@ -311,6 +311,13 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/gray"
                         android:text="Create coupon" />
+
+                    <Button
+                        android:id="@+id/btnDeleteHotel"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#E53935"
+                        android:text="Delete hotel" />
                 </LinearLayout>
             </LinearLayout>
 

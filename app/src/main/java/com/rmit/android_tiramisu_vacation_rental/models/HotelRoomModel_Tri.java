@@ -3,6 +3,7 @@ package com.rmit.android_tiramisu_vacation_rental.models;
 import com.rmit.android_tiramisu_vacation_rental.enums.HotelRoomStatus;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class HotelRoomModel_Tri implements Serializable {
@@ -15,6 +16,7 @@ public class HotelRoomModel_Tri implements Serializable {
     private Date startDate; // Format HH:mm dd-MM-yyyy
     private Date endDate; // Format HH:mm dd-MM-yyyy
     private int people;
+    private ArrayList<String> bookedUserIds;
     private Double price;
 
     public HotelRoomModel_Tri() {}
@@ -91,6 +93,14 @@ public class HotelRoomModel_Tri implements Serializable {
         this.people = people;
     }
 
+    public ArrayList<String> getBookedUserIds() {
+        return bookedUserIds;
+    }
+
+    public void setBookedUserIds(ArrayList<String> bookedUserIds) {
+        this.bookedUserIds = bookedUserIds;
+    }
+
     public Double getPrice() {
         return price;
     }
@@ -111,6 +121,7 @@ public class HotelRoomModel_Tri implements Serializable {
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", people=" + people +
+                ", bookedUserIds=" + bookedUserIds +
                 ", price=" + price +
                 '}';
     }

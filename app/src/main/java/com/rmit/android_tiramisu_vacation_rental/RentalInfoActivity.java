@@ -51,6 +51,7 @@ import com.rmit.android_tiramisu_vacation_rental.utils.MyDateUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = "RentalInfoActivity"; //Tag use for Logcat
@@ -62,6 +63,8 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
     // All views
     private TextView textViewHotelName, textViewHotelLocation;
     private RatingBar ratingBarHotel;
+    private LinearLayout layoutActionButtons, layoutCreateHotelRoomForm;
+    private Button btnDeleteHotel, btnShowEditHotelForm, btnShowCreateHotelRoom, btnShowCreateHotelCouponForm;
     private HotelRoomAdapter hotelRoomAdapter;
     private RecyclerView recyclerViewHotelRoomCard;
     // All bottom navigation buttons
@@ -111,6 +114,12 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
         textViewHotelName = findViewById(R.id.textViewHotelName);
         textViewHotelLocation = findViewById(R.id.textViewHotelLocation);
         ratingBarHotel = findViewById(R.id.ratingBarHotel);
+        layoutActionButtons = findViewById(R.id.layoutActionButtons);
+        layoutCreateHotelRoomForm = findViewById(R.id.layoutCreateHotelRoomForm);
+        btnDeleteHotel = findViewById(R.id.btnDeleteHotel);
+        btnShowEditHotelForm = findViewById(R.id.btnShowEditHotelForm);
+        btnShowCreateHotelRoom = findViewById(R.id.btnShowCreateHotelRoomForm);
+        btnShowCreateHotelCouponForm = findViewById(R.id.btnShowCreateHotelCouponForm);
         recyclerViewHotelRoomCard = findViewById(R.id.recyclerViewHotelRoomCard);
 
         //Find all bottom navigation ids
@@ -120,13 +129,26 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
         navNotification = findViewById(R.id.nav_notification);
         navProfile = findViewById(R.id.nav_profile);
 
-        //Display views based on role
-        if (userSession.getUserRole() == UserRole.RENTAL_PROVIDER || userSession.getUserRole() == UserRole.SUPER_USER) {
+        // Setup click event listener for all buttons
+        btnDeleteHotel.setOnClickListener(v -> {
 
-        } else {
+        });
 
-        }
-        // Setup click event listener;
+        btnShowEditHotelForm.setOnClickListener(v -> {
+
+        });
+
+        btnShowCreateHotelRoom.setOnClickListener(v -> {
+            if(layoutCreateHotelRoomForm.getVisibility() == View.GONE){
+                layoutCreateHotelRoomForm.setVisibility(View.VISIBLE);
+            }else{
+                layoutCreateHotelRoomForm.setVisibility(View.GONE);
+            }
+        });
+
+        btnShowCreateHotelCouponForm.setOnClickListener(v -> {
+
+        });
 
         // Setup click event listener for all bottom buttons
         navHome.setOnClickListener(v -> {
@@ -179,10 +201,10 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         ArrayList<HotelRoomModel_Tri> foundRooms = new ArrayList<>();
 
-                        for(DataSnapshot roomSnapshot: snapshot.getChildren()){
+                        for (DataSnapshot roomSnapshot : snapshot.getChildren()) {
                             HotelRoomModel_Tri foundRoom = roomSnapshot.getValue(HotelRoomModel_Tri.class);
 
-                            if(foundRoom != null){
+                            if (foundRoom != null) {
                                 foundRooms.add(foundRoom);
                             }
                         }
@@ -239,17 +261,26 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
     }
 
     private void updateView() {
-        if(hotelModel == null){
+        if (hotelModel == null) {
             return;
         }
 
         this.textViewHotelName.setText(hotelModel.getName());
         this.textViewHotelLocation.setText(hotelModel.getAddress());
         this.ratingBarHotel.setRating(hotelModel.getRating());
+
+        //Display views based on role
+        String userId = userSession.getUserId();
+        UserRole userRole = userSession.getUserRole();
+
+        if ((userRole == UserRole.RENTAL_PROVIDER && userId.equals(hotelModel.getOwnerId())) || userRole == UserRole.SUPER_USER) {
+            layoutActionButtons.setVisibility(View.VISIBLE);
+        }
+        // Setup click event listener;
     }
 
     private void updateHotelMapView() {
-        if(hotelModel == null){
+        if (hotelModel == null) {
             return;
         }
 

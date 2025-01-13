@@ -4,7 +4,9 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -50,7 +52,7 @@ public class HotelRoomAdapter extends RecyclerView.Adapter<HotelRoomAdapter.Hote
         }
 
         holder.textViewHotelRoomName.setText(model.getName() == null ? "No name" : model.getName());
-        holder.textViewHotelRoomDescription.setText(model.getDescription() == null ? "No description": model.getDescription());
+        holder.textViewHotelRoomDescription.setText(model.getDescription() == null ? "No description" : model.getDescription());
 
         String priceText = model.getPrice() == null ? "0$" : model.getPrice() + "$";
         holder.textViewHotelRoomPrice.setText("Price: " + priceText);
@@ -68,10 +70,23 @@ public class HotelRoomAdapter extends RecyclerView.Adapter<HotelRoomAdapter.Hote
 
         //Display views based on role
         if (userSession.getUserRole() == UserRole.RENTAL_PROVIDER || userSession.getUserRole() == UserRole.SUPER_USER) {
-
+            holder.btnShowEditHotelRoomForm.setVisibility(View.VISIBLE);
+            holder.btnDeleteHotelRoom.setVisibility(View.VISIBLE);
         } else {
+            ArrayList<String> bookedIds = model.getBookedUserIds();
 
+            if (bookedIds == null || bookedIds.contains(userSession.getUserId())) {
+                holder.btnBookHotelRoom.setVisibility(View.VISIBLE);
+            }
         }
+
+        holder.btnShowEditHotelRoomForm.setOnClickListener(v -> {
+            if(holder.layoutEditHotelRoomForm.getVisibility() == View.VISIBLE){
+                holder.layoutEditHotelRoomForm.setVisibility(View.GONE);
+            }else{
+                holder.layoutEditHotelRoomForm.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     public void setRooms(ArrayList<HotelRoomModel_Tri> newRooms) {
@@ -85,6 +100,8 @@ public class HotelRoomAdapter extends RecyclerView.Adapter<HotelRoomAdapter.Hote
     }
 
     public static class HotelRoomCardViewHolder extends RecyclerView.ViewHolder {
+        private LinearLayout layoutEditHotelRoomForm;
+        private Button btnBookHotelRoom, btnShowEditHotelRoomForm, btnDeleteHotelRoom, btnSaveHotelRoom;
         private ImageView imageViewHotelRoom;
         private TextView textViewHotelRoomName, textViewHotelRoomDescription, textViewHotelRoomPrice, textViewHotelRoomStartDate, textViewHotelRoomEndDate, textViewHotelRoomStatus;
 
@@ -98,6 +115,12 @@ public class HotelRoomAdapter extends RecyclerView.Adapter<HotelRoomAdapter.Hote
             textViewHotelRoomStartDate = itemView.findViewById(R.id.textViewHotelRoomStartDate);
             textViewHotelRoomEndDate = itemView.findViewById(R.id.textViewHotelRoomEndDate);
             textViewHotelRoomStatus = itemView.findViewById(R.id.textViewHotelRoomStatus);
+
+            layoutEditHotelRoomForm = itemView.findViewById(R.id.layoutEditHotelRoomForm);
+            btnBookHotelRoom = itemView.findViewById(R.id.btnBookHotelRoom);
+            btnShowEditHotelRoomForm = itemView.findViewById(R.id.btnShowEditHotelRoomForm);
+            btnDeleteHotelRoom = itemView.findViewById(R.id.btnDeleteHotelRoom);
+            btnSaveHotelRoom = itemView.findViewById(R.id.btnSaveHotelRoom);
         }
     }
 }
