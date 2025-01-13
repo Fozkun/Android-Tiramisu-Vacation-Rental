@@ -1,60 +1,81 @@
 package com.rmit.android_tiramisu_vacation_rental;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.rmit.android_tiramisu_vacation_rental.model_Nghi.Coupon;
 
-import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class BookingConfirmationActivity extends AppCompatActivity {
 
-    private TextView tvHotelName, tvRoomDetails, tvRoomPrice, tvTotalPrice, tvFinalPrice;
-    private RecyclerView rvCoupons;
-    private int totalPrice;
-    private double finalPrice = totalPrice;
+        private TextView tvHotelName, tvRoomDetails, tvRoomPrice, tvFinalPrice;
+        private RecyclerView rvCoupons;
+        private Button btnConfirmBooking;
+        private final double roomPrice = 5550000; // Example price
+        private double finalPrice = roomPrice;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_booking_confirm);
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_booking_confirm);
 
-        // Find views
-        tvHotelName = findViewById(R.id.tvHotelName);
-        tvRoomDetails = findViewById(R.id.tvRoomDetails);
-        tvRoomPrice = findViewById(R.id.tvRoomPrice);
-        tvFinalPrice = findViewById(R.id.tvFinalPrice);
-        rvCoupons = findViewById(R.id.rvCoupons);
+            tvHotelName = findViewById(R.id.tvHotelName);
+            tvRoomDetails = findViewById(R.id.tvRoomDetails);
+            tvRoomPrice = findViewById(R.id.tvRoomPrice);
+            tvFinalPrice = findViewById(R.id.tvFinalPrice);
+            rvCoupons = findViewById(R.id.rvCoupons);
+            btnConfirmBooking = findViewById(R.id.btnConfirmBooking);
 
-        tvHotelName.setText("Hotel Name: ");
-        tvRoomDetails.setText("Room Details: ");
-        tvTotalPrice.setText("Total Price: " + totalPrice + "đ");
-        tvFinalPrice.setText("Final Price: " + finalPrice + "đ");
+            loadCoupons();
 
+            btnConfirmBooking.setOnClickListener(v -> {
+                Intent intent = new Intent(this, PaymentActivity.class);
+                intent.putExtra("finalPrice", finalPrice);
+                startActivity(intent);
+            });
+        }
 
-        List<Coupon> coupons = loadCoupons();
+        private void loadCoupons() {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference ref = database.getReference("coupons");
 
-        CouponsAdapter adapter = new CouponsAdapter(coupons, coupon -> {
-            finalPrice = totalPrice - coupon.getDiscountAmount();
-            tvFinalPrice.setText("Final Price: " + finalPrice + "đ");
-        });
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    List<Coupon> coupons = new ArrayList<>();
+                    for (DataSnapshot child : snapshot.getChildren()) {
+                        Coupon coupon = child.getValue(Coupon.class);
+                        coupons.add(coupon);
+                    }
+                }
 
-        rvCoupons.setLayoutManager(new LinearLayoutManager(this));
-        rvCoupons.setAdapter(adapter);
-    }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(BookingConfirmationActivity.this, "Failed to load coupons", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
-    private List<Coupon> loadCoupons() {
-        List<Coupon> coupons = new ArrayList<>();
-        return coupons;
+    private void applyCoupon(Coupon coupon) {
+        finalPrice = roomPrice - (roomPrice * coupon.getDiscount() / 100);
+        tvFinalPrice.setText(String.format("Final Price: %.2f VND", finalPrice));
     }
 }
