@@ -314,7 +314,7 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
                 hotelModel = foundModel;
                 updateView();
 
-                roomReference.orderByChild("hotelId").equalTo(hotelModel.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                roomReference.orderByChild("hotelId").equalTo(hotelModel.getId()).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         ArrayList<HotelRoomModel_Tri> foundRooms = new ArrayList<>();

@@ -107,7 +107,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
-                    android:background="@drawable/border_shape"
+                    android:background="@drawable/border_shape_black"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="10dp"
@@ -123,7 +123,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="50dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -134,13 +134,14 @@
                             android:text="Name" />
 
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/inputLayoutHotelRoomName"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="match_parent">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/InputRoomName"
                                 android:layout_width="match_parent"
-                                android:layout_height="30dp"
+                                android:layout_height="match_parent"
                                 android:hint="Room Name" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -148,7 +149,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="50dp"
                         android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
@@ -160,21 +161,22 @@
                             android:text="Description" />
 
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/inputLayoutHotelRoomDescription"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="match_parent">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/InputRoomDetails"
                                 android:layout_width="match_parent"
-                                android:layout_height="30dp"
-                                android:hint="Room Details" />
+                                android:layout_height="match_parent"
+                                android:hint="Room Description" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="50dp"
                         android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
@@ -186,13 +188,14 @@
                             android:text="Price" />
 
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/inputLayoutHotelRoomPrice"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="match_parent">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/InputRoomPrice"
                                 android:layout_width="match_parent"
-                                android:layout_height="30dp"
+                                android:layout_height="match_parent"
                                 android:hint="Room Price" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -200,7 +203,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="50dp"
                         android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
@@ -212,13 +215,14 @@
                             android:text="Start Date" />
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="316dp"
-                            android:layout_height="wrap_content">
+                            android:id="@+id/inputLayoutHotelRoomStartDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/InputStartDate"
                                 android:layout_width="match_parent"
-                                android:layout_height="30dp"
+                                android:layout_height="match_parent"
                                 android:hint="Room Start Date" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -226,7 +230,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="50dp"
                         android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
@@ -238,13 +242,14 @@
                             android:text="End Date" />
 
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/inputLayoutHotelRoomEndDate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/InputEndDate"
                                 android:layout_width="match_parent"
-                                android:layout_height="30dp"
+                                android:layout_height="match_parent"
                                 android:hint="Room End Date" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -263,16 +268,12 @@
                             android:layout_gravity="center_vertical"
                             android:text="Status" />
 
-                        <com.google.android.material.textfield.TextInputLayout
+                        <Button
+                            android:id="@+id/btnChangeHotelRoomStatus"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/InputStatus"
-                                android:layout_width="match_parent"
-                                android:layout_height="30dp"
-                                android:hint="Room Status" />
-                        </com.google.android.material.textfield.TextInputLayout>
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/gray"
+                            android:text="Current status" />
 
                     </LinearLayout>
 
