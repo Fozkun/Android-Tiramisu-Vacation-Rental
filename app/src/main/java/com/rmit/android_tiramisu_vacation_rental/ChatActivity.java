@@ -166,61 +166,8 @@ public class ChatActivity extends AppCompatActivity implements RecyclerViewChatB
                     }
                 });
             });
-            /*
-            providerId = userSessionTri.getUserId(); //getIntent().getStringExtra("providerId");
-            userId = "xGdtPOcyBgbxXuHZGcU8062MTFC3"; //userSessionTri.getUserId();
-
-            Log.d("ChatActivity", "UserId: " + userId);
-
-            chatId = providerId + "_" + userId;
-
-            chatAdapter = new ChatAdapter(new ArrayList<>());
-            chatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            chatRecyclerView.setAdapter(chatAdapter);
-
-            loadChatMessages();
-
-            sendButton.setOnClickListener(v -> sendMessage());
-             */
         }
     }
-    /*
-    private void loadChatMessages() {
-        Log.d("Test", chatId);
-        chatReference.child(chatId).child("messages").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<Message> messages = new ArrayList<>();
-                for (DataSnapshot data : snapshot.getChildren()) {
-                    Message message = data.getValue(Message.class);
-                    messages.add(message);
-                }
-
-                Log.d("Test", String.valueOf(messages.size()));
-
-                chatAdapter.updateMessages(messages);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("ChatActivity", "Failed to load messages", error.toException());
-            }
-        });
-    }
-
-    private void sendMessage() {
-        String content = inputMessage.getText().toString().trim();
-        if (!content.isEmpty()) {
-            String messageId = chatReference.child(chatId).child("messages").push().getKey();
-            Message message = new Message(userId, content, System.currentTimeMillis());
-
-            assert messageId != null;
-            chatReference.child(chatId).child("messages").child(messageId).setValue(message);
-
-            inputMessage.setText(""); // Clear input field
-        }
-    }
-    */
 
     @Override
     public void onItemClick(int position) {
