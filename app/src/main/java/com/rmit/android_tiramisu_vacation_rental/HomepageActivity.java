@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -139,6 +141,14 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
         textViewFindHotelRoomAdults.setOnClickListener(v -> showRoomPickerDialog(textViewFindHotelRoomAdults));
         btnFindHotel.setOnClickListener(v -> handleBtnFindHotel());
         btnCreateHotel.setOnClickListener(v -> handleBtnCreateHotel());
+
+        // Setup chat icon;
+        ImageButton chatButton = findViewById(R.id.imageButton);
+        chatButton.setOnClickListener(v -> {
+            Intent intent = new Intent(HomepageActivity.this, ChatActivity.class);
+            intent.putExtra("providerId", userSessionTri.getUserId()); //
+            startActivity(intent);
+        });
 
         // Setup click event listener for all bottom buttons
         navCoupons.setOnClickListener(v -> {
