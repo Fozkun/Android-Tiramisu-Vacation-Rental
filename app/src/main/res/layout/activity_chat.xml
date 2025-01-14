@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chatRecyclerView"
+        android:id="@+id/recyclerViewChatSuperUser"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewChatUser"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_above="@id/messageInputLayout"
         android:layout_alignParentTop="true"
-        android:padding="8dp" />
+        android:padding="8dp"
+        android:visibility="gone" />
 
 
     <LinearLayout
@@ -19,24 +28,26 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:visibility="gone">
 
         <EditText
             android:id="@+id/inputMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@android:drawable/edit_text"
             android:hint="Input message..."
             android:padding="10dp"
-            android:background="@android:drawable/edit_text"
             android:textColor="@android:color/black" />
 
         <Button
             android:id="@+id/sendButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Send"
-            android:layout_marginStart="8dp" />
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@color/accent_color"
+            android:text="Send" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -46,13 +46,14 @@ public class CouponAdapter extends RecyclerView.Adapter<CouponAdapter.CouponView
         return coupons.size();
     }
 
-    public void setCoupons(ArrayList<CouponModel_Tri> coupons){
+    public void setCoupons(ArrayList<CouponModel_Tri> coupons) {
         this.coupons = coupons;
         this.notifyDataSetChanged();
     }
 
     public static class CouponViewHolder extends RecyclerView.ViewHolder {
         TextView textViewCouponTitle, textViewCouponDescription;
+
         public CouponViewHolder(@NonNull View itemView, RecyclerViewCouponInterface couponInterface) {
             super(itemView);
 

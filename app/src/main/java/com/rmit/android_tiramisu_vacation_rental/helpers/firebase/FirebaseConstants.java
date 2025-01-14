@@ -8,4 +8,5 @@ public class FirebaseConstants {
     public static final String HOTEL_ROOMS = "Hotel Rooms";
     public static final String Notifications = "Notifications";
     public static final String Coupons = "Coupons";
+    public static final String Chat = "chat";
 }

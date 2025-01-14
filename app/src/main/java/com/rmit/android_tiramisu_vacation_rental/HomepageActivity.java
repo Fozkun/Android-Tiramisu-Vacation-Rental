@@ -227,7 +227,7 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
         ImageButton chatButton = findViewById(R.id.imageButton);
         chatButton.setOnClickListener(v -> {
             Intent intent = new Intent(HomepageActivity.this, ChatActivity.class);
-            intent.putExtra("providerId", userSessionTri.getUserId()); //
+            //intent.putExtra("providerId", userSessionTri.getUserId());
             startActivity(intent);
         });
 
