@@ -2,6 +2,7 @@ package com.rmit.android_tiramisu_vacation_rental.models;
 
 import com.rmit.android_tiramisu_vacation_rental.enums.CouponType;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class CouponModel_Tri {
@@ -10,6 +11,7 @@ public class CouponModel_Tri {
     private String description;
     private CouponType type;
     private String value;
+    private ArrayList<String> claimedUserIds;
     private Date createdDate;
 
     public CouponModel_Tri() {
@@ -53,6 +55,14 @@ public class CouponModel_Tri {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public ArrayList<String> getClaimedUserIds() {
+        return claimedUserIds;
+    }
+
+    public void setClaimedUserIds(ArrayList<String> claimedUserIds) {
+        this.claimedUserIds = claimedUserIds;
     }
 
     public Date getCreatedDate() {

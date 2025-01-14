@@ -55,6 +55,9 @@
             android:name=".ChatActivity"
             android:exported="false" />
         <activity
+            android:name=".BookingConfirmationActivity"
+            android:exported="false" />
+        <activity
             android:name=".SignupActivity"
             android:exported="false" />
         <activity

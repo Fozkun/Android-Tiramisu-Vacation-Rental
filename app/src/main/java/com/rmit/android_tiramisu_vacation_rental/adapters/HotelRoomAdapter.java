@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.rmit.android_tiramisu_vacation_rental.BookingConfirmationActivity;
 import com.rmit.android_tiramisu_vacation_rental.R;
 import com.rmit.android_tiramisu_vacation_rental.enums.HotelRoomStatus;
 import com.rmit.android_tiramisu_vacation_rental.enums.UserRole;
@@ -227,7 +229,6 @@ public class HotelRoomAdapter extends RecyclerView.Adapter<HotelRoomAdapter.Hote
                 }
             });
         });
-
         holder.btnDeleteHotelRoom.setOnClickListener(v -> {
             AlertDialog.Builder confirmDialogBuilder = new AlertDialog.Builder(holder.itemView.getContext());
             confirmDialogBuilder.setCancelable(false);
@@ -282,6 +283,11 @@ public class HotelRoomAdapter extends RecyclerView.Adapter<HotelRoomAdapter.Hote
             }));
 
             confirmDialogBuilder.show();
+        });
+        holder.btnBookHotelRoom.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), BookingConfirmationActivity.class);
+            intent.putExtra("roomId", model.getId());
+            holder.itemView.getContext().startActivity(intent);
         });
     }
 

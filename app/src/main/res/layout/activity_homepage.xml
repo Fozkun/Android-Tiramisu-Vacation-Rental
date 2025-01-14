@@ -163,7 +163,6 @@
                                     android:padding="5dp">
 
                                     <ImageView
-                                        android:id="@+id/imageView"
                                         android:layout_width="14dp"
                                         android:layout_height="14dp"
                                         android:adjustViewBounds="true"
