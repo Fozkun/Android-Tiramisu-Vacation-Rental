@@ -1,5 +1,6 @@
 package com.rmit.android_tiramisu_vacation_rental.adapters;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -225,6 +226,57 @@ public class HotelRoomAdapter extends RecyclerView.Adapter<HotelRoomAdapter.Hote
                     });
                 }
             });
+        });
+        holder.btnDeleteHotelRoom.setOnClickListener(v -> {
+            AlertDialog.Builder confirmDialogBuilder = new AlertDialog.Builder(holder.itemView.getContext());
+            confirmDialogBuilder.setCancelable(false);
+
+            String title = "Delete room confirmation";
+            String description = "Are you sure to delete room?";
+
+            confirmDialogBuilder.setTitle(title);
+            confirmDialogBuilder.setMessage(description);
+
+            confirmDialogBuilder.setPositiveButton("Yes", ((dialog, which) -> {
+                roomReference.child(model.getId()).removeValue().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        fmTokenReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ArrayList<String> tokens = new ArrayList<>();
+
+                                for (DataSnapshot tokenSnapshot : snapshot.getChildren()) {
+                                    String token = tokenSnapshot.getValue(String.class);
+
+                                    if (token != null) {
+                                        tokens.add(token);
+                                    }
+                                }
+
+                                StringBuilder builder = new StringBuilder();
+                                builder.append("Room name: ").append(model.getName()).append("\n");
+                                builder.append("Deleted date:").append(MyDateUtils.formatDate(new Date()));
+
+                                for (String token : tokens) {
+                                    FirebaseNotificationSender sender = new FirebaseNotificationSender(token, "Room has deleted", builder.toString(), holder.itemView.getContext());
+                                    sender.sendNotification();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+                });
+
+                dialog.dismiss();
+            }));
+
+            confirmDialogBuilder.setNegativeButton("No", ((dialog, which) -> {
+                dialog.dismiss();
+            }));
         });
     }
 
