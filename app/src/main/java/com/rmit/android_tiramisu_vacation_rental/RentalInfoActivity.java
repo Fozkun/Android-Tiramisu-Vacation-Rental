@@ -15,9 +15,11 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -30,6 +32,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -55,6 +58,8 @@ import com.rmit.android_tiramisu_vacation_rental.models.Location_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
 import com.rmit.android_tiramisu_vacation_rental.utils.MyDateUtils;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -155,9 +160,20 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
             }
 
             if (!editTextLatitude.getText().toString().equals("") && !editTextLongitude.getText().toString().equals("")) {
-                double latitude = Double.parseDouble(editTextLatitude.getText().toString());
-                double longtitude = Double.parseDouble(editTextLongitude.getText().toString());
-                Location_Tri locationTri = new Location_Tri(latitude, longtitude);
+                NumberFormat format = NumberFormat.getInstance(Locale.getDefault());
+
+                double parsedLatitude;
+                double parsedLongitude;
+
+                try {
+                    parsedLatitude = format.parse(editTextLatitude.getText().toString()).doubleValue();
+                    parsedLongitude = format.parse(editTextLongitude.getText().toString()).doubleValue();
+                } catch (ParseException e) {
+                    Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                    return;
+                }
+
+                Location_Tri locationTri = new Location_Tri(parsedLatitude, parsedLongitude);
                 this.hotelModel.setLocation(locationTri);
             }
 
@@ -167,6 +183,8 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
             }
 
             hotelReference.child(this.hotelModel.getId()).setValue(this.hotelModel);
+
+            layoutEditHotelForm.setVisibility(View.GONE);
         });
 
         inputLayoutRoomStartDate.getEditText().setOnClickListener(view -> showDateTimePicker(this, inputLayoutRoomStartDate));
@@ -281,7 +299,36 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
         });
 
         btnDeleteHotel.setOnClickListener(v -> {
+            AlertDialog.Builder confirmDialog = new AlertDialog.Builder(this);
+            confirmDialog.setCancelable(false);
+            String title = "Delete Hotel confirmation";
+            String message = "Are you sure to delete this hotel";
 
+            confirmDialog.setTitle(title);
+            confirmDialog.setMessage(message);
+
+            confirmDialog.setPositiveButton("Yes", (dialogInterface, i) -> {
+                hotelReference.child(hotelModel.getId()).removeValue().addOnSuccessListener(aVoid -> {
+                            // After deleting the hotel, delete associated rooms
+                            deleteAssociatedRooms(hotelModel.getId());
+                            //hotelReference.removeEventListener();
+
+                            // Deletion successful
+                            Toast.makeText(this, "Hotel deleted successfully.", Toast.LENGTH_SHORT).show();
+                            BottomNavigationHelper.navigateTo(btnDeleteHotel.getContext(), HomepageActivity.class);
+                        })
+                        .addOnFailureListener(e -> {
+                            // Handle deletion errors
+                            Toast.makeText(this, "Error deleting hotel.", Toast.LENGTH_SHORT).show();
+                            Log.e("TAG", "Error deleting hotel from database.", e);
+                        });
+                dialogInterface.dismiss();
+            });
+            confirmDialog.setNegativeButton("No", (dialogInterface, i) -> {
+                dialogInterface.dismiss();
+            });
+
+            confirmDialog.show();
         });
 
         btnShowEditHotelForm.setOnClickListener(v -> {
@@ -406,91 +453,12 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerViewHotelRoomCard.setAdapter(hotelRoomAdapter);
 
-        // Get hotel id from intent
-        Intent intent = getIntent();
-        String hotelId = intent.getStringExtra("hotelId");
-
-        if (hotelId == null) {
-            Log.d(TAG, "Hotel id is missing?");
-            finish();
-            return;
-        }
-
-        hotelReference.child(hotelId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                HotelModel_Tri foundModel = snapshot.getValue(HotelModel_Tri.class);
-                if (foundModel == null) {
-                    Log.d(TAG, "Hotel is not found with id: " + hotelId);
-                    hotelReference.removeEventListener(this);
-                    finish();
-                }
-
-                hotelModel = foundModel;
-                updateView();
-
-                roomReference.orderByChild("hotelId").equalTo(hotelModel.getId()).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        ArrayList<HotelRoomModel_Tri> foundRooms = new ArrayList<>();
-
-                        for (DataSnapshot roomSnapshot : snapshot.getChildren()) {
-                            HotelRoomModel_Tri foundRoom = roomSnapshot.getValue(HotelRoomModel_Tri.class);
-
-                            if (foundRoom != null) {
-                                foundRooms.add(foundRoom);
-                            }
-                        }
-
-                        rooms = foundRooms;
-                        hotelRoomAdapter.setRooms(rooms);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        /*
-        //Find view by id
-        mapView = findViewById(R.id.mapView);
-        mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(this);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        mAuth = FirebaseAuth.getInstance();
-        userId = mAuth.getCurrentUser().getUid();
-        btnCreateRoom = findViewById(R.id.btnCreateRoom);
-        btnEditRoom = findViewById(R.id.btnEdit);
-        btnDeleteRoom = findViewById(R.id.btnDelete);
-        checkBookingStatus();
-        rentalInfo = new RentalInfo_Hoa();
-        populateRentalInfo();
-        writeToDatabase();
-
-        // Set up RecyclerView
-        roomTypesRecyclerView = findViewById(R.id.roomTypesRecyclerView);
-        roomTypesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        roomTypesAdapter = new RoomTypesAdapter(new ArrayList<>()); // Initialize with an empty list
-        roomTypesRecyclerView.setAdapter(roomTypesAdapter);
-
-        // Get rental ID from intent
-        String rentalId = getIntent().getStringExtra("rentalId");
-
-        // Fetch rental information from Firebase
-        fetchRentalInfo(rentalId);
-
-        btnCreateRoom.setOnClickListener(view -> createNewRoom());
-        btnEditRoom.setOnClickListener(view -> editHotelInfo());
-        btnDeleteRoom.setOnClickListener(view -> deleteHotel());
-         */
+        SupportMapFragment mapFragment = SupportMapFragment.newInstance();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.mapView, mapFragment)
+                .commit();
+        mapFragment.getMapAsync(this);
     }
 
     private void updateView() {
@@ -509,7 +477,6 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
         if ((userRole == UserRole.RENTAL_PROVIDER && userId.equals(hotelModel.getOwnerId())) || userRole == UserRole.SUPER_USER) {
             layoutActionButtons.setVisibility(View.VISIBLE);
         }
-        // Setup click event listener;
     }
 
     private void updateHotelMapView() {
@@ -518,10 +485,13 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
         }
 
         Location_Tri hotelLocation = hotelModel.getLocation();
+        Log.d(TAG, hotelLocation.latitude + " " + hotelLocation.longitude);
         LatLng latLng = new LatLng(0, 0);
         if (hotelLocation != null) {
             latLng = new LatLng(hotelLocation.latitude, hotelLocation.longitude);
         }
+
+        Log.d(TAG, latLng.toString());
 
         if (mMap != null) {
             mMap.clear(); // Clear existing markers if any
@@ -572,7 +542,62 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
-        updateHotelMapView();
+
+        // Get hotel id from intent
+        Intent intent = getIntent();
+        String hotelId = intent.getStringExtra("hotelId");
+
+        if (hotelId == null) {
+            Log.d(TAG, "Hotel id is missing?");
+            finish();
+            return;
+        }
+
+        hotelReference.child(hotelId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                HotelModel_Tri foundModel = snapshot.getValue(HotelModel_Tri.class);
+                if (foundModel == null) {
+                    Log.d(TAG, "Hotel is not found with id: " + hotelId);
+                    hotelReference.removeEventListener(this);
+                    finish();
+                    return;
+                }
+
+                hotelModel = foundModel;
+                updateView();
+                updateHotelMapView();
+
+                roomReference.orderByChild("hotelId").equalTo(hotelModel.getId()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        ArrayList<HotelRoomModel_Tri> foundRooms = new ArrayList<>();
+
+                        for (DataSnapshot roomSnapshot : snapshot.getChildren()) {
+                            HotelRoomModel_Tri foundRoom = roomSnapshot.getValue(HotelRoomModel_Tri.class);
+
+                            if (foundRoom != null) {
+                                foundRooms.add(foundRoom);
+                            }
+                        }
+
+                        rooms = foundRooms;
+                        hotelRoomAdapter.setRooms(rooms);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     private void showDateTimePicker(Context context, TextInputLayout inputLayout) {
@@ -602,5 +627,33 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
                 year, month, day);
 
         datePickerDialog.show();
+    }
+
+    private void deleteAssociatedRooms(String hotelId) {
+        roomReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot roomSnapshot : dataSnapshot.getChildren()) {
+                    String roomId = roomSnapshot.getKey();
+                    String roomRentalId = roomSnapshot.child("hotelId").getValue(String.class);
+
+                    if (roomRentalId != null && roomRentalId.equals(hotelId)) {
+                        // Delete the room from the database
+                        roomReference.child(roomId).removeValue()
+                                .addOnSuccessListener(aVoid -> {
+                                    Log.d("TAG", "Room deleted successfully.");
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.e("TAG", "Error deleting room.", e);
+                                });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("TAG", "Error retrieving room data.", error.toException());
+            }
+        });
     }
 }

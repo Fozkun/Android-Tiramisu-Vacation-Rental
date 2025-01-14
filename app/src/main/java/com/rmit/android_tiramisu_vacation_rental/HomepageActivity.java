@@ -53,6 +53,8 @@ import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
 import com.rmit.android_tiramisu_vacation_rental.utils.MyDateUtils;
 
 import java.text.MessageFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -178,7 +180,22 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
                 editTextLongitude.setError("Longitude is required");
                 editTextLongitude.requestFocus();
             } else {
-                Location_Tri location = new Location_Tri(Double.parseDouble(hotelLatitude), Double.parseDouble(hotelLongitude));
+                Log.d(TAG, hotelLatitude + " " + hotelLongitude);
+                NumberFormat format = NumberFormat.getInstance(Locale.getDefault());
+
+                double parsedLatitude;
+                double parsedLongitude;
+
+                try {
+                    parsedLatitude = format.parse(hotelLatitude).doubleValue();
+                    parsedLongitude = format.parse(hotelLongitude).doubleValue();
+                } catch (ParseException e) {
+                    Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                    return;
+                }
+
+                Log.d(TAG, parsedLatitude + " " + parsedLongitude);
+                Location_Tri location = new Location_Tri(parsedLatitude, parsedLongitude);
 
                 HotelModel_Tri hotel = new HotelModel_Tri();
                 hotel.setName(hotelName);

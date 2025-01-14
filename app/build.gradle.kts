@@ -48,7 +48,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.play.services.wallet)
     implementation(libs.retrofit2.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.glide)

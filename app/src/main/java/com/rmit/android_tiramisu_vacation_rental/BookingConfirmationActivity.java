@@ -26,6 +26,7 @@ import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseConsta
 import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseNotificationSender;
 import com.rmit.android_tiramisu_vacation_rental.interfaces.RecyclerViewCouponInterface;
 import com.rmit.android_tiramisu_vacation_rental.models.CouponModel_Tri;
+import com.rmit.android_tiramisu_vacation_rental.models.HotelModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.HotelRoomModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
 import com.rmit.android_tiramisu_vacation_rental.utils.MyDateUtils;
@@ -44,7 +45,7 @@ import java.util.Date;
 public class BookingConfirmationActivity extends AppCompatActivity implements RecyclerViewCouponInterface {
     private static final String TAG = "BookingConfirmationActivity"; //Tag use for Logcat
     private UserSession_Tri userSession;
-    private DatabaseReference roomReference, couponReference, fmTokenReference;
+    private DatabaseReference hotelReference, roomReference, couponReference, fmTokenReference;
     private HotelRoomModel_Tri hotelRoomModel;
 
     //All views
@@ -77,6 +78,7 @@ public class BookingConfirmationActivity extends AppCompatActivity implements Re
         }
 
         //Define firebase references
+        hotelReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.HOTELS);
         roomReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.HOTEL_ROOMS);
         couponReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.Coupons);
         fmTokenReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.FM_TOKENS);
@@ -117,31 +119,44 @@ public class BookingConfirmationActivity extends AppCompatActivity implements Re
 
             roomReference.child(hotelRoomModel.getId()).setValue(hotelRoomModel).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    String hotelOwnerId = hotelRoomModel.getHotelId();
-
-                    fmTokenReference.child(hotelOwnerId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    hotelReference.child(hotelRoomModel.getHotelId()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            String token = snapshot.getValue(String.class);
+                            HotelModel_Tri hotelModel = snapshot.getValue(HotelModel_Tri.class);
 
-                            if (token != null) {
-                                new Thread(() -> {
-                                    StringBuilder builder = new StringBuilder();
-                                    builder.append("Room name: ").append(hotelRoomModel.getName()).append("\n");
-                                    builder.append("Book date: ").append(MyDateUtils.formatDate(new Date())).append("\n");
-                                    builder.append("Booked user id: ").append(userSession.getUserId());
+                            if (hotelModel != null) {
+                                String hotelOwnerId = hotelModel.getOwnerId();
+                                fmTokenReference.child(hotelOwnerId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        String token = snapshot.getValue(String.class);
+                                        Log.d(TAG, token == null ? "" : token);
 
-                                    FirebaseNotificationSender sender = new FirebaseNotificationSender(token, "New room has been booked", builder.toString(), btnConfirmPurchasedHotelRoom.getContext());
-                                    sender.sendNotification();
-                                }).start();
+                                        if (token != null) {
+                                            new Thread(() -> {
+                                                StringBuilder builder = new StringBuilder();
+                                                builder.append("Room name: ").append(hotelRoomModel.getName()).append("\n");
+                                                builder.append("Book date: ").append(MyDateUtils.formatDate(new Date())).append("\n");
+                                                builder.append("Booked user id: ").append(userSession.getUserId());
+
+                                                FirebaseNotificationSender sender = new FirebaseNotificationSender(token, "New room has been booked", builder.toString(), btnConfirmPurchasedHotelRoom.getContext());
+                                                sender.sendNotification();
+                                            }).start();
+                                        }
+
+                                        BottomNavigationHelper.navigateTo(btnConfirmPurchasedHotelRoom.getContext(), HomepageActivity.class);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
                             }
-
-                            //BottomNavigationHelper.navigateTo(btnConfirmPurchasedHotelRoom.getContext(), HomepageActivity.class);
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-
                         }
                     });
                 }
