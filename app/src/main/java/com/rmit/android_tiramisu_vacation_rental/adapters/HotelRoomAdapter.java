@@ -227,6 +227,7 @@ public class HotelRoomAdapter extends RecyclerView.Adapter<HotelRoomAdapter.Hote
                 }
             });
         });
+
         holder.btnDeleteHotelRoom.setOnClickListener(v -> {
             AlertDialog.Builder confirmDialogBuilder = new AlertDialog.Builder(holder.itemView.getContext());
             confirmDialogBuilder.setCancelable(false);
@@ -257,10 +258,12 @@ public class HotelRoomAdapter extends RecyclerView.Adapter<HotelRoomAdapter.Hote
                                 builder.append("Room name: ").append(model.getName()).append("\n");
                                 builder.append("Deleted date:").append(MyDateUtils.formatDate(new Date()));
 
-                                for (String token : tokens) {
-                                    FirebaseNotificationSender sender = new FirebaseNotificationSender(token, "Room has deleted", builder.toString(), holder.itemView.getContext());
-                                    sender.sendNotification();
-                                }
+                                new Thread(() -> {
+                                    for (String token : tokens) {
+                                        FirebaseNotificationSender sender = new FirebaseNotificationSender(token, "Room has deleted", builder.toString(), holder.itemView.getContext());
+                                        sender.sendNotification();
+                                    }
+                                }).start();
                             }
 
                             @Override
@@ -277,6 +280,8 @@ public class HotelRoomAdapter extends RecyclerView.Adapter<HotelRoomAdapter.Hote
             confirmDialogBuilder.setNegativeButton("No", ((dialog, which) -> {
                 dialog.dismiss();
             }));
+
+            confirmDialogBuilder.show();
         });
     }
 

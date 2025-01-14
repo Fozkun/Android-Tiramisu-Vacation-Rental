@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,11 +43,11 @@ import com.rmit.android_tiramisu_vacation_rental.adapters.HotelCardAdapter;
 import com.rmit.android_tiramisu_vacation_rental.enums.HotelRoomStatus;
 import com.rmit.android_tiramisu_vacation_rental.enums.UserRole;
 import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseConstants;
-import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseNotificationSender;
 import com.rmit.android_tiramisu_vacation_rental.helpers.BottomNavigationHelper;
 import com.rmit.android_tiramisu_vacation_rental.interfaces.RecyclerViewHotelCardInterface;
 import com.rmit.android_tiramisu_vacation_rental.models.HotelModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.HotelRoomModel_Tri;
+import com.rmit.android_tiramisu_vacation_rental.models.Location_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
 import com.rmit.android_tiramisu_vacation_rental.utils.MyDateUtils;
 
@@ -66,13 +67,14 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
     private String userFirebaseMsgToken; //User token for notification
     private DatabaseReference roomReference, hotelReference, fmTokenReference;
     private EditText editTextFindHotelWhere, editTextFindHotelStartDate, editTextFindHotelEndDate;
-    private TextView textViewFindHotelRoomAdults;
-    private Button btnFindHotel, btnCreateHotel;
+    private TextView textViewFindHotelRoomAdults, latLngFinderHyperLink;
+    private Button btnFindHotel, btnShowCreateHotelForm, btnCreateHotel;
 
     private ArrayList<HotelModel_Tri> filteredHotels = new ArrayList<>();
     private HotelCardAdapter hotelCardAdapter;
     private FilteredHotelCardAdapter filteredHotelCardAdapter;
     private RecyclerView recyclerViewHotelCard;
+    private LinearLayout layoutCreateHotelForm;
 
     // All bottom navigation buttons
     private LinearLayout navMyTrips, navCoupons, navNotification, navProfile;
@@ -117,7 +119,10 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
         editTextFindHotelStartDate = findViewById(R.id.editTextFindHotelStartDate);
         editTextFindHotelEndDate = findViewById(R.id.editTextFindHotelEndDate);
         textViewFindHotelRoomAdults = findViewById(R.id.textViewFindHotelRoomAdults);
+        latLngFinderHyperLink = findViewById(R.id.latLngFinderHyperLink);
         btnFindHotel = findViewById(R.id.button);
+        btnShowCreateHotelForm = findViewById(R.id.btnShowCreateHotelForm);
+        layoutCreateHotelForm = findViewById(R.id.layoutCreateHotelForm);
         btnCreateHotel = findViewById(R.id.btnCreateHotel);
         recyclerViewHotelCard = findViewById(R.id.recyclerViewHotelCard);
 
@@ -129,9 +134,9 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
 
         //Display views based on role
         if (userSessionTri.getUserRole() == UserRole.RENTAL_PROVIDER || userSessionTri.getUserRole() == UserRole.SUPER_USER) {
-            btnCreateHotel.setVisibility(View.VISIBLE);
+            btnShowCreateHotelForm.setVisibility(View.VISIBLE);
         } else {
-            btnCreateHotel.setVisibility(View.GONE);
+            btnShowCreateHotelForm.setVisibility(View.GONE);
         }
 
         // Setup click event listener;
@@ -139,7 +144,66 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
         editTextFindHotelEndDate.setOnClickListener(v -> showDateTimePicker(editTextFindHotelEndDate));
         textViewFindHotelRoomAdults.setOnClickListener(v -> showRoomPickerDialog(textViewFindHotelRoomAdults));
         btnFindHotel.setOnClickListener(v -> handleBtnFindHotel());
-        btnCreateHotel.setOnClickListener(v -> handleBtnCreateHotel());
+        btnShowCreateHotelForm.setOnClickListener(v -> {
+            if (layoutCreateHotelForm.getVisibility() == View.GONE) {
+                layoutCreateHotelForm.setVisibility(View.VISIBLE);
+            } else {
+                layoutCreateHotelForm.setVisibility(View.GONE);
+            }
+        });
+        btnCreateHotel.setOnClickListener(v -> {
+            EditText editTextHotelName = findViewById(R.id.editText_hotel_name);
+            EditText editTextHotelAddress = findViewById(R.id.editText_hotel_address);
+            EditText editTextLatitude = findViewById(R.id.editText_latitude);
+            EditText editTextLongitude = findViewById(R.id.editText_longitude);
+            EditText editTextMaxOccupancy = findViewById(R.id.editText_max_occupancy);
+
+            String hotelName = editTextHotelName.getText().toString();
+            String hotelAddress = editTextHotelAddress.getText().toString();
+            String hotelLatitude = editTextLatitude.getText().toString();
+            String hotelLongitude = editTextLongitude.getText().toString();
+            String maxOccupancy = editTextMaxOccupancy.getText().toString();
+
+            if (TextUtils.isEmpty(hotelName)) {
+                editTextHotelName.setError("Hotel name is required");
+                editTextHotelName.requestFocus();
+            } else if (TextUtils.isEmpty(hotelAddress)) {
+                editTextHotelAddress.setError("Hotel address is required");
+                editTextHotelAddress.requestFocus();
+            } else if (TextUtils.isEmpty(hotelLatitude)) {
+                editTextLatitude.setError("Latitude is required");
+                editTextLatitude.requestFocus();
+            } else if (TextUtils.isEmpty(hotelLongitude)) {
+                editTextLongitude.setError("Longitude is required");
+                editTextLongitude.requestFocus();
+            } else {
+                Location_Tri location = new Location_Tri(Double.parseDouble(hotelLatitude), Double.parseDouble(hotelLongitude));
+
+                HotelModel_Tri hotel = new HotelModel_Tri();
+                hotel.setName(hotelName);
+                hotel.setAddress(hotelAddress);
+                hotel.setLocation(location);
+                hotel.setMaxOccupancy(Integer.parseInt(maxOccupancy));
+                hotel.setOwnerId(this.userSessionTri.getUserId());
+
+                String key = hotelReference.push().getKey();
+                if (key != null) {
+                    hotel.setId(key);
+                    hotelReference.child(key).setValue(hotel).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, key);
+                            layoutCreateHotelForm.setVisibility(View.GONE);
+                        } else {
+                            try {
+                                throw Objects.requireNonNull(task.getException());
+                            } catch (Exception e) {
+                                Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                            }
+                        }
+                    });
+                }
+            }
+        });
 
         // Setup click event listener for all bottom buttons
         navCoupons.setOnClickListener(v -> {
@@ -155,6 +219,8 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
             BottomNavigationHelper.navigateTo(this, Profile.class);
         });
 
+        latLngFinderHyperLink.setMovementMethod(LinkMovementMethod.getInstance());
+
         //Setup recycler view and adapter;
         FirebaseRecyclerOptions<HotelModel_Tri> options
                 = new FirebaseRecyclerOptions.Builder<HotelModel_Tri>()
@@ -167,8 +233,6 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
 
         recyclerViewHotelCard.setAdapter(hotelCardAdapter);
         hotelCardAdapter.startListening();
-
-        //testCreateRoom();
     }
 
     private void requestPermission() {
@@ -379,10 +443,6 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
         });
     }
 
-    private void handleBtnCreateHotel() {
-
-    }
-
     @Override
     public void onItemClick(int position) {
         HotelModel_Tri model = hotelCardAdapter.getItem(position);
@@ -391,29 +451,5 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
         Intent intent = new Intent(this, RentalInfoActivity.class);
         intent.putExtra("hotelId", model.getId());
         startActivity(intent);
-    }
-
-    //A method to get user Firebase messaging token for notification feature
-    public void sendNotificationToUsers() {
-        new Thread(() -> {
-            FirebaseNotificationSender firebaseNotificationSender = new FirebaseNotificationSender("dlJ0orWGSDGDdirmVFAhs4:APA91bGBCBkVGPCJalkBTJvw7Vz8eVp51s8YAR1oL7R_BfZizscSXi6tszidePSQDgN1Rr5TiQLgU5sbqiBOhnHQorHj17imfed1CBVhLy4hMOkLyq1NwUc", "Test noti send", "Test if this work", HomepageActivity.this);
-            firebaseNotificationSender.sendNotification();
-        }).start();
-    }
-
-    private void testCreateRoom() {
-        String key = roomReference.push().getKey();
-        if (key != null) {
-            HotelRoomModel_Tri model = new HotelRoomModel_Tri();
-            model.setId(key);
-            model.setHotelId("-OFoxFbuSdxQyRU3SjOS");
-            model.setDescription("A description for this room");
-            model.setStatus(HotelRoomStatus.AVAILABLE);
-            model.setStartDate(MyDateUtils.parseDate("00:00 01-01-2025"));
-            model.setEndDate(MyDateUtils.parseDate("00:00 02-01-2025"));
-            model.setPeople(5);
-
-            roomReference.child(key).setValue(model);
-        }
     }
 }

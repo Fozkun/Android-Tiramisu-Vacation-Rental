@@ -57,6 +57,8 @@
                     android:id="@+id/ratingBarHotel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:isIndicator="true"
                     android:numStars="5" />
 
                 <LinearLayout
@@ -143,7 +145,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Latitude"
-                            android:inputType="numberDecimal"
+                            android:inputType="number|numberDecimal|numberSigned"
                             android:minHeight="48dp" />
 
                         <EditText
@@ -151,8 +153,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Longitude"
-                            android:inputType="numberDecimal"
+                            android:inputType="number|numberDecimal|numberSigned"
                             android:minHeight="48dp" />
+
+                        <TextView
+                            android:id="@+id/latLngFinderHyperLink"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/LatitudeLongitudeFinder"
+                            android:textAlignment="center"
+                            android:textStyle="bold" />
 
                         <!-- Max Occupancy -->
                         <TextView

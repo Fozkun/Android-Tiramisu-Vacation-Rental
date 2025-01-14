@@ -54,7 +54,8 @@
                 android:layout_height="wrap_content"
                 android:numStars="5"
                 android:progressTint="@color/accent_color"
-                android:rating="0.0" />
+                android:rating="0.0"
+                tools:isIndicator="true" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -3,6 +3,7 @@ package com.rmit.android_tiramisu_vacation_rental;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -62,7 +63,7 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
     private ArrayList<HotelRoomModel_Tri> rooms = new ArrayList<>();
 
     // All views
-    private TextView textViewHotelName, textViewHotelLocation;
+    private TextView textViewHotelName, textViewHotelLocation, latLngFinderHyperLink;;
     private RatingBar ratingBarHotel;
     private LinearLayout layoutActionButtons, layoutEditHotelForm, layoutCreateHotelRoomForm, layoutCreateHotelCouponForm;
     private Button btnDeleteHotel, btnSaveHotel, btnCreateHotelCoupon, btnShowEditHotelForm, btnShowCreateHotelRoom, btnShowCreateHotelCouponForm;
@@ -113,6 +114,7 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
         fmTokenReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.FM_TOKENS);
 
         //Find view by id
+        latLngFinderHyperLink = findViewById(R.id.latLngFinderHyperLink);
         textViewHotelName = findViewById(R.id.textViewHotelName);
         textViewHotelLocation = findViewById(R.id.textViewHotelLocation);
         ratingBarHotel = findViewById(R.id.ratingBarHotel);
@@ -285,6 +287,8 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
             BottomNavigationHelper.navigateTo(this, Profile.class);
         });
 
+        latLngFinderHyperLink.setMovementMethod(LinkMovementMethod.getInstance());
+
         //Setup recycler view and adapter;
         hotelRoomAdapter = new HotelRoomAdapter(this.rooms);
         recyclerViewHotelRoomCard.setLayoutManager(
@@ -439,10 +443,12 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
                         }
                     }
 
-                    for (String key : allKeys) {
-                        FirebaseNotificationSender firebaseNotificationSender = new FirebaseNotificationSender(key, title, description, RentalInfoActivity.this);
-                        firebaseNotificationSender.sendNotification();
-                    }
+                    new Thread(() -> {
+                        for (String key : allKeys) {
+                            FirebaseNotificationSender firebaseNotificationSender = new FirebaseNotificationSender(key, title, description, RentalInfoActivity.this);
+                            firebaseNotificationSender.sendNotification();
+                        }
+                    }).start();
                 }
 
                 @Override
