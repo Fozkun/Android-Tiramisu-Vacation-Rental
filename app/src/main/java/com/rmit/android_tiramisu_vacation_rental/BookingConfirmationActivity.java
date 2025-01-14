@@ -1,6 +1,5 @@
 package com.rmit.android_tiramisu_vacation_rental;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -9,29 +8,27 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.wallet.IsReadyToPayRequest;
-import com.google.android.gms.wallet.button.ButtonOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rmit.android_tiramisu_vacation_rental.adapters.CouponAdapter;
-import com.rmit.android_tiramisu_vacation_rental.adapters.HotelRoomAdapter;
+import com.rmit.android_tiramisu_vacation_rental.enums.HotelRoomStatus;
 import com.rmit.android_tiramisu_vacation_rental.helpers.BottomNavigationHelper;
 import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseConstants;
+import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseNotificationSender;
 import com.rmit.android_tiramisu_vacation_rental.interfaces.RecyclerViewCouponInterface;
 import com.rmit.android_tiramisu_vacation_rental.models.CouponModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.HotelRoomModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
-import com.rmit.android_tiramisu_vacation_rental.utils.PaymentUtils;
+import com.rmit.android_tiramisu_vacation_rental.utils.MyDateUtils;
 
 import androidx.annotation.NonNull;
 import androidx.core.graphics.Insets;
@@ -40,17 +37,14 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Optional;
+import java.util.Date;
 
 
 public class BookingConfirmationActivity extends AppCompatActivity implements RecyclerViewCouponInterface {
     private static final String TAG = "BookingConfirmationActivity"; //Tag use for Logcat
     private UserSession_Tri userSession;
-    private DatabaseReference roomReference, couponReference;
+    private DatabaseReference roomReference, couponReference, fmTokenReference;
     private HotelRoomModel_Tri hotelRoomModel;
 
     //All views
@@ -59,7 +53,7 @@ public class BookingConfirmationActivity extends AppCompatActivity implements Re
     private CouponModel_Tri selectedCoupon;
     private RecyclerView recyclerViewCoupon;
     private LinearLayout layoutPaymentInfo;
-    private Button btnConfirmBooking, btnPurchaseHotelRoom;
+    private Button btnConfirmBooking, btnConfirmPurchasedHotelRoom;
 
     // All bottom navigation buttons
     private LinearLayout navHome, navMyTrips, navCoupons, navNotification, navProfile;
@@ -85,6 +79,7 @@ public class BookingConfirmationActivity extends AppCompatActivity implements Re
         //Define firebase references
         roomReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.HOTEL_ROOMS);
         couponReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.Coupons);
+        fmTokenReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.FM_TOKENS);
 
         //Find view by id
         textViewHotelRoomName = findViewById(R.id.textViewHotelRoomName);
@@ -93,7 +88,7 @@ public class BookingConfirmationActivity extends AppCompatActivity implements Re
         textViewSelectCoupon = findViewById(R.id.textViewSelectCoupon);
         textViewHotelRoomFinalPrice = findViewById(R.id.textViewHotelRoomFinalPrice);
         btnConfirmBooking = findViewById(R.id.btnConfirmBooking);
-        btnPurchaseHotelRoom = findViewById(R.id.btnPurchaseHotelRoom);
+        btnConfirmPurchasedHotelRoom = findViewById(R.id.btnConfirmPurchasedHotelRoom);
         layoutPaymentInfo = findViewById(R.id.layoutPaymentInfo);
         recyclerViewCoupon = findViewById(R.id.recyclerViewCoupon);
 
@@ -110,11 +105,47 @@ public class BookingConfirmationActivity extends AppCompatActivity implements Re
             layoutPaymentInfo.setVisibility(View.VISIBLE);
             recyclerViewCoupon.setAdapter(null);
         });
-        btnPurchaseHotelRoom.setOnClickListener(v -> {
-            //Launch momo view
+        btnConfirmPurchasedHotelRoom.setOnClickListener(v -> {
+            ArrayList<String> bookedUserIds = new ArrayList();
+            if (hotelRoomModel.getBookedUserIds() != null) {
+                bookedUserIds = hotelRoomModel.getBookedUserIds();
+            }
 
-            //On success ?
-            //On Fail ?
+            bookedUserIds.add(userSession.getUserId());
+            hotelRoomModel.setBookedUserIds(bookedUserIds);
+            hotelRoomModel.setStatus(HotelRoomStatus.UNAVAILABLE);
+
+            roomReference.child(hotelRoomModel.getId()).setValue(hotelRoomModel).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    String hotelOwnerId = hotelRoomModel.getHotelId();
+
+                    fmTokenReference.child(hotelOwnerId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String token = snapshot.getValue(String.class);
+
+                            if (token != null) {
+                                new Thread(() -> {
+                                    StringBuilder builder = new StringBuilder();
+                                    builder.append("Room name: ").append(hotelRoomModel.getName()).append("\n");
+                                    builder.append("Book date: ").append(MyDateUtils.formatDate(new Date())).append("\n");
+                                    builder.append("Booked user id: ").append(userSession.getUserId());
+
+                                    FirebaseNotificationSender sender = new FirebaseNotificationSender(token, "New room has been booked", builder.toString(), btnConfirmPurchasedHotelRoom.getContext());
+                                    sender.sendNotification();
+                                }).start();
+                            }
+
+                            //BottomNavigationHelper.navigateTo(btnConfirmPurchasedHotelRoom.getContext(), HomepageActivity.class);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+            });
         });
 
         // Setup click event listener for all bottom buttons

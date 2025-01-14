@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -76,44 +78,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/border_shape_black"
+                android:gravity="center"
                 android:orientation="vertical"
                 android:padding="16dp"
                 android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/hotelNameTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/editTextCardNumber"
+                <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Card Number"
-                    android:minHeight="48dp" />
-
-                <EditText
-                    android:id="@+id/editTextExpiryDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Expiry Date"
-                    android:minHeight="48dp" />
-
-                <EditText
-                    android:id="@+id/editTextCvv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="CVV"
-                    android:minHeight="48dp" />
+                    android:layout_height="500dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="payment QR info"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/payment_info" />
 
                 <Button
-                    android:id="@+id/btnPurchaseHotelRoom"
+                    android:id="@+id/btnConfirmPurchasedHotelRoom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/accent_color"
-                    android:text="Purchase" />
+                    android:text="Confirm purchased" />
 
             </LinearLayout>
         </LinearLayout>

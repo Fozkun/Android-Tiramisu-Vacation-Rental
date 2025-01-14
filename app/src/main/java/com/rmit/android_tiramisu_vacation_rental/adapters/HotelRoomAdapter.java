@@ -97,7 +97,7 @@ public class HotelRoomAdapter extends RecyclerView.Adapter<HotelRoomAdapter.Hote
         } else {
             ArrayList<String> bookedIds = model.getBookedUserIds();
 
-            if (bookedIds == null || bookedIds.contains(userSession.getUserId())) {
+            if (bookedIds == null || !bookedIds.contains(userSession.getUserId())) {
                 holder.btnBookHotelRoom.setVisibility(View.VISIBLE);
             }
         }
