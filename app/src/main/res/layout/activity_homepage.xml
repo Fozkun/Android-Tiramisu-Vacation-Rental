@@ -269,7 +269,7 @@
                                     android:layout_weight="1" />
 
                                 <Button
-                                    android:id="@+id/btnCreateHotel"
+                                    android:id="@+id/btnShowCreateHotelForm"
                                     android:layout_width="200dp"
                                     android:layout_height="50dp"
                                     android:backgroundTint="@color/blue"
@@ -303,26 +303,167 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:orientation="vertical"
-                    android:padding="5dp">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/textView2"
+                    <LinearLayout
+                        android:id="@+id/layoutCreateHotelForm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Popular Choices"
-                        android:textColor="@color/text_color_2"
-                        android:textSize="34sp"
-                        android:textStyle="bold" />
+                        android:layout_margin="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/border_shape_black"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp"
+                        android:visibility="gone">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerViewHotelCard"
+                        <!-- Hotel Name -->
+                        <TextView
+                            android:id="@+id/textView6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Create hotel form"
+                            android:textColor="@color/text_color_2"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="4dp"
+                            android:text="Hotel Name"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/editText_hotel_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter hotel name"
+                            android:inputType="text"
+                            android:minHeight="48dp" />
+
+                        <!-- Address -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="16dp"
+                            android:paddingBottom="4dp"
+                            android:text="Address"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/editText_hotel_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter hotel address"
+                            android:inputType="textPostalAddress"
+                            android:minHeight="48dp" />
+
+                        <!-- Location (latitude & longitude) -->
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="16dp"
+                            android:paddingBottom="4dp"
+                            android:text="Location (Latitude and Longitude)"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/editText_latitude"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Latitude"
+                            android:inputType="number|numberDecimal|numberSigned"
+                            android:minHeight="48dp" />
+
+                        <EditText
+                            android:id="@+id/editText_longitude"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Longitude"
+                            android:inputType="number|numberDecimal|numberSigned"
+                            android:minHeight="48dp" />
+
+                        <TextView
+                            android:id="@+id/latLngFinderHyperLink"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/LatitudeLongitudeFinder"
+                            android:textAlignment="center"
+                            android:textStyle="bold" />
+
+                        <!-- Max Occupancy -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:paddingTop="16dp"
+                            android:paddingBottom="4dp"
+                            android:text="Max Occupancy"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/editText_max_occupancy"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter maximum occupancy"
+                            android:inputType="number"
+                            android:minHeight="48dp" />
+
+                        <!-- Rating -->
+
+                        <!-- Upload Image Button -->
+                        <Button
+                            android:id="@+id/btnUploadHotelImage"
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/gray"
+                            android:text="Upload Image" />
+
+                        <ImageView
+                            android:id="@+id/iv_uploaded_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:layout_marginTop="8dp"
+                            android:contentDescription="Uploaded Image Preview"
+                            android:scaleType="centerCrop"
+                            android:visibility="gone" />
+                        <!-- Create Button -->
+                        <Button
+                            android:id="@+id/btnCreateHotel"
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/accent_color"
+                            android:text="Create"
+                            android:textColor="@android:color/white" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="5dp" />
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:orientation="vertical"
+                        android:padding="5dp">
 
+                        <TextView
+                            android:id="@+id/textView2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Popular Choices"
+                            android:textColor="@color/text_color_2"
+                            android:textSize="34sp"
+                            android:textStyle="bold" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerViewHotelCard"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="5dp" />
+
+                    </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>

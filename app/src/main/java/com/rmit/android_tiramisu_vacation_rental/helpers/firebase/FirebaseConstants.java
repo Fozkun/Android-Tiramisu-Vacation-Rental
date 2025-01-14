@@ -7,4 +7,5 @@ public class FirebaseConstants {
     public static final String FM_TOKENS = "FM Tokens";
     public static final String HOTEL_ROOMS = "Hotel Rooms";
     public static final String Notifications = "Notifications";
+    public static final String Coupons = "Coupons";
 }

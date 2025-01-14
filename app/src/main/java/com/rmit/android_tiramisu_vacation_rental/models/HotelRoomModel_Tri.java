@@ -3,16 +3,20 @@ package com.rmit.android_tiramisu_vacation_rental.models;
 import com.rmit.android_tiramisu_vacation_rental.enums.HotelRoomStatus;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class HotelRoomModel_Tri implements Serializable {
     private String id;
+    private String name;
     private String hotelId;
     private String description;
+    private String imageUrl;
     private HotelRoomStatus status;
     private Date startDate; // Format HH:mm dd-MM-yyyy
     private Date endDate; // Format HH:mm dd-MM-yyyy
     private int people;
+    private ArrayList<String> bookedUserIds;
     private Double price;
 
     public HotelRoomModel_Tri() {}
@@ -23,6 +27,14 @@ public class HotelRoomModel_Tri implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getHotelId() {
@@ -39,6 +51,14 @@ public class HotelRoomModel_Tri implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public HotelRoomStatus getStatus() {
@@ -73,6 +93,14 @@ public class HotelRoomModel_Tri implements Serializable {
         this.people = people;
     }
 
+    public ArrayList<String> getBookedUserIds() {
+        return bookedUserIds;
+    }
+
+    public void setBookedUserIds(ArrayList<String> bookedUserIds) {
+        this.bookedUserIds = bookedUserIds;
+    }
+
     public Double getPrice() {
         return price;
     }
@@ -85,12 +113,15 @@ public class HotelRoomModel_Tri implements Serializable {
     public String toString() {
         return "HotelRoomModel_Tri{" +
                 "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", hotelId='" + hotelId + '\'' +
                 ", description='" + description + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
                 ", status=" + status +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", people=" + people +
+                ", bookedUserIds=" + bookedUserIds +
                 ", price=" + price +
                 '}';
     }

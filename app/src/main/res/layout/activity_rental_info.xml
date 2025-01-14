@@ -8,404 +8,635 @@
     android:orientation="vertical"
     tools:context=".RentalInfoActivity">
 
-    <HorizontalScrollView
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="70dp">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.google.android.gms.maps.MapView
-                android:id="@+id/mapView"
-                android:layout_width="410dp"
-                android:layout_height="113dp"
-                android:layout_weight="1" />
-
-        </LinearLayout>
-
-    </HorizontalScrollView>
+        android:layout_height="250dp"/>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="751dp"
-        android:padding="8dp">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border_shape"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
 
-
-            <TextView
-                android:id="@+id/hotelName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border_shape_black"
-                android:padding="10dp"
-                android:text="Hotel Name"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <RatingBar
-                android:id="@+id/hotelRating"
-                android:layout_width="286dp"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/hotelLocation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border_shape_black"
-                android:padding="5dp"
-                android:text="locationTri" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textViewOccupancy"
+                    android:id="@+id/textViewHotelName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/border_shape_black"
-                    android:text="Occupancy" />
+                    android:padding="10dp"
+                    android:text="Hotel Name"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color_2"
+                    android:textSize="34sp"
+                    android:textStyle="bold" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/roomTypesRecyclerView"
+                <TextView
+                    android:id="@+id/textViewHotelLocation"
                     android:layout_width="match_parent"
-                    android:layout_height="16dp" />
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Location"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color_2"
+                    android:textSize="14sp" />
+
+                <RatingBar
+                    android:id="@+id/ratingBarHotel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:isIndicator="true"
+                    android:numStars="5" />
 
                 <LinearLayout
+                    android:id="@+id/layoutActionButtons"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:visibility="gone">
 
-                    <LinearLayout
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:padding="5dp"
+                        android:text="Action"
+                        android:textAlignment="center"
+                        android:textColor="@color/text_color_2"
+                        android:textSize="34sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnShowEditHotelForm"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/gray"
+                        android:text="Edit hotel" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutEditHotelForm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/border_shape_black"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp"
+                        android:visibility="gone">
+
+                        <!-- Hotel Name -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="4dp"
+                            android:text="Hotel Name"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/editText_hotel_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter hotel name"
+                            android:inputType="text"
+                            android:minHeight="48dp" />
+
+                        <!-- Address -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="16dp"
+                            android:paddingBottom="4dp"
+                            android:text="Address"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/editText_hotel_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter hotel address"
+                            android:inputType="textPostalAddress"
+                            android:minHeight="48dp" />
+
+                        <!-- Location (latitude & longitude) -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="16dp"
+                            android:paddingBottom="4dp"
+                            android:text="Location (Latitude and Longitude)"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/editText_latitude"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Latitude"
+                            android:inputType="number|numberDecimal|numberSigned"
+                            android:minHeight="48dp" />
+
+                        <EditText
+                            android:id="@+id/editText_longitude"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Longitude"
+                            android:inputType="number|numberDecimal|numberSigned"
+                            android:minHeight="48dp" />
+
+                        <TextView
+                            android:id="@+id/latLngFinderHyperLink"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/LatitudeLongitudeFinder"
+                            android:textAlignment="center"
+                            android:textStyle="bold" />
+
+                        <!-- Max Occupancy -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="16dp"
+                            android:paddingBottom="4dp"
+                            android:text="Max Occupancy"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/editText_max_occupancy"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter maximum occupancy"
+                            android:inputType="number"
+                            android:minHeight="48dp" />
+
+                        <!-- Rating -->
+
+                        <!-- Upload Image Button -->
+                        <Button
+                            android:id="@+id/btnUploadHotelImage"
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/gray"
+                            android:text="Upload Image" />
 
                         <ImageView
-                            android:id="@+id/roomImage"
-                            android:layout_width="100dp"
-                            android:layout_height="match_parent"
+                            android:id="@+id/iv_uploaded_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:layout_marginTop="8dp"
+                            android:contentDescription="Uploaded Image Preview"
                             android:scaleType="centerCrop"
-                            tools:src="@drawable/room_image" />
+                            android:visibility="gone" />
+                        <!-- Create Button -->
+                        <Button
+                            android:id="@+id/btnSaveHotel"
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@color/accent_color"
+                            android:text="Save"
+                            android:textColor="@android:color/white" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnShowCreateHotelRoomForm"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/gray"
+                        android:text="Create room" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutCreateHotelRoomForm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/border_shape_black"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/textViewForm"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Create new room"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/border_shape_black"
-                            android:orientation="vertical"
-                            android:padding="5dp">
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/roomName"
-                                android:layout_width="match_parent"
+                                android:id="@+id/textViewCreateHotelRoomName"
+                                android:layout_width="95dp"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/border_shape_black"
-                                android:padding="5dp"
-                                android:text="Room Name"
-                                android:textStyle="bold" />
+                                android:layout_gravity="center_vertical"
+                                android:text="Name" />
 
-                            <TextView
-                                android:id="@+id/roomDetails"
+                            <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/border_shape_black"
-                                android:padding="5dp"
-                                android:text="Descrption" />
+                                android:layout_height="wrap_content">
 
-                            <TextView
-                                android:id="@+id/roomPrice"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/border_shape_black"
-                                android:padding="5dp"
-                                android:text="Price" />
-
-                            <TextView
-                                android:id="@+id/startDate"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/border_shape_black"
-                                android:padding="5dp"
-                                android:text="Start Date" />
-
-                            <TextView
-                                android:id="@+id/endDate"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/border_shape_black"
-                                android:padding="5dp"
-                                android:text="End Date" />
-
-                            <TextView
-                                android:id="@+id/roomStatus"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/border_shape_black"
-                                android:padding="5dp"
-                                android:text="Status" />
-
-                            <Button
-                                android:id="@+id/bookNowButton"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Book Now" />
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/InputRoomName"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="30dp"
+                                    android:hint="Room Name" />
+                            </com.google.android.material.textfield.TextInputLayout>
 
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/textViewCreateRoomDescription"
+                                android:layout_width="95dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="Description" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/InputRoomDetails"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="30dp"
+                                    android:hint="Room Details" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/textViewCreateHotelRoomPrice"
+                                android:layout_width="95dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="Price" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/InputRoomPrice"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="30dp"
+                                    android:hint="Room Price" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/textViewCreateHotelRoomStartDate"
+                                android:layout_width="95dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="Start Date" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="316dp"
+                                android:layout_height="wrap_content">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/InputStartDate"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="30dp"
+                                    android:hint="Room Start Date" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/textViewCreateHotelRoomEndDate"
+                                android:layout_width="95dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="End Date" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/InputEndDate"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="30dp"
+                                    android:hint="Room End Date" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/textViewCreateHotelRoomStatus"
+                                android:layout_width="95dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="Status" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/InputStatus"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="30dp"
+                                    android:hint="Room Status" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="37dp"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/textViewCreateHotelRoomImage"
+                                android:layout_width="95dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="Image" />
+
+                            <ImageView
+                                android:id="@+id/imgGallery"
+                                android:layout_width="137dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1" />
+
+                            <Button
+                                android:id="@+id/btnUploadCreateHotelRoomImage"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/gray"
+                                android:text="Upload" />
+
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/btnCreateRoom"
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="50dp"
+                            android:layout_marginRight="50dp"
+                            android:backgroundTint="@color/gray"
+                            android:text="Create" />
+
                     </LinearLayout>
 
-                </LinearLayout>
+                    <Button
+                        android:id="@+id/btnShowCreateHotelCouponForm"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/gray"
+                        android:text="Create coupon" />
 
+
+                    <LinearLayout
+                        android:id="@+id/layoutCreateHotelCouponForm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/border_shape_black"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Create coupon form"
+                            android:textAlignment="center"
+                            android:textColor="@color/text_color_2"
+                            android:textSize="34sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="50dp"
+                            android:layout_marginRight="15dp"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="150dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="Title"
+                                    android:textColor="@color/text_color_2"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/inputLayoutCouponTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="5dp">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="Coupon title"
+                                        android:inputType="text" />
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="15dp"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="150dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="Description"
+                                    android:textColor="@color/text_color_2"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/inputLayoutCouponDescription"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="5dp">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="Coupon description"
+                                        android:inputType="text" />
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="15dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Coupon type"
+                                    android:textColor="@color/text_color_2"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+
+                                <RadioGroup
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <RadioButton
+                                        android:id="@+id/radioButtonCouponTypePercentageDiscount"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:checked="true"
+                                        android:focusable="false"
+                                        android:text="Percentage discount" />
+                                </RadioGroup>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="15dp"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="150dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="Value"
+                                    android:textColor="@color/text_color_2"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/inputLayoutCouponValue"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginLeft="5dp">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:hint="Coupon value"
+                                        android:inputType="text" />
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/btnCreateHotelCoupon"
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:backgroundTint="@color/accent_color"
+                            android:text="Create" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnDeleteHotel"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#E53935"
+                        android:text="Delete hotel" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layoutHotelRooms"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="3dp"
-                android:background="@drawable/border_shape"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:visibility="visible">
 
                 <TextView
-                    android:id="@+id/textViewForm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Create New Room"
-                    android:textSize="16sp"
+                    android:padding="10dp"
+                    android:text="Rooms"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color_2"
+                    android:textSize="34sp"
                     android:textStyle="bold" />
 
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewHotelRoomCard"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/createRoomName"
-                        android:layout_width="95dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="Name"
-                        android:textAlignment="center" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="316dp"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/InputRoomName"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:hint="Room Name" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/createRoomDetails"
-                        android:layout_width="95dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="Description"
-                        android:textAlignment="center" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="316dp"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/InputRoomDetails"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:hint="Room Details" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/createPrice"
-                        android:layout_width="95dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="Price"
-                        android:textAlignment="center" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="316dp"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/InputRoomPrice"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:hint="Room Price" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/createStartDate"
-                        android:layout_width="95dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="Start Date"
-                        android:textAlignment="center" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="316dp"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/InputStartDate"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:hint="Room Start Date" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/createEndDate"
-                        android:layout_width="95dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="End Date"
-                        android:textAlignment="center" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="316dp"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/InputEndDate"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:hint="Room End Date" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/createStatus"
-                        android:layout_width="95dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="Status"
-                        android:textAlignment="center" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="316dp"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/InputStatus"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:hint="Room Status" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="37dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/createRoomImage"
-                        android:layout_width="95dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="Image"
-                        android:textAlignment="center" />
-
-                    <ImageView
-                        android:id="@+id/imgGallery"
-                        android:layout_width="137dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-
-                    <Button
-                        android:id="@+id/btnUpload"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Upload" />
-
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/btnCreateRoom"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:layout_marginRight="50dp"
-                    android:text="Create" />
+                    android:layout_margin="15dp" />
 
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
-        android:layout_width="344dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btnEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Edit" />
-
-        <Button
-            android:id="@+id/btnDelete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Delete" />
-    </LinearLayout>
-
+    <!-- Bottom Navigation -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
+        android:baselineAligned="false"
         android:elevation="4dp"
         android:gravity="center"
         android:orientation="horizontal"
@@ -413,6 +644,7 @@
 
         <!-- Home -->
         <LinearLayout
+            android:id="@+id/nav_home"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -437,6 +669,7 @@
 
         <!-- Coupons -->
         <LinearLayout
+            android:id="@+id/nav_coupons"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -461,6 +694,7 @@
 
         <!-- Trips -->
         <LinearLayout
+            android:id="@+id/nav_myTrips"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -485,6 +719,7 @@
 
         <!-- Notifications -->
         <LinearLayout
+            android:id="@+id/nav_notification"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -509,9 +744,11 @@
 
         <!-- Profile -->
         <LinearLayout
+            android:id="@+id/nav_profile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -527,12 +764,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Profile"
-                android:textColor="#007BFF"
+                android:textColor="#757575"
                 android:textSize="12sp" />
         </LinearLayout>
+
     </LinearLayout>
-
-
-    <!-- Bottom Navigation -->
-
 </LinearLayout>
