@@ -90,6 +90,7 @@ Mai Chi Nghi-s3864219: UI/UX
 Project Management Tools:
 GitHub: Version control for collaborative development.
 Trello: Used to track progress, assign tasks, and maintain deadlines.
+Discord & Messenger: Used for team communication.
 
 ---
 
@@ -99,8 +100,11 @@ Java: For app development.
 Firebase:
 - Real-time database for managing and syncing data.
 - Firebase Storage for uploading and managing images.
+- Firebase Messaging for notification.
 - Authentication for Gmail-based login.
 QR Code: Integrated payment system for secure transactions.
+Google Map SDK: Display hotel in map.
+Glide: Display image.
 Android Studio: Development environment.
 
 ---
@@ -108,12 +112,13 @@ Android Studio: Development environment.
 ## 🌟 Limitations
 
 UI Design: Limited advanced styling due to time constraints.
+Payment options: Lack of payment options for user when book hotel.
 
 ---
 
 ## ⚙️ Non-Functional Requirements Fulfilled
 
-High-Quality Code:
+Code:
 - Robust error handling using try/catch blocks and condition checking.
 - Clean and maintainable codebase.
 Consistent UI Design:
@@ -124,5 +129,3 @@ Project Management:
 - Utilized GitHub for version control and Trello for task tracking.
 
 ---
-
-Let me know if this works or needs further tweaks!
