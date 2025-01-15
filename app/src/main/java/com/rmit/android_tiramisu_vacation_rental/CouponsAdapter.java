@@ -13,17 +13,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseConstants;
 import com.rmit.android_tiramisu_vacation_rental.model_Nghi.Coupon;
+import com.rmit.android_tiramisu_vacation_rental.models.CouponModel_Tri;
+import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
 
 import java.util.ArrayList;
 
 
 public class CouponsAdapter extends RecyclerView.Adapter<CouponsAdapter.ViewHolder> {
 
-    private ArrayList<Coupon> coupons;
-
-    public CouponsAdapter(ArrayList<Coupon> coupons) {
-        this.coupons = coupons;
+    private ArrayList<CouponModel_Tri> coupons;
+    CouponModel_Tri couponModelTri = new CouponModel_Tri();
+    public CouponsAdapter(ArrayList<CouponModel_Tri> couponModelTriArrayList) {
+        this.coupons = couponModelTriArrayList;
     }
 
     @NonNull
@@ -35,28 +38,29 @@ public class CouponsAdapter extends RecyclerView.Adapter<CouponsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Coupon coupon = coupons.get(position);
-        holder.couponTitle.setText(coupon.getTitle());
-        holder.couponDescription.setText(coupon.getDescription());
+        CouponModel_Tri couponModelTri = coupons.get(position);
+        holder.couponTitle.setText(couponModelTri.getTitle());
+        holder.couponDescription.setText(couponModelTri.getDescription());
 
         holder.claimButton.setOnClickListener(view -> {
-            if (!coupon.isClaimed()) {
-                claimCoupon(coupon, position);
+            if (!couponModelTri.isClaim(UserSession_Tri.getInstance().getUserId())) {
+                claimCoupon(couponModelTri, position);
             } else {
                 Toast.makeText(view.getContext(), "Coupon already claimed.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void claimCoupon(Coupon coupon, int position) {
+    private void claimCoupon(CouponModel_Tri couponModelTri, int position) {
+        CouponModel_Tri couponModelTri1 = new CouponModel_Tri();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance()
-                .getReference("coupons")
-                .child("coupon" + (position + 1));
+                .getReference(FirebaseConstants.Coupons)
+                .child(couponModelTri1.getId());
 
         databaseReference.child("claimed").setValue(true).addOnCompleteListener(task -> {
             RecyclerView.ViewHolder holder = null;
             if (task.isSuccessful()) {
-                coupon.setClaimed(true);
+                couponModelTri1.setClaimed(UserSession_Tri.getInstance().getUserId());
                 notifyItemChanged(position);
                 Toast.makeText(holder.itemView.getContext(), "Coupon claimed!", Toast.LENGTH_SHORT).show();
             } else {
@@ -79,7 +83,7 @@ public class CouponsAdapter extends RecyclerView.Adapter<CouponsAdapter.ViewHold
             super(itemView);
             couponTitle = itemView.findViewById(R.id.couponTitle);
             couponDescription = itemView.findViewById(R.id.couponDescription);
-            claimButton = itemView.findViewById(R.id.claimButton);
+            claimButton = itemView.findViewById(R.id.btnClaim);
         }
     }
 }

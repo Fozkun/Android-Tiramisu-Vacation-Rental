@@ -16,13 +16,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rmit.android_tiramisu_vacation_rental.helpers.BottomNavigationHelper;
+import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseConstants;
 import com.rmit.android_tiramisu_vacation_rental.model_Nghi.Coupon;
+import com.rmit.android_tiramisu_vacation_rental.models.CouponModel_Tri;
+import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
 
 import java.util.ArrayList;
 
 public class MyCouponsActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
-    private ArrayList<Coupon> couponList;
+    private ArrayList<CouponModel_Tri> couponList;
     private CouponsAdapter couponsAdapter;
     private RecyclerView couponsRecyclerView;
     private LinearLayout navHomepage, navMyTrips, navCoupons, navNotification, navProfile;
@@ -40,7 +43,7 @@ public class MyCouponsActivity extends AppCompatActivity {
         navProfile = findViewById(R.id.profileButton);
 
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("coupons");
+        databaseReference = FirebaseDatabase.getInstance().getReference(FirebaseConstants.Coupons);
         couponsRecyclerView = findViewById(R.id.couponsRecyclerView);
         couponList = new ArrayList<>();
         couponsAdapter = new CouponsAdapter(couponList);
@@ -48,7 +51,7 @@ public class MyCouponsActivity extends AppCompatActivity {
         couponsRecyclerView.setAdapter(couponsAdapter);
 
         loadCoupons();
-
+        // Bottom Navigation Bar
         navHomepage.setOnClickListener(v -> {
             BottomNavigationHelper.navigateTo(this, HomepageActivity.class);
         });
@@ -71,8 +74,10 @@ public class MyCouponsActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 couponList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Coupon coupon = snapshot.getValue(Coupon.class);
-                    couponList.add(coupon);
+                    CouponModel_Tri couponModelTri = snapshot.getValue(CouponModel_Tri.class);
+                    if (!couponModelTri.isClaim(UserSession_Tri.getInstance().getUserId())){
+                        couponList.add(couponModelTri);
+                    }
                 }
                 couponsAdapter.notifyDataSetChanged();
             }

@@ -72,4 +72,20 @@ public class CouponModel_Tri {
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
+
+    public  boolean isClaim(String userId) {
+        return this.claimedUserIds == null || this.claimedUserIds.contains(userId);
+    }
+
+    public void setClaimed(String userId) {
+        ArrayList <String> clamId = new ArrayList<>();
+        if(this.claimedUserIds != null) {
+            clamId = this. claimedUserIds;
+        }
+        if (clamId.contains(userId)) {
+            return;
+        }
+        clamId.add(userId);
+        this.claimedUserIds = clamId;
+    }
 }
