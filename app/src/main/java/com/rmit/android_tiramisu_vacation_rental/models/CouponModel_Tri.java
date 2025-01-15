@@ -74,7 +74,7 @@ public class CouponModel_Tri {
     }
 
     public  boolean isClaim(String userId) {
-        return this.claimedUserIds == null || this.claimedUserIds.contains(userId);
+        return this.claimedUserIds != null && this.claimedUserIds.contains(userId);
     }
 
     public void setClaimed(String userId) {
