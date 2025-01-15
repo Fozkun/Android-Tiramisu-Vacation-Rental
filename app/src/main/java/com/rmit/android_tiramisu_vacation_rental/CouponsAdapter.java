@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseConstants;
-import com.rmit.android_tiramisu_vacation_rental.model_Nghi.Coupon;
 import com.rmit.android_tiramisu_vacation_rental.models.CouponModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
 
@@ -53,7 +52,7 @@ public class CouponsAdapter extends RecyclerView.Adapter<CouponsAdapter.ViewHold
 
     private void claimCoupon(CouponModel_Tri couponModelTri, int position, RecyclerView.ViewHolder holder) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance()
-                .getReference(FirebaseConstants.Coupons);
+                .getReference(FirebaseConstants.COUPONS);
         couponModelTri.setClaimed(UserSession_Tri.getInstance().getUserId());
         databaseReference.child(couponModelTri.getId()).setValue(couponModelTri).addOnCompleteListener(task -> {
 

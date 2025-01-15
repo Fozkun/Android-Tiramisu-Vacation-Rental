@@ -74,7 +74,7 @@ public class ChatActivity extends AppCompatActivity implements RecyclerViewChatB
         recyclerViewChatSuperUser = findViewById(R.id.recyclerViewChatSuperUser);
 
         // Define database
-        chatReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.Chat);
+        chatReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.CHATS);
 
         if (userSessionTri.getUserRole() == UserRole.SUPER_USER) {
             recyclerViewChatSuperUser.setVisibility(View.VISIBLE);

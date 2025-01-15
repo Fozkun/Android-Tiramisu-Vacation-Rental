@@ -62,7 +62,7 @@ public class NotificationActivity extends AppCompatActivity {
         }
 
         //Define firebase references
-        notificationReference = FirebaseDatabase.getInstance().getReference(FirebaseConstants.Notifications);
+        notificationReference = FirebaseDatabase.getInstance().getReference(FirebaseConstants.NOTIFICATIONS);
 
         //Find view by id
         recyclerViewNotificationCard = findViewById(R.id.recyclerViewNotificationCard);

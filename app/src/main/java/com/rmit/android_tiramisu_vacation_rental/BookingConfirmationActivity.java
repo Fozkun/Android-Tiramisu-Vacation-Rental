@@ -12,8 +12,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +27,7 @@ import com.rmit.android_tiramisu_vacation_rental.models.CouponModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.HotelModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.HotelRoomModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
+import com.rmit.android_tiramisu_vacation_rental.models.UserSettings_Tri;
 import com.rmit.android_tiramisu_vacation_rental.utils.MyDateUtils;
 
 import androidx.annotation.NonNull;
@@ -45,7 +44,7 @@ import java.util.Date;
 public class BookingConfirmationActivity extends AppCompatActivity implements RecyclerViewCouponInterface {
     private static final String TAG = "BookingConfirmationActivity"; //Tag use for Logcat
     private UserSession_Tri userSession;
-    private DatabaseReference hotelReference, roomReference, couponReference, fmTokenReference;
+    private DatabaseReference hotelReference, roomReference, couponReference, fmTokenReference, userSettingsReference;
     private HotelRoomModel_Tri hotelRoomModel;
 
     //All views
@@ -78,9 +77,10 @@ public class BookingConfirmationActivity extends AppCompatActivity implements Re
         }
 
         //Define firebase references
+        userSettingsReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.USERS_SETTINGS);
         hotelReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.HOTELS);
         roomReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.HOTEL_ROOMS);
-        couponReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.Coupons);
+        couponReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.COUPONS);
         fmTokenReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.FM_TOKENS);
 
         //Find view by id
@@ -123,35 +123,54 @@ public class BookingConfirmationActivity extends AppCompatActivity implements Re
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             HotelModel_Tri hotelModel = snapshot.getValue(HotelModel_Tri.class);
-
                             if (hotelModel != null) {
                                 String hotelOwnerId = hotelModel.getOwnerId();
-                                fmTokenReference.child(hotelOwnerId).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        String token = snapshot.getValue(String.class);
-                                        Log.d(TAG, token == null ? "" : token);
 
-                                        if (token != null) {
-                                            new Thread(() -> {
-                                                StringBuilder builder = new StringBuilder();
-                                                builder.append("Room name: ").append(hotelRoomModel.getName()).append("\n");
-                                                builder.append("Book date: ").append(MyDateUtils.formatDate(new Date())).append("\n");
-                                                builder.append("Booked user id: ").append(userSession.getUserId());
+                                ArrayList<String> usersToNotify = new ArrayList<>();
+                                usersToNotify.add(hotelOwnerId);
 
-                                                FirebaseNotificationSender sender = new FirebaseNotificationSender(token, "New room has been booked", builder.toString(), btnConfirmPurchasedHotelRoom.getContext());
-                                                sender.sendNotification();
-                                            }).start();
+                                for (String userId : usersToNotify) {
+                                    userSettingsReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            UserSettings_Tri settings = snapshot.getValue(UserSettings_Tri.class);
+
+                                            if (settings != null) {
+                                                if (settings.pushNotificationEnabled) {
+                                                    fmTokenReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                            String userFmToken = snapshot.getValue(String.class);
+                                                            Log.d(TAG, userFmToken == null ? "" : userFmToken);
+
+                                                            if (userFmToken != null) {
+                                                                new Thread(() -> {
+                                                                    StringBuilder builder = new StringBuilder();
+                                                                    builder.append("Room name: ").append(hotelRoomModel.getName()).append("\n");
+                                                                    builder.append("Book date: ").append(MyDateUtils.formatDate(new Date())).append("\n");
+                                                                    builder.append("Booked user id: ").append(userSession.getUserId());
+
+                                                                    FirebaseNotificationSender sender = new FirebaseNotificationSender(userFmToken, "New room has been booked", builder.toString(), btnConfirmPurchasedHotelRoom.getContext());
+                                                                    sender.sendNotification();
+                                                                }).start();
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                                        }
+                                                    });
+                                                }
+                                            }
                                         }
 
-                                        BottomNavigationHelper.navigateTo(btnConfirmPurchasedHotelRoom.getContext(), HomepageActivity.class);
-                                    }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                    }
-                                });
+                                        }
+                                    });
+                                }
                             }
                         }
 
@@ -159,6 +178,7 @@ public class BookingConfirmationActivity extends AppCompatActivity implements Re
                         public void onCancelled(@NonNull DatabaseError error) {
                         }
                     });
+                    BottomNavigationHelper.navigateTo(btnConfirmPurchasedHotelRoom.getContext(), HomepageActivity.class);
                 }
             });
         });

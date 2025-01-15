@@ -38,7 +38,7 @@ public class ChatBoxAdapter extends RecyclerView.Adapter<ChatBoxAdapter.ChatBoxV
         this.recyclerViewChatBoxInterface = recyclerViewChatBoxInterface;
 
         userReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.REGISTERED_USERS);
-        chatReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.Chat);
+        chatReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.CHATS);
 
         this.chatBoxModels = chatBoxModels;
     }

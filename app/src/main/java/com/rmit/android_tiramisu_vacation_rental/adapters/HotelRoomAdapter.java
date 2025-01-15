@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +34,7 @@ import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseConsta
 import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseNotificationSender;
 import com.rmit.android_tiramisu_vacation_rental.models.HotelRoomModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
+import com.rmit.android_tiramisu_vacation_rental.models.UserSettings_Tri;
 import com.rmit.android_tiramisu_vacation_rental.utils.MyDateUtils;
 
 import java.util.ArrayList;
@@ -43,12 +45,13 @@ import java.util.Locale;
 public class HotelRoomAdapter extends RecyclerView.Adapter<HotelRoomAdapter.HotelRoomCardViewHolder> {
     private UserSession_Tri userSession;
     private ArrayList<HotelRoomModel_Tri> rooms;
-    private DatabaseReference roomReference, fmTokenReference;
+    private DatabaseReference userSettingsReference, roomReference, fmTokenReference;
 
     public HotelRoomAdapter(ArrayList<HotelRoomModel_Tri> rooms) {
         userSession = UserSession_Tri.getInstance();
         this.rooms = rooms;
 
+        userSettingsReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.USERS_SETTINGS);
         roomReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.HOTEL_ROOMS);
         fmTokenReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.FM_TOKENS);
     }
@@ -67,11 +70,11 @@ public class HotelRoomAdapter extends RecyclerView.Adapter<HotelRoomAdapter.Hote
     public void onBindViewHolder(@NonNull HotelRoomAdapter.HotelRoomCardViewHolder holder, int position) {
         HotelRoomModel_Tri model = this.rooms.get(position);
 
-        if (model.getImageUrl() == null) {
-            holder.imageViewHotelRoom.setImageResource(R.drawable.homepage_card_bg);
-        } else {
-            Glide.with(holder.itemView.getContext()).load(model.getImageUrl()).into(holder.imageViewHotelRoom);
-        }
+        RequestOptions options = new RequestOptions()
+                .placeholder(R.drawable.homepage_card_bg)
+                .error(R.drawable.homepage_card_bg);
+
+        Glide.with(holder.itemView.getContext()).load(model.getImageUrl()).apply(options).into(holder.imageViewHotelRoom);
 
         holder.textViewHotelRoomName.setText(model.getName() == null ? "No name" : model.getName());
         holder.textViewHotelRoomDescription.setText(model.getDescription() == null ? "No description" : model.getDescription());
@@ -202,30 +205,42 @@ public class HotelRoomAdapter extends RecyclerView.Adapter<HotelRoomAdapter.Hote
                 if (task.isSuccessful()) {
                     holder.layoutEditHotelRoomForm.setVisibility(View.GONE);
 
-                    fmTokenReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            ArrayList<String> tokens = new ArrayList<>();
+                    new Thread(() -> {
+                        fmTokenReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot dataSnapshotToken : snapshot.getChildren()) {
+                                    String userId = dataSnapshotToken.getKey();
+                                    String token = dataSnapshotToken.getValue(String.class);
 
-                            for (DataSnapshot dataSnapshotToken : snapshot.getChildren()) {
-                                String token = dataSnapshotToken.getValue(String.class);
+                                    if (userId != null && token != null) {
+                                        userSettingsReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                UserSettings_Tri settings = snapshot.getValue(UserSettings_Tri.class);
+                                                if (settings != null && settings.pushNotificationEnabled) {
+                                                    new Thread(() -> {
+                                                        FirebaseNotificationSender sender = new FirebaseNotificationSender(token, "Hotel room information changed", builder.toString(), holder.itemView.getContext());
+                                                        sender.sendNotification();
+                                                    }).start();
+                                                }
+                                            }
 
-                                if (token != null) {
-                                    tokens.add(token);
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+                                    }
                                 }
                             }
 
-                            for (String token : tokens) {
-                                FirebaseNotificationSender sender = new FirebaseNotificationSender(token, "Hotel room information changed", builder.toString(), holder.itemView.getContext());
-                                sender.sendNotification();
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
                             }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
+                        });
+                    }).start();
                 }
             });
         });

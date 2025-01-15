@@ -17,7 +17,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rmit.android_tiramisu_vacation_rental.helpers.BottomNavigationHelper;
 import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseConstants;
-import com.rmit.android_tiramisu_vacation_rental.model_Nghi.Coupon;
 import com.rmit.android_tiramisu_vacation_rental.models.CouponModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
 
@@ -43,7 +42,7 @@ public class MyCouponsActivity extends AppCompatActivity {
         navProfile = findViewById(R.id.profileButton);
 
 
-        databaseReference = FirebaseDatabase.getInstance().getReference(FirebaseConstants.Coupons);
+        databaseReference = FirebaseDatabase.getInstance().getReference(FirebaseConstants.COUPONS);
         couponsRecyclerView = findViewById(R.id.couponsRecyclerView);
         couponList = new ArrayList<>();
         couponsAdapter = new CouponsAdapter(couponList);

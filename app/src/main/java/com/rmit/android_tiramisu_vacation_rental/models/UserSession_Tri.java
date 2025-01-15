@@ -35,10 +35,11 @@ public class UserSession_Tri {
         return userRole;
     }
 
-    public void setSession(String userId, UserRole userRole){
+    public void setSession(String userId, UserRole userRole) {
         this.userId = userId;
         this.userRole = userRole;
     }
+
     public boolean hasSession() {
         return this.userRole != null && this.userId != null;
     }

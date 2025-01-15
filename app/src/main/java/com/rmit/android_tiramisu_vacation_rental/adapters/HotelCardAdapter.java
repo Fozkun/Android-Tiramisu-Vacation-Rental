@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.rmit.android_tiramisu_vacation_rental.R;
@@ -34,12 +35,11 @@ public class HotelCardAdapter extends FirebaseRecyclerAdapter<HotelModel_Tri, Ho
     protected void
     onBindViewHolder(@NonNull HotelCardViewHolder holder,
                      int position, @NonNull HotelModel_Tri model) {
+        RequestOptions options = new RequestOptions()
+                .placeholder(R.drawable.homepage_card_bg)
+                .error(R.drawable.homepage_card_bg);
 
-        if (model.getImageUrl() == null) {
-            holder.imageViewHotel.setImageResource(R.drawable.homepage_card_bg);
-        } else {
-            Glide.with(holder.itemView.getContext()).load(model.getImageUrl()).into(holder.imageViewHotel);
-        }
+        Glide.with(holder.itemView.getContext()).load(model.getImageUrl()).apply(options).into(holder.imageViewHotel);
 
         holder.textViewHotelName.setText(model.getName());
         holder.textViewHotelLocation.setText(model.getAddress());

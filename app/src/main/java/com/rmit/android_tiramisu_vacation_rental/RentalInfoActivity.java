@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,18 +26,13 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.common.util.NumberUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -56,6 +50,7 @@ import com.rmit.android_tiramisu_vacation_rental.models.HotelModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.HotelRoomModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.Location_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
+import com.rmit.android_tiramisu_vacation_rental.models.UserSettings_Tri;
 import com.rmit.android_tiramisu_vacation_rental.utils.MyDateUtils;
 
 import java.text.NumberFormat;
@@ -63,14 +58,13 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
 public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = "RentalInfoActivity"; //Tag use for Logcat
     private UserSession_Tri userSession; //User session to access user role and id
-    private DatabaseReference userReference, hotelReference, roomReference, couponReference, fmTokenReference, mDatabase;
+    private DatabaseReference userReference, userSettingsReference, hotelReference, roomReference, couponReference, fmTokenReference;
     private HotelModel_Tri hotelModel;
     private ArrayList<HotelRoomModel_Tri> rooms = new ArrayList<>();
 
@@ -110,9 +104,10 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
 
         //Define firebase references
         userReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.REGISTERED_USERS);
+        userSettingsReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.USERS_SETTINGS);
         hotelReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.HOTELS);
         roomReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.HOTEL_ROOMS);
-        couponReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.Coupons);
+        couponReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.COUPONS);
         fmTokenReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.FM_TOKENS);
 
         //Find view by id
@@ -514,22 +509,31 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
             fmTokenReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    ArrayList<String> allKeys = new ArrayList<>();
-
                     for (DataSnapshot snapshotFcKey : snapshot.getChildren()) {
+                        String userId = snapshotFcKey.getKey();
                         String key = snapshotFcKey.getValue(String.class);
 
-                        if (key != null) {
-                            allKeys.add(key);
+                        if (userId != null) {
+                            userSettingsReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    UserSettings_Tri settingsTri = snapshot.getValue(UserSettings_Tri.class);
+
+                                    if (settingsTri != null && settingsTri.pushNotificationEnabled) {
+                                        new Thread(() -> {
+                                            FirebaseNotificationSender firebaseNotificationSender = new FirebaseNotificationSender(key, title, description, RentalInfoActivity.this);
+                                            firebaseNotificationSender.sendNotification();
+                                        }).start();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
                         }
                     }
-
-                    new Thread(() -> {
-                        for (String key : allKeys) {
-                            FirebaseNotificationSender firebaseNotificationSender = new FirebaseNotificationSender(key, title, description, RentalInfoActivity.this);
-                            firebaseNotificationSender.sendNotification();
-                        }
-                    }).start();
                 }
 
                 @Override

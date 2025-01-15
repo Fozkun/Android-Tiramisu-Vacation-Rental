@@ -46,7 +46,7 @@ public class SigninActivity extends AppCompatActivity {
     private ImageButton btnTogglePassword;
 
     private FirebaseAuth authProfile;
-    private DatabaseReference usersReference;
+    private DatabaseReference usersReference, settingsReference;
 
     private UserSession_Tri userSessionTri;
 
@@ -74,6 +74,7 @@ public class SigninActivity extends AppCompatActivity {
         FirebaseUser firebaseUser = authProfile.getCurrentUser();
 
         usersReference = FirebaseDatabase.getInstance().getReference(FirebaseConstants.REGISTERED_USERS);
+        settingsReference = FirebaseDatabase.getInstance().getReference(FirebaseConstants.USERS_SETTINGS);
 
         userSessionTri = UserSession_Tri.getInstance();
 
