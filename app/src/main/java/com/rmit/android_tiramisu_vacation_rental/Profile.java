@@ -118,14 +118,66 @@ public class Profile extends AppCompatActivity {
 
         // Handle Help & Support click
         LinearLayout helpSupportSection = findViewById(R.id.helpSupportSection);
-        helpSupportSection.setOnClickListener(v -> showDetails("Help & Support",
-                "If you need assistance, contact us at support@example.com."));
+        helpSupportSection.setOnClickListener(v -> showDetails("",
+                "Help & Support\n" +
+                        "\n" +
+                        "Welcome to the Help & Support section! Below are common issues and solutions to ensure a seamless experience with the app.  \n" +
+                        "\n" +
+                        "---\n" +
+                        "\n" +
+                        "Login Issues  \n" +
+                        "- Ensure your device is connected to the internet.  \n" +
+                        "- Double-check that your Gmail credentials are entered correctly.  \n" +
+                        "- If the issue persists, update the app or clear the app cache.  \n" +
+                        "\n" +
+                        "---\n" +
+                        "\n" +
+                        "Image Upload Fails  \n" +
+                        "- Use image formats such as JPEG or PNG.  \n" +
+                        "- Verify your internet connection is stable.  \n" +
+                        "- Ensure Firebase Storage is configured correctly.  \n" +
+                        "\n" +
+                        "---\n" +
+                        "\n" +
+                        "Payment Issues  \n" +
+                        "- Make sure the QR code is scanned properly.  \n" +
+                        "- Double-check payment details and sufficient balance.  \n" +
+                        "\n" +
+                        "---\n" +
+                        "\n" +
+                        "Chat Not Working  \n" +
+                        "- Confirm that you are logged in and connected to the internet.  \n" +
+                        "- Update the app to ensure the chat feature is functioning properly.  \n" +
+                        "\n" +
+                        "---\n" +
+                        "\n" +
+                        "App Performance \n" +
+                        "- Restart your device to refresh system performance.  \n" +
+                        "- Clear the app cache or reinstall the app to resolve persistent issues.  \n" +
+                        "\n" +
+                        "---\n" +
+                        "\n" +
+                        "Contact Support  \n" +
+                        "- Email: fozkun230403@gmail.com  \n" +
+                        "- Phone: 0901360668  \n" +
+                        "- Live Chat: Use the in-app chat system for immediate assistance.  \n" +
+                        "\n" +
+                        "---\n" +
+                        "\n" +
+                        "Feedback and Suggestions  \n" +
+                        "We value your feedback! If you have suggestions to improve the app, please email us at feedback@vacationrentalapp.com.  \n" +
+                        "\n" +
+                        "---\n" +
+                        "\n" +
+                        "This version is now clean, spaced evenly, and visually structured for easy reading and integration into your project. Let me know if further refinements are needed!"));
 
         // Handle About App click
         LinearLayout aboutAppSection = findViewById(R.id.aboutAppSection);
-        aboutAppSection.setOnClickListener(v -> showDetails("About App",
-                "This app is designed for Tiramisu vacation rentals.\nVersion: 1.0.0"));
+        aboutAppSection.setOnClickListener(v -> showDetails("",
 
+                "About App\n" + "\n" + "\n" +
+                        "The Tiramisu Vacation Rental is an Android-base platform designed to Users, Rental Providers and Super Users for a seamless vacation rental experience. Let's book a hotel for travelling "
+        ));
         // Handle Close Details
         detailContainer.setOnClickListener(v -> closeDetails());
 
