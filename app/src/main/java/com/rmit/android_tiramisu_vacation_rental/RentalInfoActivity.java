@@ -4,19 +4,24 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +43,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.rmit.android_tiramisu_vacation_rental.adapters.HotelRoomAdapter;
 import com.rmit.android_tiramisu_vacation_rental.enums.CouponType;
 import com.rmit.android_tiramisu_vacation_rental.enums.HotelRoomStatus;
@@ -45,6 +52,7 @@ import com.rmit.android_tiramisu_vacation_rental.enums.UserRole;
 import com.rmit.android_tiramisu_vacation_rental.helpers.BottomNavigationHelper;
 import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseConstants;
 import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseNotificationSender;
+import com.rmit.android_tiramisu_vacation_rental.interfaces.RecyclerViewHotelRoomInterface;
 import com.rmit.android_tiramisu_vacation_rental.models.CouponModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.HotelModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.HotelRoomModel_Tri;
@@ -69,11 +77,12 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
     private ArrayList<HotelRoomModel_Tri> rooms = new ArrayList<>();
 
     // All views
+    private ImageView imageviewHotelPicturePreview;
     private TextView textViewHotelName, textViewHotelLocation, latLngFinderHyperLink;
     ;
     private RatingBar ratingBarHotel;
     private LinearLayout layoutActionButtons, layoutEditHotelForm, layoutCreateHotelRoomForm, layoutCreateHotelCouponForm;
-    private Button btnCreateRoom, btnDeleteHotel, btnSaveHotel, btnCreateHotelCoupon, btnShowEditHotelForm, btnShowCreateHotelRoom, btnShowCreateHotelCouponForm;
+    private Button btnUploadHotelImage, btnCreateRoom, btnDeleteHotel, btnSaveHotel, btnCreateHotelCoupon, btnShowEditHotelForm, btnShowCreateHotelRoom, btnShowCreateHotelCouponForm;
 
     private TextInputLayout inputLayoutRoomStartDate, inputLayoutRoomEndDate;
     private HotelRoomAdapter hotelRoomAdapter;
@@ -82,6 +91,9 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
     private LinearLayout navHome, navMyTrips, navCoupons, navNotification, navProfile;
 
     private GoogleMap mMap;
+
+    private Uri uploadedImage;
+    private ActivityResultLauncher<Intent> imagePickerLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +113,19 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
             finish();
             return;
         }
+
+        imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            try {
+                if (result.getData() != null) {
+                    Uri imageUri = result.getData().getData();
+                    imageviewHotelPicturePreview.setImageURI(imageUri);
+                    imageviewHotelPicturePreview.setVisibility(View.VISIBLE);
+                    this.uploadedImage = imageUri;
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         //Define firebase references
         userReference = FirebaseDatabase.getInstance().getReference().child(FirebaseConstants.REGISTERED_USERS);
@@ -129,6 +154,8 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
         btnCreateRoom = findViewById(R.id.btnCreateRoom);
         inputLayoutRoomStartDate = findViewById(R.id.inputCreateRoomStartDate);
         inputLayoutRoomEndDate = findViewById(R.id.inputCreateRoomEndDate);
+        imageviewHotelPicturePreview = findViewById(R.id.imageViewHotelImagePreview);
+        btnUploadHotelImage = findViewById(R.id.btnUploadHotelImage);
 
         //Find all bottom navigation ids
         navHome = findViewById(R.id.nav_home);
@@ -138,6 +165,18 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
         navProfile = findViewById(R.id.nav_profile);
 
         // Setup click event listener for all buttons
+        imageviewHotelPicturePreview.setOnClickListener(v -> {
+            if (uploadedImage != null) {
+                uploadedImage = null;
+                imageviewHotelPicturePreview.setVisibility(View.GONE);
+            }
+        });
+
+        btnUploadHotelImage.setOnClickListener(v -> {
+            Intent intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
+            imagePickerLauncher.launch(intent);
+        });
+
         btnSaveHotel.setOnClickListener(v -> {
             EditText editTextHotelName = findViewById(R.id.editText_hotel_name);
             EditText editTextHotelAddress = findViewById(R.id.editText_hotel_address);
@@ -177,9 +216,31 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
                 this.hotelModel.setMaxOccupancy(maxOccupancy);
             }
 
-            hotelReference.child(this.hotelModel.getId()).setValue(this.hotelModel);
+            if (uploadedImage != null) {
+                String fileName = hotelModel.getId() + "_" + "image";
+                FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                StorageReference storageReference = firebaseStorage.getReference("images/hotel/" + fileName);
 
-            layoutEditHotelForm.setVisibility(View.GONE);
+                storageReference.putFile(this.uploadedImage).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        storageReference.getDownloadUrl().addOnCompleteListener(dUrlTask -> {
+                            if (dUrlTask.isSuccessful()) {
+                                Uri uri = dUrlTask.getResult();
+                                hotelModel.setImageUrl(uri.toString());
+                                handleEditHotel();
+                            }
+                        });
+                    } else {
+                        try {
+                            throw Objects.requireNonNull(task.getException());
+                        } catch (Exception e) {
+                            Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                        }
+                    }
+                });
+            } else {
+                handleEditHotel();
+            }
         });
 
         inputLayoutRoomStartDate.getEditText().setOnClickListener(view -> showDateTimePicker(this, inputLayoutRoomStartDate));
@@ -659,5 +720,10 @@ public class RentalInfoActivity extends AppCompatActivity implements OnMapReadyC
                 Log.e("TAG", "Error retrieving room data.", error.toException());
             }
         });
+    }
+
+    private void handleEditHotel() {
+        hotelReference.child(this.hotelModel.getId()).setValue(this.hotelModel);
+        layoutEditHotelForm.setVisibility(View.GONE);
     }
 }

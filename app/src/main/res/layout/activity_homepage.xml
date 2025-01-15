@@ -413,6 +413,15 @@
                         <!-- Rating -->
 
                         <!-- Upload Image Button -->
+                        <ImageView
+                            android:id="@+id/imageViewHotelImagePreview"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:adjustViewBounds="true"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:visibility="gone" />
+
                         <Button
                             android:id="@+id/btnUploadHotelImage"
                             android:layout_width="250dp"

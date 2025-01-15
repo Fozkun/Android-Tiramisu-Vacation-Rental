@@ -1,5 +1,8 @@
 package com.rmit.android_tiramisu_vacation_rental.adapters;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,6 +54,7 @@ public class HotelCardAdapter extends FirebaseRecyclerAdapter<HotelModel_Tri, Ho
         holder.ratingBarHotelRating.setRating(model.getRating());
     }
 
+
     @NonNull
     @Override
     public HotelCardViewHolder
@@ -63,7 +69,6 @@ public class HotelCardAdapter extends FirebaseRecyclerAdapter<HotelModel_Tri, Ho
 
     public void updateFilteredHotels(HotelModel_Tri hotel) {
         this.filteredHotels.add(hotel);
-
         notifyDataSetChanged();
     }
 

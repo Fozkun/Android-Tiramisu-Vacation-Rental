@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rmit.android_tiramisu_vacation_rental.adapters.BookedHotelRoomAdapter;
+import com.rmit.android_tiramisu_vacation_rental.adapters.HotelRoomAdapter;
 import com.rmit.android_tiramisu_vacation_rental.helpers.BottomNavigationHelper;
 import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseConstants;
 import com.rmit.android_tiramisu_vacation_rental.interfaces.RecyclerViewBookedHotelRoomInterface;

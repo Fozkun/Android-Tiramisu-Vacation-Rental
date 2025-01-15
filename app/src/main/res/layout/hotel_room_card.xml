@@ -23,8 +23,7 @@
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/homepage_card_bg"
-                tools:scaleType="centerCrop"
-                tools:src="@drawable/room_image" />
+                tools:scaleType="centerCrop" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -277,34 +276,6 @@
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="37dp"
-                        android:layout_marginTop="5dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/textViewCreateHotelRoomImage"
-                            android:layout_width="95dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:text="Image" />
-
-                        <ImageView
-                            android:id="@+id/imgGallery"
-                            android:layout_width="137dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1" />
-
-                        <Button
-                            android:id="@+id/btnUploadCreateHotelRoomImage"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@color/gray"
-                            android:text="Upload" />
-
-                    </LinearLayout>
-
                     <Button
                         android:id="@+id/btnSaveHotelRoom"
                         android:layout_width="250dp"
@@ -313,7 +284,6 @@
                         android:layout_marginRight="50dp"
                         android:backgroundTint="@color/gray"
                         android:text="Save" />
-
                 </LinearLayout>
 
                 <Button

@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ import com.rmit.android_tiramisu_vacation_rental.enums.HotelRoomStatus;
 import com.rmit.android_tiramisu_vacation_rental.enums.UserRole;
 import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseConstants;
 import com.rmit.android_tiramisu_vacation_rental.helpers.firebase.FirebaseNotificationSender;
+import com.rmit.android_tiramisu_vacation_rental.interfaces.RecyclerViewHotelRoomInterface;
 import com.rmit.android_tiramisu_vacation_rental.models.HotelRoomModel_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.UserSession_Tri;
 import com.rmit.android_tiramisu_vacation_rental.models.UserSettings_Tri;
@@ -62,7 +64,6 @@ public class HotelRoomAdapter extends RecyclerView.Adapter<HotelRoomAdapter.Hote
         View view
                 = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.hotel_room_card, parent, false);
-
         return new HotelRoomAdapter.HotelRoomCardViewHolder(view);
     }
 
@@ -317,11 +318,11 @@ public class HotelRoomAdapter extends RecyclerView.Adapter<HotelRoomAdapter.Hote
     }
 
     public static class HotelRoomCardViewHolder extends RecyclerView.ViewHolder {
-        private TextInputLayout inputLayoutHotelRoomStartDate, inputLayoutHotelRoomEndDate;
-        private LinearLayout layoutEditHotelRoomForm;
-        private Button btnBookHotelRoom, btnShowEditHotelRoomForm, btnDeleteHotelRoom, btnSaveHotelRoom, btnChangeHotelRoomStatus;
-        private ImageView imageViewHotelRoom;
-        private TextView textViewHotelRoomName, textViewHotelRoomDescription, textViewHotelRoomPrice, textViewHotelRoomStartDate, textViewHotelRoomEndDate, textViewHotelRoomStatus;
+        public TextInputLayout inputLayoutHotelRoomStartDate, inputLayoutHotelRoomEndDate;
+        public LinearLayout layoutEditHotelRoomForm;
+        public Button btnBookHotelRoom, btnShowEditHotelRoomForm, btnDeleteHotelRoom, btnSaveHotelRoom, btnChangeHotelRoomStatus;
+        public ImageView imageViewHotelRoom;
+        public TextView textViewHotelRoomName, textViewHotelRoomDescription, textViewHotelRoomPrice, textViewHotelRoomStartDate, textViewHotelRoomEndDate, textViewHotelRoomStatus;
 
         public HotelRoomCardViewHolder(@NonNull View itemView) {
             super(itemView);

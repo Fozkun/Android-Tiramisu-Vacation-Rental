@@ -192,6 +192,15 @@
                             android:text="Upload Image" />
 
                         <ImageView
+                            android:id="@+id/imageViewHotelImagePreview"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:adjustViewBounds="true"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:visibility="gone" />
+
+                        <ImageView
                             android:id="@+id/iv_uploaded_image"
                             android:layout_width="match_parent"
                             android:layout_height="200dp"
@@ -420,34 +429,6 @@
                                     android:layout_height="50dp"
                                     android:hint="Room People" />
                             </com.google.android.material.textfield.TextInputLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="37dp"
-                            android:layout_marginTop="5dp"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/textViewCreateHotelRoomImage"
-                                android:layout_width="95dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:text="Image" />
-
-                            <ImageView
-                                android:id="@+id/imgGallery"
-                                android:layout_width="137dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1" />
-
-                            <Button
-                                android:id="@+id/btnUploadCreateHotelRoomImage"
-                                android:layout_width="100dp"
-                                android:layout_height="wrap_content"
-                                android:backgroundTint="@color/gray"
-                                android:text="Upload" />
 
                         </LinearLayout>
 

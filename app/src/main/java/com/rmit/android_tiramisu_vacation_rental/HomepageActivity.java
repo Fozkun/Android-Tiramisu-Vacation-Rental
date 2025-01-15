@@ -6,8 +6,10 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -39,6 +42,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.rmit.android_tiramisu_vacation_rental.adapters.FilteredHotelCardAdapter;
 import com.rmit.android_tiramisu_vacation_rental.adapters.HotelCardAdapter;
 import com.rmit.android_tiramisu_vacation_rental.enums.HotelRoomStatus;
@@ -70,14 +75,17 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
     private String userFirebaseMsgToken; //User token for notification
     private DatabaseReference roomReference, hotelReference, fmTokenReference;
     private EditText editTextFindHotelWhere, editTextFindHotelStartDate, editTextFindHotelEndDate;
+    private ImageView imageviewHotelPicturePreview;
     private TextView textViewFindHotelRoomAdults, latLngFinderHyperLink;
-    private Button btnFindHotel, btnShowCreateHotelForm, btnCreateHotel;
-
+    private Button btnFindHotel, btnShowCreateHotelForm, btnCreateHotel, btnUploadHotelImage;
     private ArrayList<HotelModel_Tri> filteredHotels = new ArrayList<>();
     private HotelCardAdapter hotelCardAdapter;
     private FilteredHotelCardAdapter filteredHotelCardAdapter;
     private RecyclerView recyclerViewHotelCard;
     private LinearLayout layoutCreateHotelForm;
+    private Uri uploadedImage;
+
+    private ActivityResultLauncher<Intent> imagePickerLauncher;
 
     // All bottom navigation buttons
     private LinearLayout navMyTrips, navCoupons, navNotification, navProfile;
@@ -110,6 +118,19 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
             return;
         }
 
+        imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            try {
+                if (result.getData() != null) {
+                    Uri imageUri = result.getData().getData();
+                    imageviewHotelPicturePreview.setImageURI(imageUri);
+                    imageviewHotelPicturePreview.setVisibility(View.VISIBLE);
+                    this.uploadedImage = imageUri;
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+
         requestPermission(); // Request permission needed
 
         //Define firebase references
@@ -128,6 +149,8 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
         layoutCreateHotelForm = findViewById(R.id.layoutCreateHotelForm);
         btnCreateHotel = findViewById(R.id.btnCreateHotel);
         recyclerViewHotelCard = findViewById(R.id.recyclerViewHotelCard);
+        btnUploadHotelImage = findViewById(R.id.btnUploadHotelImage);
+        imageviewHotelPicturePreview = findViewById(R.id.imageViewHotelImagePreview);
 
         //Find all bottom navigation ids
         navCoupons = findViewById(R.id.nav_coupons);
@@ -154,6 +177,15 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
                 layoutCreateHotelForm.setVisibility(View.GONE);
             }
         });
+        imageviewHotelPicturePreview.setOnClickListener(v -> {
+            if (uploadedImage != null) {
+                uploadedImage = null;
+                imageviewHotelPicturePreview.setVisibility(View.GONE);
+            }
+        });
+        btnUploadHotelImage.setOnClickListener(v -> {
+            pickImage();
+        });
         btnCreateHotel.setOnClickListener(v -> {
             EditText editTextHotelName = findViewById(R.id.editText_hotel_name);
             EditText editTextHotelAddress = findViewById(R.id.editText_hotel_address);
@@ -161,6 +193,7 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
             EditText editTextLongitude = findViewById(R.id.editText_longitude);
             EditText editTextMaxOccupancy = findViewById(R.id.editText_max_occupancy);
 
+            String hotelId = hotelReference.push().getKey();
             String hotelName = editTextHotelName.getText().toString();
             String hotelAddress = editTextHotelAddress.getText().toString();
             String hotelLatitude = editTextLatitude.getText().toString();
@@ -194,23 +227,33 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
                     return;
                 }
 
-                Log.d(TAG, parsedLatitude + " " + parsedLongitude);
                 Location_Tri location = new Location_Tri(parsedLatitude, parsedLongitude);
 
                 HotelModel_Tri hotel = new HotelModel_Tri();
+                hotel.setId(hotelId);
                 hotel.setName(hotelName);
                 hotel.setAddress(hotelAddress);
                 hotel.setLocation(location);
-                hotel.setMaxOccupancy(Integer.parseInt(maxOccupancy));
+                if (!TextUtils.isEmpty(maxOccupancy)) {
+                    hotel.setMaxOccupancy(Integer.parseInt(maxOccupancy));
+                }
                 hotel.setOwnerId(this.userSessionTri.getUserId());
 
-                String key = hotelReference.push().getKey();
-                if (key != null) {
-                    hotel.setId(key);
-                    hotelReference.child(key).setValue(hotel).addOnCompleteListener(task -> {
+                if (this.uploadedImage != null) {
+                    String fileName = hotelId + "_" + "image";
+
+                    FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                    StorageReference storageReference = firebaseStorage.getReference("images/hotel/" + fileName);
+
+                    storageReference.putFile(this.uploadedImage).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Log.d(TAG, key);
-                            layoutCreateHotelForm.setVisibility(View.GONE);
+                            storageReference.getDownloadUrl().addOnCompleteListener(dUrlTask -> {
+                                if (dUrlTask.isSuccessful()) {
+                                    Uri uri = dUrlTask.getResult();
+                                    hotel.setImageUrl(uri.toString());
+                                    handleCreateHotel(hotel);
+                                }
+                            });
                         } else {
                             try {
                                 throw Objects.requireNonNull(task.getException());
@@ -219,6 +262,9 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
                             }
                         }
                     });
+                } else {
+                    hotel.setImageUrl(null);
+                    handleCreateHotel(hotel);
                 }
             }
         });
@@ -258,6 +304,20 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
 
         recyclerViewHotelCard.setAdapter(hotelCardAdapter);
         hotelCardAdapter.startListening();
+    }
+
+    private void handleCreateHotel(HotelModel_Tri hotel) {
+        hotelReference.child(hotel.getId()).setValue(hotel).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                layoutCreateHotelForm.setVisibility(View.GONE);
+            } else {
+                try {
+                    throw Objects.requireNonNull(task.getException());
+                } catch (Exception e) {
+                    Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                }
+            }
+        });
     }
 
     private void requestPermission() {
@@ -476,5 +536,10 @@ public class HomepageActivity extends AppCompatActivity implements RecyclerViewH
         Intent intent = new Intent(this, RentalInfoActivity.class);
         intent.putExtra("hotelId", model.getId());
         startActivity(intent);
+    }
+
+    private void pickImage() {
+        Intent intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
+        imagePickerLauncher.launch(intent);
     }
 }

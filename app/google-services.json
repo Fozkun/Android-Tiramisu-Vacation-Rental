@@ -1,8 +1,8 @@
 {
   "project_info": {
     "project_number": "1078324140214",
-    "project_id": "tiramisu-vacation-rental",
     "firebase_url": "https://tiramisu-vacation-rental-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "tiramisu-vacation-rental",
     "storage_bucket": "tiramisu-vacation-rental.firebasestorage.app"
   },
   "client": [
