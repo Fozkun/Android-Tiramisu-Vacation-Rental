@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Home"
-                android:textColor="#007BFF"
+                android:textColor="#757575"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Coupons"
-                android:textColor="#757575"
+                android:textColor="#007BFF"
                 android:textSize="12sp" />
         </LinearLayout>
 
